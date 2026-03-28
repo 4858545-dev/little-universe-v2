@@ -3,7 +3,7 @@ import useAppStore from '../../store/useAppStore'
 import Button from '../ui/Button'
 import styles from './PlanetNode.module.css'
 
-const PLANET_QUESTS = {
+export const PLANET_QUESTS = {
   'logic-zorx':   ['Робочі аркуші', 'Відеоуроки', 'Інтерактивні пазли', 'Набори для оцінювання'],
   'art-lumi':     ['Арт-терапевтичні картки', 'Аркуші емоцій', 'Посібники для батьків', 'Протоколи спеціалістів'],
   'logo-orbit':   ['Артикуляційні PDF', 'Фонетичні ігри', 'Конструктори історій', 'Трекери прогресу'],

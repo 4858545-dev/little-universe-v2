@@ -1,10 +1,8 @@
 import { useEffect, useRef } from 'react'
 import styles from './StarField.module.css'
 
-const STAR_COUNT = 280
-
-function initStars(w, h) {
-  return Array.from({ length: STAR_COUNT }, () => ({
+function initStars(w, h, count) {
+  return Array.from({ length: count }, () => ({
     x: Math.random() * w,
     y: Math.random() * h,
     r: 0.5 + Math.random() * 2,
@@ -14,7 +12,7 @@ function initStars(w, h) {
   }))
 }
 
-export default function StarField() {
+export default function StarField({ count = 280 }) {
   const canvasRef = useRef(null)
 
   useEffect(() => {
@@ -23,12 +21,12 @@ export default function StarField() {
     const ctx = canvas.getContext('2d')
     let rafId
     let stars = []
-    let startTime = performance.now()
+    const startTime = performance.now()
 
     function resize() {
       canvas.width = canvas.offsetWidth
       canvas.height = canvas.offsetHeight
-      stars = initStars(canvas.width, canvas.height)
+      stars = initStars(canvas.width, canvas.height, count)
     }
 
     function draw(now) {
@@ -54,7 +52,7 @@ export default function StarField() {
       cancelAnimationFrame(rafId)
       ro.disconnect()
     }
-  }, [])
+  }, [count])
 
   return <canvas ref={canvasRef} className={styles.canvas} />
 }
