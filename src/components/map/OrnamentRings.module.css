@@ -9,7 +9,7 @@
 .ring2,
 .ring3 {
   position: absolute;
-  top: 50%;
+  top: 47%;
   left: 50%;
   border-radius: 50%;
   will-change: transform;

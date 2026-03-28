@@ -48,7 +48,7 @@ function ProgressRing({ progress = 0, color, size = 80 }) {
   )
 }
 
-export default function PlanetNode({ id, meta, unlocked, posClass }) {
+export default function PlanetNode({ id, meta, unlocked }) {
   const { navigate, completedLessons } = useAppStore()
   const [open, setOpen] = useState(false)
   const nodeRef = useRef(null)
@@ -82,8 +82,13 @@ export default function PlanetNode({ id, meta, unlocked, posClass }) {
   return (
     <div
       ref={nodeRef}
-      className={[styles.wrap, styles[posClass], !unlocked ? styles.locked : ''].join(' ')}
-      style={{ '--planet-color': meta.color, '--planet-gradient': meta.gradient }}
+      className={[styles.wrap, !unlocked ? styles.locked : ''].join(' ')}
+      style={{
+        '--planet-color': meta.color,
+        '--planet-gradient': meta.gradient,
+        left: `${meta.x}%`,
+        top: `${meta.y}%`,
+      }}
     >
       {/* Popup */}
       {open && (
