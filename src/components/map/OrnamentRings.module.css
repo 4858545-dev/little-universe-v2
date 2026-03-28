@@ -1,0 +1,52 @@
+.wrap {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.ring1,
+.ring2,
+.ring3 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  will-change: transform;
+}
+
+.ring1 {
+  width: 260px;
+  height: 260px;
+  margin-top: -130px;
+  margin-left: -130px;
+  border: 2px dashed rgba(244, 185, 66, 0.2);
+  animation: spin 40s linear infinite;
+}
+
+.ring2 {
+  width: 380px;
+  height: 380px;
+  margin-top: -190px;
+  margin-left: -190px;
+  border: 1px dashed rgba(123, 110, 246, 0.18);
+  animation: spin 28s linear infinite reverse;
+}
+
+.ring3 {
+  width: 520px;
+  height: 520px;
+  margin-top: -260px;
+  margin-left: -260px;
+  border: 1px dashed rgba(52, 212, 200, 0.12);
+  animation: spin 55s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ring1,
+  .ring2,
+  .ring3 {
+    animation: none;
+  }
+}

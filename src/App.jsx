@@ -31,7 +31,7 @@ function ComingSoon({ name }) {
 export default function App() {
   const { screen, companion, toastVisible, toastData, hideToast } = useAppStore()
 
-  const activeScreen = !companion && screen !== 'onboarding' ? 'onboarding' : screen
+  const activeScreen = !companion && screen !== 'onboarding' && screen !== 'adventure-map' ? 'onboarding' : screen
   const ScreenComponent = SCREENS[activeScreen]
 
   return (

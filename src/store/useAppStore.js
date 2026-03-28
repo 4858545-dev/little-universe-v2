@@ -8,7 +8,7 @@ const useAppStore = create(
   persist(
     (set) => ({
       // ── Navigation ──
-      screen: 'onboarding',
+      screen: 'adventure-map',
       screenParams: {},
       navigate: (screen, params = {}) => set({ screen, screenParams: params }),
 
