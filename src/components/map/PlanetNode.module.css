@@ -43,8 +43,8 @@
 
 .ringWrap {
   position: relative;
-  width: 80px;
-  height: 80px;
+  width: 96px;
+  height: 96px;
 }
 
 .ring {
@@ -56,27 +56,34 @@
   position: absolute;
   inset: 8px;
   border-radius: 50%;
-  background: color-mix(in srgb, var(--planet-color) 22%, var(--navy-2));
-  border: 2px solid var(--planet-color);
-  box-shadow: 0 0 16px color-mix(in srgb, var(--planet-color) 28%, transparent);
+  background: var(--planet-gradient, color-mix(in srgb, var(--planet-color) 35%, var(--navy-3)));
+  border: 2px solid color-mix(in srgb, var(--planet-color) 70%, transparent);
+  box-shadow:
+    0 0 20px color-mix(in srgb, var(--planet-color) 40%, transparent),
+    0 0 40px color-mix(in srgb, var(--planet-color) 18%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: box-shadow var(--transition);
+  transition: box-shadow var(--transition), transform var(--transition);
 }
 
 .orbBtn:hover:not(:disabled) .orb {
-  box-shadow: 0 0 28px color-mix(in srgb, var(--planet-color) 48%, transparent);
+  box-shadow:
+    0 0 32px color-mix(in srgb, var(--planet-color) 65%, transparent),
+    0 0 64px color-mix(in srgb, var(--planet-color) 28%, transparent),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
 }
 
 .emoji {
-  font-size: 26px;
+  font-size: 30px;
   line-height: 1;
   user-select: none;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.5));
 }
 
 .lockIcon {
-  font-size: 18px;
+  font-size: 20px;
   line-height: 1;
   opacity: 0.6;
 }
@@ -179,8 +186,8 @@
 
 @media (max-width: 768px) {
   .ringWrap {
-    width: 64px;
-    height: 64px;
+    width: 72px;
+    height: 72px;
   }
 
   .orb {
@@ -188,12 +195,12 @@
   }
 
   .emoji {
-    font-size: 20px;
+    font-size: 22px;
   }
 
   .label {
     font-size: 10px;
-    max-width: 64px;
+    max-width: 72px;
   }
 
   .popup {

@@ -83,7 +83,7 @@ export default function PlanetNode({ id, meta, unlocked, posClass }) {
     <div
       ref={nodeRef}
       className={[styles.wrap, styles[posClass], !unlocked ? styles.locked : ''].join(' ')}
-      style={{ '--planet-color': meta.color }}
+      style={{ '--planet-color': meta.color, '--planet-gradient': meta.gradient }}
     >
       {/* Popup */}
       {open && (
@@ -117,7 +117,7 @@ export default function PlanetNode({ id, meta, unlocked, posClass }) {
         aria-label={meta.name}
       >
         <div className={styles.ringWrap}>
-          <ProgressRing progress={progress} color={meta.color} size={80} />
+          <ProgressRing progress={progress} color={meta.color} size={96} />
           <div className={styles.orb}>
             {unlocked ? (
               <span className={styles.emoji}>{meta.emoji}</span>

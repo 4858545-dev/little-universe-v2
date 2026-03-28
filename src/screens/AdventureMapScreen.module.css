@@ -73,41 +73,71 @@
 }
 
 /* ── Central hub ── */
-.hub {
+/* hubCell: transparent grid spacer so layout stays intact */
+.hubCell {
   grid-column: 2;
   grid-row: 1 / 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  z-index: 5;
+}
+
+/* hubCircle: the actual 80px glowing circle */
+.hubCircle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 32%, #f4d070 0%, #d4940a 45%, #a06000 100%);
+  border: 2px solid rgba(244, 185, 66, 0.55);
+  box-shadow:
+    0 0 24px var(--gold-glow),
+    0 0 56px rgba(244, 185, 66, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--space-2);
-  background: radial-gradient(ellipse at center, var(--navy-4) 60%, var(--navy-3));
-  border: 1px solid var(--gold-glow);
-  border-radius: var(--radius-xl);
-  box-shadow:
-    0 0 32px var(--gold-soft),
-    inset 0 0 24px rgba(0, 0, 0, 0.3);
-  z-index: 5;
+  gap: 2px;
+  animation: hubPulse 3s ease-in-out infinite;
+  will-change: box-shadow;
+}
+
+@keyframes hubPulse {
+  0%, 100% {
+    box-shadow:
+      0 0 24px var(--gold-glow),
+      0 0 56px rgba(244, 185, 66, 0.18),
+      inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  }
+  50% {
+    box-shadow:
+      0 0 40px rgba(244, 185, 66, 0.5),
+      0 0 80px rgba(244, 185, 66, 0.28),
+      inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  }
 }
 
 .hubStar {
-  font-size: 32px;
-  color: var(--gold);
-  filter: drop-shadow(0 0 8px var(--gold-glow));
-  animation: twinkle 2.5s ease-in-out infinite;
-  will-change: opacity;
+  font-size: 26px;
+  color: #fff8e0;
+  filter: drop-shadow(0 0 4px rgba(255, 248, 200, 0.8));
+  line-height: 1;
 }
 
 .hubLabel {
   font-family: var(--f-display);
-  font-size: 13px;
+  font-size: 10px;
   font-weight: 700;
-  color: var(--gold);
-  letter-spacing: 0.1em;
+  color: #fff8e0;
+  letter-spacing: 0.12em;
+  line-height: 1;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hubStar {
+  .hubCircle {
     animation: none;
   }
 }
@@ -123,15 +153,16 @@
     max-width: 380px;
   }
 
-  .hub {
-    border-radius: var(--radius-lg);
+  .hubCircle {
+    width: 64px;
+    height: 64px;
   }
 
   .hubStar {
-    font-size: 24px;
+    font-size: 20px;
   }
 
   .hubLabel {
-    font-size: 11px;
+    font-size: 9px;
   }
 }
