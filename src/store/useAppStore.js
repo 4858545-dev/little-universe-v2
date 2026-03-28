@@ -1,8 +1,8 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
-const PLANETS = ['orbita', 'zorx', 'lumi', 'marik', 'home-station', 'learning-center', 'cosmodrome']
-const UNLOCKED_PLANETS = ['lumi', 'marik']
+const PLANETS = ['logo-orbit', 'logic-zorx', 'home-station', 'training-hub', 'stem-marik', 'art-lumi', 'cosmodrome']
+const UNLOCKED_PLANETS = ['art-lumi', 'stem-marik']
 
 const useAppStore = create(
   persist(

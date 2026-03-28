@@ -8,13 +8,13 @@ import MeteorSurprise from '../components/map/MeteorSurprise'
 import styles from './AdventureMapScreen.module.css'
 
 const PLANET_META = {
-  orbita:            { emoji: '🐐', name: 'Лого-Орбіта',     subject: 'Грамота, письмо',    color: 'var(--orbita-color)', pos: 'topLeft' },
-  zorx:              { emoji: '🌟', name: 'Логіка-Зоркс',    subject: 'Математика, логіка', color: 'var(--zorx-color)',   pos: 'topRight' },
-  'home-station':    { emoji: '🏠', name: 'Домашня станція', subject: 'Батьки, поради',     color: 'var(--gold)',         pos: 'midLeft' },
-  'learning-center': { emoji: '📚', name: 'Навч. центр',     subject: 'Вебінари',           color: 'var(--purple)',       pos: 'midRight' },
-  marik:             { emoji: '👽', name: 'STEM-Марік',       subject: 'Наука, хімія',       color: 'var(--marik-color)',  pos: 'bottomLeft' },
-  lumi:              { emoji: '🦊', name: 'Мистецтво-Люмі',  subject: 'Творчість, казки',   color: 'var(--lumi-color)',   pos: 'bottomRight' },
-  cosmodrome:        { emoji: '🚀', name: 'Космодром знань', subject: 'ПДШ преміум',        color: 'var(--blue)',         pos: 'bottomCenter' },
+  'logo-orbit':   { emoji: '🪐', name: 'Лого-Орбіта',      subject: 'Грамота, письмо',    color: 'var(--orbita-color)', pos: 'topLeft' },
+  'logic-zorx':   { emoji: '📐', name: 'Логіка-Зоркс',     subject: 'Математика, логіка', color: 'var(--zorx-color)',   pos: 'topRight' },
+  'home-station': { emoji: '🏠', name: 'Домашня Станція',  subject: 'Сімейний хаб',       color: 'var(--gold)',         pos: 'midLeft' },
+  'training-hub': { emoji: '🛰', name: 'Тренінг-Хаб',      subject: 'Академія',           color: 'var(--purple)',       pos: 'midRight' },
+  'stem-marik':   { emoji: '🧪', name: 'STEM-Марік',        subject: 'Наука, хімія',       color: 'var(--marik-color)',  pos: 'bottomLeft' },
+  'art-lumi':     { emoji: '🎨', name: 'Арт-Люмі',          subject: 'Творчість, казки',   color: 'var(--lumi-color)',   pos: 'bottomRight' },
+  cosmodrome:     { emoji: '🚀', name: 'Космопорт Знань',   subject: 'Центр керування',    color: 'var(--blue)',         pos: 'bottomCenter' },
 }
 
 export default function AdventureMapScreen() {

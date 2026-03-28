@@ -3,13 +3,13 @@ import styles from './ConnectorLines.module.css'
 // Relative positions (% of map container) matching the 3-col 4-row CSS grid
 // Columns: ~17% | ~50% | ~83%  Rows: ~12.5% | ~37.5% | ~62.5% | ~87.5%
 const POSITIONS = {
-  orbita:            { x: 17,  y: 12.5 },
-  zorx:              { x: 83,  y: 12.5 },
-  'home-station':    { x: 17,  y: 37.5 },
-  'learning-center': { x: 83,  y: 37.5 },
-  lumi:              { x: 83,  y: 62.5 },
-  marik:             { x: 17,  y: 62.5 },
-  cosmodrome:        { x: 50,  y: 87.5 },
+  'logo-orbit':   { x: 17, y: 12.5 },
+  'logic-zorx':   { x: 83, y: 12.5 },
+  'home-station': { x: 17, y: 37.5 },
+  'training-hub': { x: 83, y: 37.5 },
+  'art-lumi':     { x: 83, y: 62.5 },
+  'stem-marik':   { x: 17, y: 62.5 },
+  cosmodrome:     { x: 50, y: 87.5 },
 }
 
 const HUB = { x: 50, y: 46 }
