@@ -1,0 +1,47 @@
+.border {
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  padding: 3px;
+  background: conic-gradient(
+    from 0deg,
+    var(--char-color),
+    transparent 40%,
+    var(--char-color) 60%,
+    transparent 80%,
+    var(--char-color)
+  );
+  animation: spin 3s linear infinite;
+  will-change: transform;
+  flex-shrink: 0;
+}
+
+.inner {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--char-gradient);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: spin 3s linear infinite reverse;
+  will-change: transform;
+}
+
+.img {
+  /* slightly oversized so character fills the circle; feet at bottom */
+  width: 115%;
+  height: 115%;
+  object-fit: contain;
+  object-position: center bottom;
+  /* .inner already counter-rotates — image stays upright automatically */
+  user-select: none;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .border,
+  .inner {
+    animation: none;
+  }
+}

@@ -1,0 +1,42 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--f-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  line-height: 1;
+}
+
+.gold {
+  background: var(--gold-soft);
+  color: var(--gold);
+  border: 1px solid rgba(244, 185, 66, 0.3);
+}
+
+.purple {
+  background: var(--purple-soft);
+  color: var(--purple);
+  border: 1px solid rgba(123, 110, 246, 0.3);
+}
+
+.teal {
+  background: var(--teal-glow);
+  color: var(--teal);
+  border: 1px solid rgba(52, 212, 200, 0.3);
+}
+
+.coral {
+  background: var(--coral-glow);
+  color: var(--coral);
+  border: 1px solid rgba(255, 123, 104, 0.3);
+}
+
+.mint {
+  background: rgba(126, 245, 228, 0.10);
+  color: var(--mint);
+  border: 1px solid rgba(126, 245, 228, 0.3);
+}

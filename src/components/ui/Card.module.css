@@ -1,0 +1,21 @@
+.card {
+  background: var(--navy-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.glow {
+  box-shadow: 0 0 24px var(--card-glow, var(--gold-glow));
+  border-color: var(--border-2);
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.clickable:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 32px var(--card-glow, var(--gold-glow));
+}
