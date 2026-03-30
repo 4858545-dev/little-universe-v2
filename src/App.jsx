@@ -3,12 +3,14 @@ import Toast from './components/ui/Toast'
 import OnboardingScreen from './screens/OnboardingScreen'
 import HomeScreen from './screens/HomeScreen'
 import AdventureMapScreen from './screens/AdventureMapScreen'
+import PlanetDetailScreen from './screens/PlanetDetailScreen'
 import styles from './App.module.css'
 
 const SCREENS = {
   onboarding:      OnboardingScreen,
   home:            HomeScreen,
   'adventure-map': AdventureMapScreen,
+  course:          PlanetDetailScreen,
 }
 
 function ComingSoon({ name }) {

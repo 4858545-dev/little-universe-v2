@@ -4,20 +4,10 @@ import Button from '../components/ui/Button'
 import StarField from '../components/map/StarField'
 import OrnamentRings from '../components/map/OrnamentRings'
 import ConnectorLines from '../components/map/ConnectorLines'
-import PlanetNode, { PLANET_QUESTS } from '../components/map/PlanetNode'
+import PlanetNode from '../components/map/PlanetNode'
 import MeteorSurprise from '../components/map/MeteorSurprise'
+import { PLANET_META, PLANET_SECTIONS } from '../data/planets'
 import styles from './AdventureMapScreen.module.css'
-
-// x/y = center point as % of full viewport (desktop radial layout)
-const PLANET_META = {
-  'logo-orbit':   { emoji: '🪐', name: 'Лого-Орбіта',     subject: 'Грамота, письмо',    color: 'var(--orbita-color)', gradient: 'var(--orbita-gradient)',                   x: 18, y: 17 },
-  'logic-zorx':   { emoji: '📐', name: 'Логіка-Зоркс',    subject: 'Математика, логіка', color: 'var(--zorx-color)',   gradient: 'var(--zorx-gradient)',                     x: 78, y: 17 },
-  'home-station': { emoji: '🏠', name: 'Домашня Станція', subject: 'Сімейний хаб',       color: 'var(--gold)',         gradient: 'linear-gradient(135deg,#d4940a,#a06000)',  x: 11, y: 50 },
-  'training-hub': { emoji: '🛰', name: 'Тренінг-Хаб',     subject: 'Академія',           color: 'var(--purple)',       gradient: 'linear-gradient(135deg,#5240d0,#2a1890)',  x: 85, y: 50 },
-  'stem-marik':   { emoji: '🧪', name: 'STEM-Марік',       subject: 'Наука, хімія',       color: 'var(--marik-color)',  gradient: 'var(--marik-gradient)',                    x: 20, y: 78 },
-  'art-lumi':     { emoji: '🎨', name: 'Арт-Люмі',         subject: 'Творчість, казки',   color: 'var(--lumi-color)',   gradient: 'var(--lumi-gradient)',                     x: 76, y: 78 },
-  cosmodrome:     { emoji: '🚀', name: 'Космопорт Знань',  subject: 'Центр керування',    color: 'var(--blue)',         gradient: 'linear-gradient(135deg,#2060e0,#0a1890)',  x: 50, y: 88 },
-}
 
 const isMobileViewport = () => typeof window !== 'undefined' && window.innerWidth <= 768
 
@@ -26,7 +16,7 @@ export default function AdventureMapScreen() {
   const [mobileSelected, setMobileSelected] = useState(null)
 
   const selectedMeta  = mobileSelected ? PLANET_META[mobileSelected] : null
-  const selectedQuests = mobileSelected ? (PLANET_QUESTS[mobileSelected] ?? []) : []
+  const selectedQuests = mobileSelected ? (PLANET_SECTIONS[mobileSelected] ?? []) : []
   const starCount = isMobileViewport() ? 120 : 280
 
   function closeMobileSheet() { setMobileSelected(null) }

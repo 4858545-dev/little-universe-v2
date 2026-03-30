@@ -1,17 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 import useAppStore from '../../store/useAppStore'
 import Button from '../ui/Button'
+import { PLANET_SECTIONS } from '../../data/planets'
 import styles from './PlanetNode.module.css'
-
-export const PLANET_QUESTS = {
-  'logic-zorx':   ['Робочі аркуші', 'Відеоуроки', 'Інтерактивні пазли', 'Набори для оцінювання'],
-  'art-lumi':     ['Арт-терапевтичні картки', 'Аркуші емоцій', 'Посібники для батьків', 'Протоколи спеціалістів'],
-  'logo-orbit':   ['Артикуляційні PDF', 'Фонетичні ігри', 'Конструктори історій', 'Трекери прогресу'],
-  'stem-marik':   ['Набори експериментів', 'Щоденники природи', 'Космічні активності', 'STEM-челенджі'],
-  'home-station': ['Ідеї для ігор', 'Статті для батьків', 'Швидкі активності', 'Сезонні гайди'],
-  cosmodrome:     ['Курси підготовки', 'Тести оцінювання', 'Бейджі навичок', 'Звіти для батьків'],
-  'training-hub': ['Живі вебінари', 'Шляхи сертифікації', 'Архів воркшопів', 'Прокачка екіпажу'],
-}
 
 // SVG progress ring
 function ProgressRing({ progress = 0, color, size = 80 }) {
@@ -53,7 +44,7 @@ export default function PlanetNode({ id, meta, unlocked }) {
   const [open, setOpen] = useState(false)
   const nodeRef = useRef(null)
 
-  const quests = PLANET_QUESTS[id] ?? []
+  const quests = PLANET_SECTIONS[id] ?? []
   const done = completedLessons.filter((l) => l.startsWith(id)).length
   const progress = quests.length > 0 ? done / quests.length : 0
 
