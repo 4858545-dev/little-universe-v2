@@ -214,7 +214,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .flowStep {
-    animation: none;
-  }
+  .screen { animation: none; }
+  .flowStep { animation: none; }
+  .tab { transition: none; }
 }

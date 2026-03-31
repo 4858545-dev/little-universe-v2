@@ -66,3 +66,11 @@
 .close:hover {
   color: var(--text);
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .toast {
+    animation: none;
+    will-change: auto;
+  }
+  .close { transition: none; }
+}

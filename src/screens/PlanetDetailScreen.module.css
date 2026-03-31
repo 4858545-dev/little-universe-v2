@@ -8,6 +8,7 @@
   display: flex;
   flex-direction: column;
   z-index: 10;
+  animation: fadeInUp 0.4s ease both;
 }
 
 /* ── Hero ──────────────────────────────────────────────── */
@@ -184,4 +185,10 @@
   .grid {
     grid-template-columns: 1fr;
   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .screen { animation: none; }
+  .backBtn { transition: none; }
+  .tab { transition: none; }
 }

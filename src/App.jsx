@@ -1,10 +1,14 @@
 import useAppStore from './store/useAppStore'
 import Toast from './components/ui/Toast'
+import AppFooter from './components/ui/AppFooter'
 import OnboardingScreen from './screens/OnboardingScreen'
 import HomeScreen from './screens/HomeScreen'
 import AdventureMapScreen from './screens/AdventureMapScreen'
 import PlanetDetailScreen from './screens/PlanetDetailScreen'
 import styles from './App.module.css'
+
+// Screens that show the bottom nav footer
+const FOOTER_SCREENS = new Set(['home', 'course'])
 
 const SCREENS = {
   onboarding:      OnboardingScreen,
@@ -36,9 +40,12 @@ export default function App() {
   const activeScreen = !companion && screen !== 'onboarding' && screen !== 'adventure-map' ? 'onboarding' : screen
   const ScreenComponent = SCREENS[activeScreen]
 
+  const showFooter = FOOTER_SCREENS.has(activeScreen)
+
   return (
     <div className={styles.shell}>
       {ScreenComponent ? <ScreenComponent /> : <ComingSoon name={activeScreen} />}
+      {showFooter && <AppFooter />}
       <Toast
         visible={toastVisible}
         message={toastData?.message}

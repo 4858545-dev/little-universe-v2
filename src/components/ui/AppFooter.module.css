@@ -1,0 +1,50 @@
+.footer {
+  display: flex;
+  align-items: stretch;
+  background: var(--navy-2);
+  border-top: 1px solid var(--border);
+  height: 56px;
+  flex-shrink: 0;
+  /* iOS safe area */
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+.navBtn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-3);
+  transition: color var(--transition);
+  padding: 0;
+}
+
+.navBtn:hover {
+  color: var(--text-2);
+}
+
+.active {
+  color: var(--gold);
+}
+
+.navEmoji {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.navLabel {
+  font-family: var(--f-display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navBtn { transition: none; }
+}

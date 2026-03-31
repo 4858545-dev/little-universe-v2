@@ -103,3 +103,15 @@
     font-size: 32px;
   }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .screen {
+    animation: none;
+  }
+  .card {
+    animation: none;
+    transition: none;
+    will-change: auto;
+  }
+  .card:hover { transform: none; }
+}

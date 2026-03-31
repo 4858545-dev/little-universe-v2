@@ -69,3 +69,11 @@
   background: rgba(244, 185, 66, 0.20);
   border-color: var(--gold);
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .card {
+    transition: none;
+  }
+  .card:hover { transform: none; }
+  .takeBtn { transition: none; }
+}
