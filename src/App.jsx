@@ -1,21 +1,17 @@
 import useAppStore from './store/useAppStore'
 import Toast from './components/ui/Toast'
 import AppFooter from './components/ui/AppFooter'
-import OnboardingScreen from './screens/OnboardingScreen'
-import HomeScreen from './screens/HomeScreen'
 import AdventureMapScreen from './screens/AdventureMapScreen'
 import PlanetDetailScreen from './screens/PlanetDetailScreen'
 import styles from './App.module.css'
 
-// Screens that show the bottom nav footer
-const FOOTER_SCREENS = new Set(['home', 'course'])
-
 const SCREENS = {
-  onboarding:      OnboardingScreen,
-  home:            HomeScreen,
   'adventure-map': AdventureMapScreen,
   course:          PlanetDetailScreen,
 }
+
+// Screens where the bottom footer is visible
+const FOOTER_SCREENS = new Set(['course'])
 
 function ComingSoon({ name }) {
   const { navigate } = useAppStore()
@@ -25,27 +21,24 @@ function ComingSoon({ name }) {
         {name} — незабаром
       </p>
       <button
-        onClick={() => navigate('home')}
+        onClick={() => navigate('adventure-map')}
         style={{ fontFamily: 'var(--f-display)', color: 'var(--gold)', background: 'none', border: '1px solid var(--gold)', borderRadius: '999px', padding: '10px 24px', cursor: 'pointer' }}
       >
-        ← На головну
+        ← Карта пригод
       </button>
     </div>
   )
 }
 
 export default function App() {
-  const { screen, companion, toastVisible, toastData, hideToast } = useAppStore()
+  const { screen, toastVisible, toastData, hideToast } = useAppStore()
 
-  const activeScreen = !companion && screen !== 'onboarding' && screen !== 'adventure-map' ? 'onboarding' : screen
-  const ScreenComponent = SCREENS[activeScreen]
-
-  const showFooter = FOOTER_SCREENS.has(activeScreen)
+  const ScreenComponent = SCREENS[screen]
 
   return (
     <div className={styles.shell}>
-      {ScreenComponent ? <ScreenComponent /> : <ComingSoon name={activeScreen} />}
-      {showFooter && <AppFooter />}
+      {ScreenComponent ? <ScreenComponent /> : <ComingSoon name={screen} />}
+      {FOOTER_SCREENS.has(screen) && <AppFooter />}
       <Toast
         visible={toastVisible}
         message={toastData?.message}

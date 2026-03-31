@@ -67,7 +67,6 @@ export default function AdventureMapScreen() {
           </div>
           <div className={styles.headerRight}>
             <span className={styles.coins}>🪙 {coins}</span>
-            <Button variant="ghost" size="sm" onClick={() => navigate('home')}>← Назад</Button>
           </div>
         </header>
       </div>
@@ -85,7 +84,6 @@ export default function AdventureMapScreen() {
           </div>
           <div className={styles.mobileHeaderRight}>
             <span className={styles.mobileCoins}>🪙 {coins}</span>
-            <Button variant="ghost" size="sm" onClick={() => navigate('home')}>← Назад</Button>
           </div>
         </header>
 

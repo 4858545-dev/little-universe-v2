@@ -2,7 +2,6 @@ import useAppStore from '../../store/useAppStore'
 import styles from './AppFooter.module.css'
 
 const NAV = [
-  { id: 'home',          emoji: '🏠', label: 'Головна' },
   { id: 'adventure-map', emoji: '🗺', label: 'Карта' },
   { id: 'profile',       emoji: '👤', label: 'Профіль' },
 ]
