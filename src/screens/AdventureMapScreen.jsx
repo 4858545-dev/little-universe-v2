@@ -234,6 +234,7 @@ function PlanetOrb({ planet, hovered, onClick, onHover, onLeave, style: extraSty
         borderRadius: '50%',
         cursor: 'pointer',
         position: 'relative',
+        overflow: 'visible',
         transition: 'transform 0.4s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.4s',
         transform: hovered ? 'scale(1.15)' : 'scale(1)',
         ...extraStyle,
@@ -289,8 +290,8 @@ function PlanetOrb({ planet, hovered, onClick, onHover, onLeave, style: extraSty
             src={planet.charImg}
             alt={planet.name}
             style={{
-              height: 75,
-              width: 75,
+              height: 140,
+              width: 140,
               objectFit: 'contain',
               objectPosition: 'center',
               filter: 'drop-shadow(0 2px 10px rgba(0,0,0,0.8))',
