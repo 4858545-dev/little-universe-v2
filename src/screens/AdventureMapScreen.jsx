@@ -1,5 +1,10 @@
 import { useState, useEffect, useRef } from 'react'
 import useAppStore from '../store/useAppStore'
+import lumiPng   from '../assets/characters/lumi.png'
+import orbitaPng from '../assets/characters/orbita.png'
+import zorxPng   from '../assets/characters/zorx.png'
+import marikPng  from '../assets/characters/marik.png'
+import lambiPng  from '../assets/characters/lambi.png'
 import styles from './AdventureMapScreen.module.css'
 
 /* ═══════════════════════════════════════════
@@ -11,6 +16,7 @@ const PLANETS = [
     id: 'logic-zorx',
     name: 'Логіка-Зоркс',
     emoji: '📐',
+    charImg: zorxPng,
     curator: 'Зоркс Зірка',
     curatorRole: 'Куратор математики та логіки',
     color1: '#00E5CC',
@@ -28,6 +34,7 @@ const PLANETS = [
     id: 'art-lumi',
     name: 'Арт-Люмі',
     emoji: '🎨',
+    charImg: lumiPng,
     curator: 'Люмі Лисичка',
     curatorRole: 'Куратор психології та арт-терапії',
     color1: '#FF7E7E',
@@ -45,6 +52,7 @@ const PLANETS = [
     id: 'logo-orbit',
     name: 'Лого-Орбіта',
     emoji: '🪐',
+    charImg: orbitaPng,
     curator: 'Орбіта Козочка',
     curatorRole: 'Куратор логопедії та грамотності',
     color1: '#B388FF',
@@ -62,6 +70,7 @@ const PLANETS = [
     id: 'stem-marik',
     name: 'STEM-Марік',
     emoji: '🧪',
+    charImg: marikPng,
     curator: 'Марік Інопланетянин',
     curatorRole: 'Куратор STEM та науки',
     color1: '#64B5F6',
@@ -79,6 +88,7 @@ const PLANETS = [
     id: 'heritage-lambi',
     name: 'Спадщина-Ламбі',
     emoji: '🐑',
+    charImg: lambiPng,
     curator: 'Ламбі Ягня',
     curatorRole: 'Хранитель традицій та спадщини',
     color1: '#F8BBD0',
@@ -239,7 +249,7 @@ function PlanetOrb({ planet, hovered, onClick, onHover, onLeave, style: extraSty
         transition: 'all 0.4s',
         animation: 'planetPulse 3s ease-in-out infinite alternate',
       }} />
-      {/* body */}
+      {/* body — overflow:hidden clips everything inside to circle */}
       <div style={{
         position: 'absolute',
         inset: 0,
@@ -252,18 +262,52 @@ function PlanetOrb({ planet, hovered, onClick, onHover, onLeave, style: extraSty
         `,
         overflow: 'hidden',
       }}>
-        {/* surface detail */}
+        {/* character image or emoji — inside circular clip */}
         <div style={{
-          position: 'absolute', inset: 0, borderRadius: '50%',
+          position: 'absolute', inset: 0,
+          display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
+          paddingBottom: sz * 0.05,
+        }}>
+          {planet.charImg ? (
+            <img
+              src={planet.charImg}
+              alt={planet.name}
+              style={{
+                height: sz * 0.78,
+                width: sz * 0.78,
+                objectFit: 'contain',
+                objectPosition: 'center bottom',
+                filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.7))',
+                userSelect: 'none',
+                pointerEvents: 'none',
+                display: 'block',
+              }}
+            />
+          ) : (
+            <span style={{
+              fontSize: sz * 0.35,
+              filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.5))',
+              lineHeight: 1,
+              paddingBottom: sz * 0.08,
+            }}>
+              {planet.emoji}
+            </span>
+          )}
+        </div>
+        {/* surface highlight */}
+        <div style={{
+          position: 'absolute', inset: 0,
           background: `
-            radial-gradient(circle at 60% 40%, rgba(255,255,255,0.08) 0%, transparent 40%),
-            radial-gradient(circle at 25% 70%, rgba(0,0,0,0.15) 0%, transparent 35%)
+            radial-gradient(circle at 60% 25%, rgba(255,255,255,0.12) 0%, transparent 45%),
+            radial-gradient(circle at 25% 70%, rgba(0,0,0,0.2) 0%, transparent 35%)
           `,
+          pointerEvents: 'none',
         }} />
-        {/* atmosphere */}
+        {/* atmosphere rim */}
         <div style={{
           position: 'absolute', inset: -2, borderRadius: '50%',
           border: `1.5px solid ${planet.color1}30`,
+          pointerEvents: 'none',
         }} />
       </div>
       {/* ring for logo-orbit and knowledge-spaceport */}
@@ -281,16 +325,6 @@ function PlanetOrb({ planet, hovered, onClick, onHover, onLeave, style: extraSty
           boxShadow: `0 0 8px ${planet.color1}15`,
         }} />
       )}
-      {/* emoji */}
-      <div style={{
-        position: 'absolute', inset: 0,
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        fontSize: sz * 0.35,
-        zIndex: 2,
-        filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.5))',
-      }}>
-        {planet.emoji}
-      </div>
     </div>
   )
 }
@@ -312,7 +346,14 @@ export default function AdventureMapScreen() {
   const [hoveredPlanet, setHoveredPlanet] = useState(null)
   const [time, setTime] = useState(0)
   const [meteoritePos, setMeteoritePos] = useState({ x: 85, y: 15 })
+  const [winSize, setWinSize] = useState(() => ({ w: window.innerWidth, h: window.innerHeight }))
   const frameRef = useRef(null)
+
+  useEffect(() => {
+    const onResize = () => setWinSize({ w: window.innerWidth, h: window.innerHeight })
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
 
   useEffect(() => {
     let t = 0
@@ -339,12 +380,26 @@ export default function AdventureMapScreen() {
     setMeteorite(null)
   }
 
+  // Dynamic orbit scale: fits all 8 orbits within the full-viewport orbital area.
+  // Outermost orbit radius = 630. With 0.55 perspective squish, y-extent = r * 0.55.
+  // scaleFromW: horizontal fit; scaleFromH: vertical fit (accounting for squish).
+  const NAV_H = 54
+  const availW = winSize.w
+  const availH = Math.max(400, winSize.h - NAV_H)
+  const MAX_ORBIT = 630
+  const ORBIT_MARGIN = 80 // px of breathing room per side (labels + planet radius)
+  const scaleFromW = (availW / 2 - ORBIT_MARGIN) / MAX_ORBIT
+  const scaleFromH = (availH / 2 - ORBIT_MARGIN) / (MAX_ORBIT * 0.55)
+  const orbitScale = Math.max(0.45, Math.min(scaleFromW, scaleFromH))
+
   function openPlanet(p) {
+    window.scrollTo(0, 0)
     setActivePlanet(p)
     setView('planet')
   }
 
   function backToLanding() {
+    window.scrollTo(0, 0)
     setView('landing')
     setActivePlanet(null)
   }
@@ -497,62 +552,48 @@ export default function AdventureMapScreen() {
          ═══════════════════════ */}
       {view === 'landing' && (
         <>
-          {/* HERO */}
+          {/* ─── ORBITAL — fills entire viewport below nav ─── */}
           <div style={{
-            textAlign: 'center', padding: '50px 20px 20px',
-            position: 'relative', zIndex: 1,
-            animation: 'fadeSlideUp 0.8s ease-out',
+            position: 'relative', width: '100%',
+            height: 'calc(100vh - 54px)',
+            overflow: 'hidden', zIndex: 1,
           }}>
+            {/* Hero text — absolute overlay at top */}
             <div style={{
-              display: 'inline-block', padding: '5px 20px', borderRadius: 24,
-              border: '1px solid rgba(179,136,255,0.25)',
-              background: 'rgba(179,136,255,0.08)',
-              fontSize: 11, fontWeight: 700, letterSpacing: 2.5, textTransform: 'uppercase',
-              color: '#B388FF', marginBottom: 20,
-            }}>✦ Освітній Командний Центр ✦</div>
-
-            <h1 style={{
-              fontSize: 'clamp(36px, 7vw, 64px)', fontWeight: 900, lineHeight: 1.05,
-              fontFamily: "'Comfortaa', sans-serif", marginBottom: 12,
-              background: 'linear-gradient(135deg, #E8D5FF 0%, #64FFDA 40%, #FFD54F 70%, #FF80AB 100%)',
-              backgroundSize: '300% auto',
-              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-              animation: 'glowLine 8s linear infinite',
-            }}>Маленький Всесвіт</h1>
-
-            <p style={{
-              fontSize: 'clamp(14px, 2.2vw, 17px)', color: 'rgba(232,224,240,0.6)',
-              maxWidth: 520, margin: '0 auto 20px', lineHeight: 1.6, fontWeight: 600,
+              position: 'absolute', top: 0, left: 0, right: 0,
+              textAlign: 'center', padding: '28px 20px 0',
+              pointerEvents: 'none', zIndex: 10,
+              animation: 'fadeSlideUp 0.8s ease-out',
             }}>
-              Професійний освітній хаб, де кінематографічні персонажі
-              ведуть спеціалістів та батьків крізь галактику навчання
-            </p>
-
-            <div style={{ display: 'flex', gap: 8, justifyContent: 'center', flexWrap: 'wrap' }}>
-              {['🔐 Стикування', '🔍 Галактичний пошук', '⬇ Взяти на борт', '🎓 Прокачка екіпажу'].map((t) => (
-                <span key={t} style={{
-                  padding: '5px 12px', borderRadius: 12,
-                  background: 'rgba(255,255,255,0.04)',
-                  border: '1px solid rgba(255,255,255,0.08)',
-                  fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.4)',
-                }}>{t}</span>
-              ))}
+              <div style={{
+                display: 'inline-block', padding: '4px 18px', borderRadius: 24,
+                border: '1px solid rgba(179,136,255,0.25)',
+                background: 'rgba(179,136,255,0.08)',
+                fontSize: 10, fontWeight: 700, letterSpacing: 2.5, textTransform: 'uppercase',
+                color: '#B388FF', marginBottom: 10,
+              }}>✦ Освітній Командний Центр ✦</div>
+              <h1 style={{
+                fontSize: 'clamp(28px, 4vw, 54px)', fontWeight: 900, lineHeight: 1.05,
+                fontFamily: "'Comfortaa', sans-serif", marginBottom: 6,
+                background: 'linear-gradient(135deg, #E8D5FF 0%, #64FFDA 40%, #FFD54F 70%, #FF80AB 100%)',
+                backgroundSize: '300% auto',
+                WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+                animation: 'glowLine 8s linear infinite',
+              }}>Маленький Всесвіт</h1>
+              <p style={{
+                fontSize: 'clamp(11px, 1.4vw, 14px)', color: 'rgba(232,224,240,0.4)',
+                maxWidth: 400, margin: '0 auto', lineHeight: 1.5, fontWeight: 600,
+              }}>Освітній хаб для спеціалістів та батьків</p>
             </div>
-          </div>
 
-          {/* ─── ORBITAL DISPLAY ─── */}
-          <div style={{
-            position: 'relative', width: '100%', maxWidth: 780,
-            height: 780, margin: '-20px auto 0',
-            zIndex: 1,
-          }}>
-            {/* center sun */}
+            {/* Sun — dead center of viewport area */}
             <div style={{
               position: 'absolute', top: '50%', left: '50%',
               transform: 'translate(-50%, -50%)',
               width: 70, height: 70, borderRadius: '50%',
               background: 'radial-gradient(circle at 40% 35%, #FFD54F, #FF9800, #E65100)',
               boxShadow: '0 0 40px rgba(255,213,79,0.4), 0 0 80px rgba(255,152,0,0.2), inset -8px -6px 16px rgba(0,0,0,0.3)',
+              zIndex: 5,
             }}>
               <div style={{
                 position: 'absolute', inset: -20, borderRadius: '50%',
@@ -566,26 +607,29 @@ export default function AdventureMapScreen() {
               }}>☀️</div>
             </div>
 
-            {/* orbit rings */}
-            {PLANETS.map((p) => (
-              <div key={`orbit-${p.id}`} style={{
-                position: 'absolute',
-                top: '50%', left: '50%',
-                width: p.orbitRadius * 2 * 0.56,
-                height: p.orbitRadius * 2 * 0.56,
-                marginTop: -p.orbitRadius * 0.56,
-                marginLeft: -p.orbitRadius * 0.56,
-                borderRadius: '50%',
-                border: `1px solid ${p.ring}`,
-                pointerEvents: 'none',
-              }} />
-            ))}
+            {/* Orbit rings — centered at 50%,50% using orbitScale */}
+            {PLANETS.map((p) => {
+              const rPx = p.orbitRadius * orbitScale
+              return (
+                <div key={`orbit-${p.id}`} style={{
+                  position: 'absolute',
+                  top: '50%', left: '50%',
+                  width: rPx * 2,
+                  height: rPx * 2,
+                  marginTop: -rPx,
+                  marginLeft: -rPx,
+                  borderRadius: '50%',
+                  border: `1px solid ${p.ring}`,
+                  pointerEvents: 'none',
+                }} />
+              )
+            })}
 
-            {/* planets on orbits */}
+            {/* Planets — positioned via computed x,y from center */}
             {PLANETS.map((p) => {
               const angle = p.startAngle + (time * 360) / p.speed
               const rad = (angle * Math.PI) / 180
-              const r = p.orbitRadius * 0.56
+              const r = p.orbitRadius * orbitScale
               const x = Math.cos(rad) * r
               const y = Math.sin(rad) * r * 0.55 // perspective squish
               return (
@@ -637,7 +681,7 @@ export default function AdventureMapScreen() {
 
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+            gridTemplateColumns: winSize.w <= 640 ? '1fr' : 'repeat(auto-fit, minmax(280px, 1fr))',
             gap: 16, padding: '0 24px 40px',
             maxWidth: 1100, margin: '0 auto',
             position: 'relative', zIndex: 1,
