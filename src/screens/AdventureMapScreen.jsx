@@ -249,7 +249,7 @@ function PlanetOrb({ planet, hovered, onClick, onHover, onLeave, style: extraSty
         transition: 'all 0.4s',
         animation: 'planetPulse 3s ease-in-out infinite alternate',
       }} />
-      {/* body — overflow:hidden clips everything inside to circle */}
+      {/* body — overflow:hidden clips gradient/surface effects to circle */}
       <div style={{
         position: 'absolute',
         inset: 0,
@@ -262,36 +262,6 @@ function PlanetOrb({ planet, hovered, onClick, onHover, onLeave, style: extraSty
         `,
         overflow: 'hidden',
       }}>
-        {/* character image or emoji — centered inside circular clip */}
-        <div style={{
-          position: 'absolute', inset: 0,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-        }}>
-          {planet.charImg ? (
-            <img
-              src={planet.charImg}
-              alt={planet.name}
-              style={{
-                height: sz * 0.70,
-                width: sz * 0.70,
-                objectFit: 'contain',
-                objectPosition: 'center',
-                filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.7))',
-                userSelect: 'none',
-                pointerEvents: 'none',
-                display: 'block',
-              }}
-            />
-          ) : (
-            <span style={{
-              fontSize: sz * 0.38,
-              filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.5))',
-              lineHeight: 1,
-            }}>
-              {planet.emoji}
-            </span>
-          )}
-        </div>
         {/* surface highlight */}
         <div style={{
           position: 'absolute', inset: 0,
@@ -307,6 +277,36 @@ function PlanetOrb({ planet, hovered, onClick, onHover, onLeave, style: extraSty
           border: `1.5px solid ${planet.color1}30`,
           pointerEvents: 'none',
         }} />
+      </div>
+      {/* character image — outside overflow clip, same fixed size on every planet */}
+      <div style={{
+        position: 'absolute', inset: 0, zIndex: 3,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        pointerEvents: 'none',
+      }}>
+        {planet.charImg ? (
+          <img
+            src={planet.charImg}
+            alt={planet.name}
+            style={{
+              height: 75,
+              width: 75,
+              objectFit: 'contain',
+              objectPosition: 'center',
+              filter: 'drop-shadow(0 2px 10px rgba(0,0,0,0.8))',
+              userSelect: 'none',
+              display: 'block',
+            }}
+          />
+        ) : (
+          <span style={{
+            fontSize: sz * 0.38,
+            filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.5))',
+            lineHeight: 1,
+          }}>
+            {planet.emoji}
+          </span>
+        )}
       </div>
       {/* ring for logo-orbit and knowledge-spaceport */}
       {(planet.id === 'logo-orbit' || planet.id === 'knowledge-spaceport') && (
@@ -383,7 +383,7 @@ export default function AdventureMapScreen() {
   // Min 0.38 prevents innermost orbit from colliding with sun on very narrow screens.
   const MAX_ORBIT = 630
   const orbitScale = Math.max(0.38, (winSize.w * 0.45) / MAX_ORBIT)
-  const SUN_TOP = '62%'   // vertical center for sun + all orbital math
+  const SUN_TOP = '50%'   // dead center of the orbital container (hero is now above it)
 
   function openPlanet(p) {
     window.scrollTo(0, 0)
@@ -545,41 +545,41 @@ export default function AdventureMapScreen() {
          ═══════════════════════ */}
       {view === 'landing' && (
         <>
-          {/* ─── ORBITAL — true 100vw × 100vh, nav floats above ─── */}
+          {/* ─── HERO — normal flow, above orbital ─── */}
+          <div style={{
+            textAlign: 'center',
+            padding: '76px 20px 32px', // 76px clears the 54px fixed nav + breathing room
+            position: 'relative', zIndex: 1,
+            animation: 'fadeSlideUp 0.8s ease-out',
+          }}>
+            <div style={{
+              display: 'inline-block', padding: '4px 18px', borderRadius: 24,
+              border: '1px solid rgba(179,136,255,0.25)',
+              background: 'rgba(179,136,255,0.08)',
+              fontSize: 10, fontWeight: 700, letterSpacing: 2.5, textTransform: 'uppercase',
+              color: '#B388FF', marginBottom: 12,
+            }}>✦ Освітній Командний Центр ✦</div>
+            <h1 style={{
+              fontSize: 'clamp(28px, 4vw, 54px)', fontWeight: 900, lineHeight: 1.05,
+              fontFamily: "'Comfortaa', sans-serif", marginBottom: 8,
+              background: 'linear-gradient(135deg, #E8D5FF 0%, #64FFDA 40%, #FFD54F 70%, #FF80AB 100%)',
+              backgroundSize: '300% auto',
+              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+              animation: 'glowLine 8s linear infinite',
+            }}>Маленький Всесвіт</h1>
+            <p style={{
+              fontSize: 'clamp(12px, 1.4vw, 15px)', color: 'rgba(232,224,240,0.5)',
+              maxWidth: 480, margin: '0 auto', lineHeight: 1.6, fontWeight: 600,
+            }}>Освітній хаб для спеціалістів та батьків</p>
+          </div>
+
+          {/* ─── ORBITAL — fills viewport height, starts after hero ─── */}
           <div style={{
             position: 'relative', width: '100%',
-            height: '100vh',
+            height: 'calc(100vh - 54px)',
             overflow: 'hidden', zIndex: 1,
           }}>
-            {/* Hero text — clears the 54px fixed nav + breathing room */}
-            <div style={{
-              position: 'absolute', top: 0, left: 0, right: 0,
-              textAlign: 'center', padding: '72px 20px 0',
-              pointerEvents: 'none', zIndex: 10,
-              animation: 'fadeSlideUp 0.8s ease-out',
-            }}>
-              <div style={{
-                display: 'inline-block', padding: '4px 18px', borderRadius: 24,
-                border: '1px solid rgba(179,136,255,0.25)',
-                background: 'rgba(179,136,255,0.08)',
-                fontSize: 10, fontWeight: 700, letterSpacing: 2.5, textTransform: 'uppercase',
-                color: '#B388FF', marginBottom: 10,
-              }}>✦ Освітній Командний Центр ✦</div>
-              <h1 style={{
-                fontSize: 'clamp(28px, 4vw, 54px)', fontWeight: 900, lineHeight: 1.05,
-                fontFamily: "'Comfortaa', sans-serif", marginBottom: 6,
-                background: 'linear-gradient(135deg, #E8D5FF 0%, #64FFDA 40%, #FFD54F 70%, #FF80AB 100%)',
-                backgroundSize: '300% auto',
-                WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-                animation: 'glowLine 8s linear infinite',
-              }}>Маленький Всесвіт</h1>
-              <p style={{
-                fontSize: 'clamp(11px, 1.4vw, 14px)', color: 'rgba(232,224,240,0.4)',
-                maxWidth: 400, margin: '0 auto', lineHeight: 1.5, fontWeight: 600,
-              }}>Освітній хаб для спеціалістів та батьків</p>
-            </div>
-
-            {/* Sun — at SUN_TOP (62%) so title has clearance above */}
+            {/* Sun — centered at 50% of orbital area */}
             <div style={{
               position: 'absolute', top: SUN_TOP, left: '50%',
               transform: 'translate(-50%, -50%)',
