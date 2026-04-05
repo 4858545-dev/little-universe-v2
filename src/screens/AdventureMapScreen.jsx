@@ -262,21 +262,20 @@ function PlanetOrb({ planet, hovered, onClick, onHover, onLeave, style: extraSty
         `,
         overflow: 'hidden',
       }}>
-        {/* character image or emoji — inside circular clip */}
+        {/* character image or emoji — centered inside circular clip */}
         <div style={{
           position: 'absolute', inset: 0,
-          display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
-          paddingBottom: sz * 0.05,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}>
           {planet.charImg ? (
             <img
               src={planet.charImg}
               alt={planet.name}
               style={{
-                height: sz * 0.78,
-                width: sz * 0.78,
+                height: sz * 0.70,
+                width: sz * 0.70,
                 objectFit: 'contain',
-                objectPosition: 'center bottom',
+                objectPosition: 'center',
                 filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.7))',
                 userSelect: 'none',
                 pointerEvents: 'none',
@@ -285,10 +284,9 @@ function PlanetOrb({ planet, hovered, onClick, onHover, onLeave, style: extraSty
             />
           ) : (
             <span style={{
-              fontSize: sz * 0.35,
+              fontSize: sz * 0.38,
               filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.5))',
               lineHeight: 1,
-              paddingBottom: sz * 0.08,
             }}>
               {planet.emoji}
             </span>
@@ -380,17 +378,12 @@ export default function AdventureMapScreen() {
     setMeteorite(null)
   }
 
-  // Dynamic orbit scale: fits all 8 orbits within the full-viewport orbital area.
-  // Outermost orbit radius = 630. With 0.55 perspective squish, y-extent = r * 0.55.
-  // scaleFromW: horizontal fit; scaleFromH: vertical fit (accounting for squish).
-  const NAV_H = 54
-  const availW = winSize.w
-  const availH = Math.max(400, winSize.h - NAV_H)
+  // Orbit scale: outermost orbit spans ~90% of viewport width (edge-to-edge feel).
+  // Sun sits at 62% vertical — leaves room for title above, orbits below.
+  // Min 0.38 prevents innermost orbit from colliding with sun on very narrow screens.
   const MAX_ORBIT = 630
-  const ORBIT_MARGIN = 80 // px of breathing room per side (labels + planet radius)
-  const scaleFromW = (availW / 2 - ORBIT_MARGIN) / MAX_ORBIT
-  const scaleFromH = (availH / 2 - ORBIT_MARGIN) / (MAX_ORBIT * 0.55)
-  const orbitScale = Math.max(0.45, Math.min(scaleFromW, scaleFromH))
+  const orbitScale = Math.max(0.38, (winSize.w * 0.45) / MAX_ORBIT)
+  const SUN_TOP = '62%'   // vertical center for sun + all orbital math
 
   function openPlanet(p) {
     window.scrollTo(0, 0)
@@ -456,13 +449,13 @@ export default function AdventureMapScreen() {
       <StarField />
       <NebulaLayer />
 
-      {/* ─── NAV ─── */}
+      {/* ─── NAV — fixed so orbital can be true 100vh ─── */}
       <nav style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         padding: '14px 24px',
-        background: 'linear-gradient(180deg, rgba(10,10,30,0.9) 0%, rgba(10,10,30,0.6) 100%)',
+        background: 'linear-gradient(180deg, rgba(10,10,30,0.95) 0%, rgba(10,10,30,0.75) 100%)',
         backdropFilter: 'blur(12px)',
-        position: 'sticky', top: 0, zIndex: 100,
+        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
         borderBottom: '1px solid rgba(179,136,255,0.15)',
       }}>
         <div
@@ -552,16 +545,16 @@ export default function AdventureMapScreen() {
          ═══════════════════════ */}
       {view === 'landing' && (
         <>
-          {/* ─── ORBITAL — fills entire viewport below nav ─── */}
+          {/* ─── ORBITAL — true 100vw × 100vh, nav floats above ─── */}
           <div style={{
             position: 'relative', width: '100%',
-            height: 'calc(100vh - 54px)',
+            height: '100vh',
             overflow: 'hidden', zIndex: 1,
           }}>
-            {/* Hero text — absolute overlay at top */}
+            {/* Hero text — clears the 54px fixed nav + breathing room */}
             <div style={{
               position: 'absolute', top: 0, left: 0, right: 0,
-              textAlign: 'center', padding: '28px 20px 0',
+              textAlign: 'center', padding: '72px 20px 0',
               pointerEvents: 'none', zIndex: 10,
               animation: 'fadeSlideUp 0.8s ease-out',
             }}>
@@ -586,9 +579,9 @@ export default function AdventureMapScreen() {
               }}>Освітній хаб для спеціалістів та батьків</p>
             </div>
 
-            {/* Sun — dead center of viewport area */}
+            {/* Sun — at SUN_TOP (62%) so title has clearance above */}
             <div style={{
-              position: 'absolute', top: '50%', left: '50%',
+              position: 'absolute', top: SUN_TOP, left: '50%',
               transform: 'translate(-50%, -50%)',
               width: 70, height: 70, borderRadius: '50%',
               background: 'radial-gradient(circle at 40% 35%, #FFD54F, #FF9800, #E65100)',
@@ -607,13 +600,13 @@ export default function AdventureMapScreen() {
               }}>☀️</div>
             </div>
 
-            {/* Orbit rings — centered at 50%,50% using orbitScale */}
+            {/* Orbit rings — centered at SUN_TOP */}
             {PLANETS.map((p) => {
               const rPx = p.orbitRadius * orbitScale
               return (
                 <div key={`orbit-${p.id}`} style={{
                   position: 'absolute',
-                  top: '50%', left: '50%',
+                  top: SUN_TOP, left: '50%',
                   width: rPx * 2,
                   height: rPx * 2,
                   marginTop: -rPx,
@@ -625,7 +618,7 @@ export default function AdventureMapScreen() {
               )
             })}
 
-            {/* Planets — positioned via computed x,y from center */}
+            {/* Planets — positioned from SUN_TOP center */}
             {PLANETS.map((p) => {
               const angle = p.startAngle + (time * 360) / p.speed
               const rad = (angle * Math.PI) / 180
@@ -635,7 +628,7 @@ export default function AdventureMapScreen() {
               return (
                 <div key={p.id} style={{
                   position: 'absolute',
-                  top: '50%', left: '50%',
+                  top: SUN_TOP, left: '50%',
                   marginLeft: x - p.size / 2,
                   marginTop: y - p.size / 2,
                   zIndex: Math.round(y + 500),
@@ -683,7 +676,6 @@ export default function AdventureMapScreen() {
             display: 'grid',
             gridTemplateColumns: winSize.w <= 640 ? '1fr' : 'repeat(auto-fit, minmax(280px, 1fr))',
             gap: 16, padding: '0 24px 40px',
-            maxWidth: 1100, margin: '0 auto',
             position: 'relative', zIndex: 1,
           }}>
             {PLANETS.map((p, idx) => {
@@ -753,7 +745,7 @@ export default function AdventureMapScreen() {
 
           {/* ─── MICROCOPY GUIDE ─── */}
           <div style={{
-            maxWidth: 700, margin: '0 auto 60px', padding: '24px',
+            margin: '0 24px 60px', padding: '24px',
             ...glassCard(), position: 'relative', zIndex: 1,
           }}>
             <div style={{
@@ -828,12 +820,12 @@ export default function AdventureMapScreen() {
               <div style={{ fontSize: 13, fontWeight: 700, color: 'rgba(255,255,255,0.4)' }}>
                 {p.curator} — {p.curatorRole}
               </div>
-              <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.45)', marginTop: 8, maxWidth: 460, margin: '8px auto 0' }}>
+              <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.45)', marginTop: 8, maxWidth: 600, margin: '8px auto 0' }}>
                 {p.desc}
               </p>
             </div>
 
-            <div style={{ maxWidth: 720, margin: '24px auto', padding: '0 24px 60px', position: 'relative', zIndex: 1 }}>
+            <div style={{ margin: '24px 0', padding: '0 24px 60px', position: 'relative', zIndex: 1 }}>
               <div style={{
                 fontWeight: 800, fontSize: 12, color: 'rgba(179,136,255,0.5)',
                 textTransform: 'uppercase', letterSpacing: 2, marginBottom: 16,
