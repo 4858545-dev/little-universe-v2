@@ -234,7 +234,6 @@ function PlanetOrb({ planet, hovered, onClick, onHover, onLeave, style: extraSty
         borderRadius: '50%',
         cursor: 'pointer',
         position: 'relative',
-        overflow: 'visible',
         transition: 'transform 0.4s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.4s',
         transform: hovered ? 'scale(1.15)' : 'scale(1)',
         ...extraStyle,
@@ -250,7 +249,7 @@ function PlanetOrb({ planet, hovered, onClick, onHover, onLeave, style: extraSty
         transition: 'all 0.4s',
         animation: 'planetPulse 3s ease-in-out infinite alternate',
       }} />
-      {/* body — overflow:hidden clips gradient/surface effects to circle */}
+      {/* body — overflow:hidden + border-radius clips everything to circle */}
       <div style={{
         position: 'absolute',
         inset: 0,
@@ -262,41 +261,23 @@ function PlanetOrb({ planet, hovered, onClick, onHover, onLeave, style: extraSty
           0 0 ${hovered ? 40 : 20}px ${planet.glow}
         `,
         overflow: 'hidden',
-      }}>
-        {/* surface highlight */}
-        <div style={{
-          position: 'absolute', inset: 0,
-          background: `
-            radial-gradient(circle at 60% 25%, rgba(255,255,255,0.12) 0%, transparent 45%),
-            radial-gradient(circle at 25% 70%, rgba(0,0,0,0.2) 0%, transparent 35%)
-          `,
-          pointerEvents: 'none',
-        }} />
-        {/* atmosphere rim */}
-        <div style={{
-          position: 'absolute', inset: -2, borderRadius: '50%',
-          border: `1.5px solid ${planet.color1}30`,
-          pointerEvents: 'none',
-        }} />
-      </div>
-      {/* character image — outside overflow clip, same fixed size on every planet */}
-      <div style={{
-        position: 'absolute', inset: 0, zIndex: 3,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        pointerEvents: 'none',
       }}>
+        {/* character image or emoji — centered, clipped by sphere */}
         {planet.charImg ? (
           <img
             src={planet.charImg}
             alt={planet.name}
             style={{
-              height: 140,
-              width: 140,
+              height: sz * 0.65,
+              width: sz * 0.65,
               objectFit: 'contain',
               objectPosition: 'center',
-              filter: 'drop-shadow(0 2px 10px rgba(0,0,0,0.8))',
+              filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.7))',
               userSelect: 'none',
+              pointerEvents: 'none',
               display: 'block',
+              position: 'relative', zIndex: 1,
             }}
           />
         ) : (
@@ -304,10 +285,26 @@ function PlanetOrb({ planet, hovered, onClick, onHover, onLeave, style: extraSty
             fontSize: sz * 0.38,
             filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.5))',
             lineHeight: 1,
+            position: 'relative', zIndex: 1,
           }}>
             {planet.emoji}
           </span>
         )}
+        {/* surface highlight overlay — on top of character */}
+        <div style={{
+          position: 'absolute', inset: 0,
+          background: `
+            radial-gradient(circle at 60% 25%, rgba(255,255,255,0.10) 0%, transparent 45%),
+            radial-gradient(circle at 25% 70%, rgba(0,0,0,0.15) 0%, transparent 35%)
+          `,
+          pointerEvents: 'none', zIndex: 2,
+        }} />
+        {/* atmosphere rim */}
+        <div style={{
+          position: 'absolute', inset: -2, borderRadius: '50%',
+          border: `1.5px solid ${planet.color1}30`,
+          pointerEvents: 'none', zIndex: 2,
+        }} />
       </div>
       {/* ring for logo-orbit and knowledge-spaceport */}
       {(planet.id === 'logo-orbit' || planet.id === 'knowledge-spaceport') && (
