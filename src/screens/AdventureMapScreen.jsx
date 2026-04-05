@@ -269,8 +269,8 @@ function PlanetOrb({ planet, hovered, onClick, onHover, onLeave, style: extraSty
             src={planet.charImg}
             alt={planet.name}
             style={{
-              height: sz * 0.65,
-              width: sz * 0.65,
+              height: sz * (['art-lumi', 'logo-orbit', 'stem-marik'].includes(planet.id) ? 0.9 : 0.65),
+              width: sz * (['art-lumi', 'logo-orbit', 'stem-marik'].includes(planet.id) ? 0.9 : 0.65),
               objectFit: 'contain',
               objectPosition: 'center',
               filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.7))',
