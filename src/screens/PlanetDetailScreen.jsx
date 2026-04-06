@@ -172,7 +172,7 @@ export default function PlanetDetailScreen() {
   if (!meta) {
     return (
       <div className={styles.screen}>
-        <button className={styles.backBtn} onClick={() => navigate('adventure-map')}>
+        <button className={styles.backBtn} onClick={() => { window.scrollTo(0, 0); navigate('adventure-map'); }}>
           ← Карта пригод
         </button>
         <p style={{ color: 'var(--text-2)', textAlign: 'center', marginTop: '40px' }}>
@@ -192,7 +192,7 @@ export default function PlanetDetailScreen() {
       {/* Hero band */}
       <div className={styles.hero}>
         <div className={styles.heroContent}>
-          <button className={styles.backBtn} onClick={() => navigate('adventure-map')}>
+          <button className={styles.backBtn} onClick={() => { window.scrollTo(0, 0); navigate('adventure-map'); }}>
             ← Карта пригод
           </button>
           <div className={styles.heroBody}>
