@@ -7,7 +7,7 @@
   background: var(--navy);
   display: flex;
   flex-direction: column;
-  z-index: 10;
+  z-index: 110;
   animation: fadeInUp 0.4s ease both;
 }
 
