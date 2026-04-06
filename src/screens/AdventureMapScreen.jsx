@@ -528,7 +528,7 @@ export default function AdventureMapScreen() {
           {/* ─── HERO — normal flow, above orbital ─── */}
           <div style={{
             textAlign: 'center',
-            padding: isMobile ? '50px 16px 8px' : '40px 20px 24px',
+            padding: isMobile ? '70px 16px 8px' : '40px 20px 24px',
             position: 'relative', zIndex: 1,
             animation: 'fadeSlideUp 0.8s ease-out',
           }}>
