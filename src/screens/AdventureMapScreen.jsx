@@ -447,8 +447,8 @@ export default function AdventureMapScreen() {
       <StarField />
       <NebulaLayer />
 
-      {/* ─── NAV — fixed so orbital can be true 100vh ─── */}
-      <nav style={{
+      {/* ─── NAV — only on landing view ─── */}
+      {view === 'landing' && <nav style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         padding: '14px 24px',
         background: 'linear-gradient(180deg, rgba(10,10,30,0.95) 0%, rgba(10,10,30,0.75) 100%)',
@@ -488,7 +488,7 @@ export default function AdventureMapScreen() {
             transition: 'all 0.3s',
           }}>☄️ Метеорит</button>
         </div>
-      </nav>
+      </nav>}
 
       {/* ─── FLOATING METEORITE ─── */}
       {view === 'landing' && (
