@@ -453,7 +453,7 @@ export default function AdventureMapScreen() {
       {/* ─── FLOATING HUD — coins + meteor button, top-right ─── */}
       {view === 'landing' && (
         <div style={{
-          position: 'fixed', top: 16, right: 16, zIndex: 100,
+          position: 'fixed', top: 12, right: 12, zIndex: 100,
           display: 'flex', gap: 8, alignItems: 'center',
         }}>
           <span style={{
@@ -528,7 +528,7 @@ export default function AdventureMapScreen() {
           {/* ─── HERO — normal flow, above orbital ─── */}
           <div style={{
             textAlign: 'center',
-            padding: isMobile ? '24px 16px 8px' : '40px 20px 24px',
+            padding: isMobile ? '50px 16px 8px' : '40px 20px 24px',
             position: 'relative', zIndex: 1,
             animation: 'fadeSlideUp 0.8s ease-out',
           }}>
