@@ -377,8 +377,8 @@ export default function AdventureMapScreen() {
   }
 
   const isMobile = winSize.w <= 768
-  const NAV_H = 54
-  const HERO_H = isMobile ? 110 : 160  // approximate hero section height
+  const NAV_H = 0
+  const HERO_H = isMobile ? 90 : 140  // approximate hero section height (no navbar)
   const MAX_ORBIT = 900
   const orbitScale = isMobile
     ? Math.max(0.28, Math.min(winSize.w, winSize.h - NAV_H - HERO_H) / MAX_ORBIT)
@@ -450,39 +450,18 @@ export default function AdventureMapScreen() {
       <StarField />
       <NebulaLayer />
 
-      {/* ─── NAV — only on landing view ─── */}
-      {view === 'landing' && <nav style={{
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '14px 24px',
-        background: 'linear-gradient(180deg, rgba(10,10,30,0.95) 0%, rgba(10,10,30,0.75) 100%)',
-        backdropFilter: 'blur(12px)',
-        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
-        borderBottom: '1px solid rgba(179,136,255,0.15)',
-      }}>
-        <div
-          onClick={backToLanding}
-          style={{
-            fontSize: 20, fontWeight: 800, letterSpacing: 2,
-            fontFamily: "'Comfortaa', sans-serif",
-            background: 'linear-gradient(135deg, #B388FF, #64FFDA, #FFD54F)',
-            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-            display: 'flex', alignItems: 'center', gap: 10,
-            cursor: 'pointer',
-          }}
-        >
-          <span style={{ fontSize: 24, WebkitTextFillColor: 'initial' }}>🌌</span>
-          МАЛЕНЬКИЙ ВСЕСВІТ
-        </div>
-
-        <div style={{ display: 'flex', gap: 6, alignItems: 'center', flexWrap: 'wrap' }}>
-          {/* coins */}
+      {/* ─── FLOATING HUD — coins + meteor button, top-right ─── */}
+      {view === 'landing' && (
+        <div style={{
+          position: 'fixed', top: 16, right: 16, zIndex: 100,
+          display: 'flex', gap: 8, alignItems: 'center',
+        }}>
           <span style={{
             padding: '7px 14px', borderRadius: 24,
             background: 'rgba(255,213,79,0.1)',
             border: '1.5px solid rgba(255,213,79,0.25)',
             color: '#FFD54F', fontWeight: 800, fontSize: 13,
           }}>🪙 {coins}</span>
-
           <button onClick={triggerMeteorite} style={{
             padding: '7px 18px', borderRadius: 24, fontFamily: 'inherit',
             background: 'linear-gradient(135deg, rgba(255,152,0,0.25), rgba(255,87,34,0.2))',
@@ -491,7 +470,7 @@ export default function AdventureMapScreen() {
             transition: 'all 0.3s',
           }}>☄️ Метеорит</button>
         </div>
-      </nav>}
+      )}
 
       {/* ─── FLOATING METEORITE ─── */}
       {view === 'landing' && (
@@ -549,7 +528,7 @@ export default function AdventureMapScreen() {
           {/* ─── HERO — normal flow, above orbital ─── */}
           <div style={{
             textAlign: 'center',
-            padding: isMobile ? '70px 16px 8px' : '76px 20px 32px',
+            padding: isMobile ? '24px 16px 8px' : '40px 20px 24px',
             position: 'relative', zIndex: 1,
             animation: 'fadeSlideUp 0.8s ease-out',
           }}>
