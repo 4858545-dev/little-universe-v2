@@ -221,8 +221,8 @@ function NebulaLayer() {
 }
 
 /* ── 3D Planet orb (matches reference exactly) ── */
-function PlanetOrb({ planet, hovered, onClick, onHover, onLeave, style: extraStyle }) {
-  const sz = planet.size
+function PlanetOrb({ planet, hovered, onClick, onHover, onLeave, style: extraStyle, sizeOverride }) {
+  const sz = sizeOverride ?? planet.size
   return (
     <div
       onClick={onClick}
@@ -376,11 +376,14 @@ export default function AdventureMapScreen() {
     setMeteorite(null)
   }
 
-  // Orbit scale: outermost orbit spans ~90% of viewport width (edge-to-edge feel).
-  // Sun sits at 62% vertical — leaves room for title above, orbits below.
-  // Min 0.38 prevents innermost orbit from colliding with sun on very narrow screens.
-  const MAX_ORBIT = 630
-  const orbitScale = Math.max(0.38, (winSize.w * 0.45) / MAX_ORBIT)
+  const isMobile = winSize.w <= 768
+  const NAV_H = 54
+  const HERO_H = isMobile ? 110 : 160  // approximate hero section height
+  const MAX_ORBIT = 900
+  const orbitScale = isMobile
+    ? Math.max(0.28, Math.min(winSize.w, winSize.h - NAV_H - HERO_H) / MAX_ORBIT)
+    : Math.max(0.38, (winSize.w * 0.45) / MAX_ORBIT)
+  const planetScale = isMobile ? 0.7 : 1.0
   const SUN_TOP = '50%'   // dead center of the orbital container (hero is now above it)
 
   function openPlanet(p) {
@@ -546,7 +549,7 @@ export default function AdventureMapScreen() {
           {/* ─── HERO — normal flow, above orbital ─── */}
           <div style={{
             textAlign: 'center',
-            padding: '76px 20px 32px', // 76px clears the 54px fixed nav + breathing room
+            padding: isMobile ? '70px 16px 8px' : '76px 20px 32px',
             position: 'relative', zIndex: 1,
             animation: 'fadeSlideUp 0.8s ease-out',
           }}>
@@ -581,7 +584,7 @@ export default function AdventureMapScreen() {
             <div style={{
               position: 'absolute', top: SUN_TOP, left: '50%',
               transform: 'translate(-50%, -50%)',
-              width: 70, height: 70, borderRadius: '50%',
+              width: isMobile ? 48 : 70, height: isMobile ? 48 : 70, borderRadius: '50%',
               background: 'radial-gradient(circle at 40% 35%, #FFD54F, #FF9800, #E65100)',
               boxShadow: '0 0 40px rgba(255,213,79,0.4), 0 0 80px rgba(255,152,0,0.2), inset -8px -6px 16px rgba(0,0,0,0.3)',
               zIndex: 5,
@@ -618,6 +621,7 @@ export default function AdventureMapScreen() {
 
             {/* Planets — positioned from SUN_TOP center */}
             {PLANETS.map((p) => {
+              const scaledSize = p.size * planetScale
               const angle = p.startAngle + (time * 360) / p.speed
               const rad = (angle * Math.PI) / 180
               const r = p.orbitRadius * orbitScale
@@ -627,8 +631,8 @@ export default function AdventureMapScreen() {
                 <div key={p.id} style={{
                   position: 'absolute',
                   top: SUN_TOP, left: '50%',
-                  marginLeft: x - p.size / 2,
-                  marginTop: y - p.size / 2,
+                  marginLeft: x - scaledSize / 2,
+                  marginTop: y - scaledSize / 2,
                   zIndex: Math.round(y + 500),
                   transition: 'margin 0.05s linear',
                 }}>
@@ -638,6 +642,7 @@ export default function AdventureMapScreen() {
                     onClick={() => openPlanet(p)}
                     onHover={() => setHoveredPlanet(p.id)}
                     onLeave={() => setHoveredPlanet(null)}
+                    sizeOverride={scaledSize}
                   />
                   {/* label */}
                   <div style={{
@@ -648,12 +653,12 @@ export default function AdventureMapScreen() {
                     transition: 'opacity 0.3s',
                   }}>
                     <div style={{
-                      fontSize: 12, fontWeight: 800, color: p.color1,
+                      fontSize: isMobile ? 9 : 12, fontWeight: 800, color: p.color1,
                       textShadow: `0 0 12px ${p.glow}`,
                     }}>{p.name}</div>
-                    <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.35)', fontWeight: 600 }}>
+                    {!isMobile && <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.35)', fontWeight: 600 }}>
                       {p.curator}
-                    </div>
+                    </div>}
                   </div>
                 </div>
               )
