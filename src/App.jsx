@@ -1,8 +1,11 @@
+import { useEffect } from 'react'
 import useAppStore from './store/useAppStore'
+import useAuthStore from './store/useAuthStore'
 import Toast from './components/ui/Toast'
 import AppFooter from './components/ui/AppFooter'
 import AdventureMapScreen from './screens/AdventureMapScreen'
 import PlanetDetailScreen from './screens/PlanetDetailScreen'
+import AuthScreen from './screens/AuthScreen'
 import styles from './App.module.css'
 
 const SCREENS = {
@@ -32,6 +35,34 @@ function ComingSoon({ name }) {
 
 export default function App() {
   const { screen, toastVisible, toastData, hideToast } = useAppStore()
+  const { isAuthenticated, isLoading, initAuth } = useAuthStore()
+
+  useEffect(() => {
+    const unsubscribe = initAuth()
+    return unsubscribe
+  }, [])
+
+  if (isLoading) {
+    return (
+      <div style={{
+        minHeight: '100vh',
+        background: '#05050F',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontFamily: "'Comfortaa', sans-serif",
+        color: 'rgba(232,224,240,0.5)',
+        fontSize: 16,
+        letterSpacing: 2,
+      }}>
+        Запуск двигунів...
+      </div>
+    )
+  }
+
+  if (!isAuthenticated) {
+    return <AuthScreen />
+  }
 
   const ScreenComponent = SCREENS[screen]
 
