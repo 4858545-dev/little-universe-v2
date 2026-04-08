@@ -11,7 +11,7 @@
 
 **Repo:** (новий GitHub repo)
 **Stack:** React 18 + Vite PWA · Zustand · CSS Modules · state-based routing
-**Backend (later):** Supabase · Stripe · Cloudflare R2 · Brevo · PostHog
+**Backend (in progress):** Supabase ✓ · Stripe · Cloudflare R2 · Brevo · PostHog
 
 ---
 
@@ -430,10 +430,17 @@ docs/
 
 ## Current status
 
-**Completed:** нічого (новий проєкт)
+**Completed:**
+- Сесія 1–3: theme.css, useAppStore, App.jsx, UI kit, AdventureMapScreen, OnboardingScreen, PlanetDetailScreen, character assets
+- Supabase setup: @supabase/supabase-js installed, src/lib/supabase.js, .env.local, supabase/migrations/001_initial_schema.sql
+
+**In progress:**
+- Step 2: Supabase backend — schema deployed, auth + data hooks next
 
 **Next session:**
-- Сесія 1: theme.css + useAppStore + App.jsx + UI kit компоненти
+- Supabase Auth (email/password) — login/register flow
+- Hook resources table to PlanetDetailScreen (replace MOCK_RESOURCES)
+- Stripe integration for subscription tiers
 
 **Characters in store:**
 `companion: 'lumi' | 'orbita' | 'zorx' | 'marik' | null`
