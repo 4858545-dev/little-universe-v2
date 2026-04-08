@@ -435,12 +435,12 @@ docs/
 - Supabase setup: @supabase/supabase-js installed, src/lib/supabase.js, .env.local, supabase/migrations/001_initial_schema.sql
 
 **In progress:**
-- Step 2: Supabase backend — schema deployed, auth + data hooks next
+- Step 3: Authentication — AuthScreen, useAuthStore, supabase auth helpers, App.jsx auth gate ✓
 
 **Next session:**
-- Supabase Auth (email/password) — login/register flow
-- Hook resources table to PlanetDetailScreen (replace MOCK_RESOURCES)
+- Hook resources table to PlanetDetailScreen (replace MOCK_RESOURCES with Supabase queries)
 - Stripe integration for subscription tiers
+- Profile creation on register (insert into profiles table)
 
 **Characters in store:**
 `companion: 'lumi' | 'orbita' | 'zorx' | 'marik' | null`
