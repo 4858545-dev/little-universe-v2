@@ -890,25 +890,38 @@ export default function AdventureMapScreen() {
                 textTransform: 'uppercase', letterSpacing: 2, marginBottom: 16,
               }}>★ Розділи контенту</div>
 
-              <div style={{ display: 'grid', gap: 12 }}>
+              <div style={
+                p.id === 'logic-zorx' && !isMobile
+                  ? { display: 'flex', flexDirection: 'row', gap: 12 }
+                  : p.id === 'logic-zorx' && isMobile
+                  ? { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }
+                  : { display: 'grid', gap: 12 }
+              }>
                 {p.sections.map((s, i) => (
                   <div key={s} style={{
                     ...glassCard(),
-                    padding: '18px 22px',
-                    display: 'flex', alignItems: 'center', gap: 14,
+                    padding: p.id === 'logic-zorx' ? '12px 14px' : '18px 22px',
+                    display: 'flex',
+                    flexDirection: p.id === 'logic-zorx' && !isMobile ? 'column' : 'row',
+                    alignItems: p.id === 'logic-zorx' && !isMobile ? 'flex-start' : 'center',
+                    gap: 10,
+                    flex: p.id === 'logic-zorx' && !isMobile ? 1 : undefined,
                     animation: `fadeSlideUp 0.5s ease-out ${i * 0.1}s both`,
                   }}>
                     <div style={{
-                      width: 40, height: 40, borderRadius: 12,
+                      width: p.id === 'logic-zorx' ? 32 : 40,
+                      height: p.id === 'logic-zorx' ? 32 : 40,
+                      borderRadius: 10,
                       background: `linear-gradient(135deg, ${p.color1}20, ${p.color2}30)`,
                       border: `1px solid ${p.color1}25`,
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: 17, fontWeight: 900, color: p.color1,
+                      fontSize: p.id === 'logic-zorx' ? 14 : 17, fontWeight: 900, color: p.color1,
+                      flexShrink: 0,
                     }}>{i + 1}</div>
                     <div>
-                      <div style={{ fontWeight: 800, fontSize: 15, color: 'rgba(255,255,255,0.85)' }}>{s}</div>
-                      <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', fontWeight: 600 }}>
-                        Огляд ★ PDF, відео, інтерактив
+                      <div style={{ fontWeight: 800, fontSize: p.id === 'logic-zorx' ? 13 : 15, color: 'rgba(255,255,255,0.85)' }}>{s}</div>
+                      <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)', fontWeight: 600 }}>
+                        PDF · відео · інтерактив
                       </div>
                     </div>
                   </div>
