@@ -72,6 +72,23 @@
   border-color: var(--gold);
 }
 
+.compact {
+  padding: 12px;
+}
+
+.compact .typeEmoji {
+  font-size: 18px;
+}
+
+.compact .title {
+  font-size: 11px;
+}
+
+.compact .takeBtn {
+  font-size: 11px;
+  padding: 6px 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .card {
     transition: none;

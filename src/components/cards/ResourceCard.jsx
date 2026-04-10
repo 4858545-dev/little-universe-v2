@@ -17,7 +17,7 @@ const TYPE_EMOJI = {
   worksheet:  '📝',
 }
 
-export default function ResourceCard({ title, type, tier = 'free', description = '', emoji }) {
+export default function ResourceCard({ title, type, tier = 'free', description = '', emoji, style: extraStyle, compact }) {
   const { showToast } = useAppStore()
   const badge = TIER_BADGE[tier] ?? TIER_BADGE.free
   const typeEmoji = emoji ?? TYPE_EMOJI[type] ?? '📦'
@@ -27,7 +27,7 @@ export default function ResourceCard({ title, type, tier = 'free', description =
   }
 
   return (
-    <div className={styles.card}>
+    <div className={[styles.card, compact ? styles.compact : ''].join(' ')} style={extraStyle}>
       <div className={styles.top}>
         <span className={styles.typeEmoji}>{typeEmoji}</span>
         <Badge variant={badge.variant}>{badge.label}</Badge>

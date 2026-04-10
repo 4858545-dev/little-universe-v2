@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import useAppStore from '../store/useAppStore'
 import CharacterAvatar from '../components/characters/CharacterAvatar'
 import ResourceCard from '../components/cards/ResourceCard'
@@ -168,6 +168,12 @@ export default function PlanetDetailScreen() {
   const meta = PLANET_META[planetId]
   const sections = PLANET_SECTIONS[planetId] ?? []
   const [activeSection, setActiveSection] = useState(sections[0] ?? '')
+  const [winW, setWinW] = useState(window.innerWidth)
+  useEffect(() => {
+    const onResize = () => setWinW(window.innerWidth)
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
 
   if (!meta) {
     return (
@@ -227,7 +233,11 @@ export default function PlanetDetailScreen() {
       </div>
 
       {/* Resource grid */}
-      <div className={styles.grid}>
+      <div className={styles.grid} style={planetId === 'logic-zorx' ? (
+        winW >= 768
+          ? { display: 'flex', flexDirection: 'row', gap: '12px', alignItems: 'stretch' }
+          : { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }
+      ) : undefined}>
         {resources.length === 0 ? (
           <p className={styles.empty}>Ресурси незабаром з'являться</p>
         ) : (
@@ -238,6 +248,8 @@ export default function PlanetDetailScreen() {
               title={r.title}
               type={r.type}
               tier={r.tier}
+              compact={planetId === 'logic-zorx'}
+              style={planetId === 'logic-zorx' && winW >= 768 ? { flex: 1 } : undefined}
             />
           ))
         )}
