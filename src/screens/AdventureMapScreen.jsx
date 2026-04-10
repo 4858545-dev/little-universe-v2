@@ -761,6 +761,20 @@ export default function AdventureMapScreen() {
               ))}
             </div>
           </div>
+
+          {/* ─── FOOTER ─── */}
+          <div style={{
+            textAlign: 'center',
+            padding: '24px',
+            fontSize: 12,
+            color: 'rgba(255,255,255,0.2)',
+            fontFamily: "'Nunito', sans-serif",
+            fontWeight: 600,
+            letterSpacing: 0.5,
+            position: 'relative', zIndex: 1,
+          }}>
+            © 2026 Маленький Всесвіт
+          </div>
         </>
       )}
 
