@@ -228,6 +228,8 @@ function PlanetOrb({ planet, hovered, onClick, onHover, onLeave, style: extraSty
       onClick={onClick}
       onMouseEnter={onHover}
       onMouseLeave={onLeave}
+      onTouchStart={onHover}
+      onTouchEnd={() => setTimeout(onLeave, 300)}
       style={{
         width: sz,
         height: sz,
