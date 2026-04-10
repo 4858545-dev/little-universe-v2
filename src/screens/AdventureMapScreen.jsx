@@ -441,6 +441,14 @@ export default function AdventureMapScreen() {
           0%   { opacity: 0; transform: translateY(20px); }
           100% { opacity: 1; transform: translateY(0);    }
         }
+        @keyframes sunRaysRotate {
+          from { transform: translate(-50%, -50%) rotate(0deg); }
+          to   { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        @keyframes sunCorePulse {
+          0%, 100% { transform: scale(1.0); }
+          50%      { transform: scale(1.05); }
+        }
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-thumb { background: rgba(179,136,255,0.3); border-radius: 10px; }
         ::-webkit-scrollbar-track { background: transparent; }
@@ -562,25 +570,81 @@ export default function AdventureMapScreen() {
             overflow: 'hidden', zIndex: 1,
           }}>
             {/* Sun — centered at 50% of orbital area */}
-            <div style={{
-              position: 'absolute', top: SUN_TOP, left: '50%',
-              transform: 'translate(-50%, -50%)',
-              width: isMobile ? 48 : 70, height: isMobile ? 48 : 70, borderRadius: '50%',
-              background: 'radial-gradient(circle at 40% 35%, #FFD54F, #FF9800, #E65100)',
-              boxShadow: '0 0 40px rgba(255,213,79,0.4), 0 0 80px rgba(255,152,0,0.2), inset -8px -6px 16px rgba(0,0,0,0.3)',
-              zIndex: 5,
-            }}>
-              <div style={{
-                position: 'absolute', inset: -20, borderRadius: '50%',
-                background: 'radial-gradient(circle, rgba(255,213,79,0.15) 0%, transparent 70%)',
-                animation: 'planetPulse 4s ease-in-out infinite alternate',
-              }} />
-              <div style={{
-                position: 'absolute', inset: 0, display: 'flex',
-                alignItems: 'center', justifyContent: 'center',
-                fontSize: 28, filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.4))',
-              }}>☀️</div>
-            </div>
+            {(() => {
+              const sunSz = isMobile ? 58 : 84
+              return (
+                <div
+                  onClick={() => navigate('home-station')}
+                  style={{
+                    position: 'absolute', top: SUN_TOP, left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    zIndex: 5, cursor: 'pointer',
+                    width: sunSz, height: sunSz,
+                  }}
+                >
+                  {/* Rotating rays */}
+                  <div style={{
+                    position: 'absolute', top: '50%', left: '50%',
+                    width: sunSz * 2.4, height: sunSz * 2.4,
+                    animation: 'sunRaysRotate 20s linear infinite',
+                    pointerEvents: 'none',
+                  }}>
+                    {Array.from({ length: 8 }).map((_, i) => (
+                      <div key={i} style={{
+                        position: 'absolute',
+                        top: '50%', left: '50%',
+                        width: sunSz * 0.18, height: sunSz * 0.7,
+                        marginLeft: -(sunSz * 0.09),
+                        marginTop: -(sunSz * 1.2),
+                        transformOrigin: `50% ${sunSz * 1.2}px`,
+                        transform: `rotate(${i * 45}deg)`,
+                        background: 'linear-gradient(to top, rgba(255,213,79,0.6), rgba(255,152,0,0.1))',
+                        borderRadius: '50% 50% 0 0',
+                        filter: 'blur(1px)',
+                      }} />
+                    ))}
+                  </div>
+
+                  {/* Outer glow halo */}
+                  <div style={{
+                    position: 'absolute', inset: -sunSz * 0.3, borderRadius: '50%',
+                    background: 'radial-gradient(circle, rgba(255,213,79,0.18) 0%, transparent 70%)',
+                    animation: 'planetPulse 4s ease-in-out infinite alternate',
+                    pointerEvents: 'none',
+                  }} />
+
+                  {/* Sun core with pulse */}
+                  <div style={{
+                    position: 'absolute', inset: 0, borderRadius: '50%',
+                    background: 'radial-gradient(circle at 40% 35%, #FFD54F, #FF9800, #E65100)',
+                    boxShadow: '0 0 40px rgba(255,213,79,0.5), 0 0 80px rgba(255,152,0,0.25), inset -8px -6px 16px rgba(0,0,0,0.3)',
+                    animation: 'sunCorePulse 3s ease-in-out infinite',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  }}>
+                    <span style={{
+                      fontSize: sunSz * 0.38,
+                      filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.4))',
+                      lineHeight: 1,
+                    }}>☀️</span>
+                  </div>
+
+                  {/* Label below sun */}
+                  <div style={{
+                    position: 'absolute', top: '100%', left: '50%',
+                    transform: 'translateX(-50%)', marginTop: 8, whiteSpace: 'nowrap',
+                    textAlign: 'center', pointerEvents: 'none',
+                  }}>
+                    <div style={{
+                      fontSize: isMobile ? 9 : 12, fontWeight: 800, color: '#FFD54F',
+                      textShadow: '0 0 12px rgba(255,213,79,0.5)',
+                    }}>Домашня Станція</div>
+                    <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.35)', fontWeight: 600 }}>
+                      Центр Всесвіту
+                    </div>
+                  </div>
+                </div>
+              )
+            })()}
 
             {/* Orbit rings — centered at SUN_TOP */}
             {PLANETS.map((p) => {
