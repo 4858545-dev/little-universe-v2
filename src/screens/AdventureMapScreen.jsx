@@ -469,10 +469,15 @@ function PlanetDetailView({ p, isMobile, backToLanding }) {
           </div>
         ) : (
           <div style={{
-            ...glassCard(), padding: '28px', textAlign: 'center',
-            color: 'rgba(255,255,255,0.3)', fontSize: 14, fontWeight: 600,
+            ...glassCard(), padding: '32px 28px', textAlign: 'center',
           }}>
-            🚀 Ресурси незабаром з'являться
+            <div style={{ fontSize: 36, marginBottom: 16 }}>🚀</div>
+            <div style={{ fontSize: 15, fontWeight: 700, color: 'rgba(255,255,255,0.7)', marginBottom: 8 }}>
+              Контент вже в розробці
+            </div>
+            <div style={{ fontSize: 13, color: 'rgba(255,255,255,0.35)', lineHeight: 1.6, maxWidth: 380, margin: '0 auto' }}>
+              Контент для цієї планети вже в розробці. Незабаром тут з'являться нові місії!
+            </div>
           </div>
         )}
       </div>
@@ -481,7 +486,7 @@ function PlanetDetailView({ p, isMobile, backToLanding }) {
 }
 
 export default function AdventureMapScreen() {
-  const { coins, showToast } = useAppStore()
+  const { coins, showToast, navigate } = useAppStore()
   const [view, setView] = useState('landing')
   const [activePlanet, setActivePlanet] = useState(null)
   const [meteorite, setMeteorite] = useState(null)
@@ -623,6 +628,13 @@ export default function AdventureMapScreen() {
             color: '#FFB74D', cursor: 'pointer', fontWeight: 700, fontSize: 13,
             transition: 'all 0.3s',
           }}>☄️ Метеорит</button>
+          <button onClick={() => navigate('about')} style={{
+            padding: '7px 14px', borderRadius: 24, fontFamily: 'inherit',
+            background: 'rgba(100,255,218,0.08)',
+            border: '1.5px solid rgba(100,255,218,0.2)',
+            color: '#64FFDA', cursor: 'pointer', fontWeight: 700, fontSize: 13,
+            transition: 'all 0.3s',
+          }}>👥 Про команду</button>
         </div>
       )}
 

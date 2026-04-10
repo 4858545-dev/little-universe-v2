@@ -6,11 +6,13 @@ import AppFooter from './components/ui/AppFooter'
 import AdventureMapScreen from './screens/AdventureMapScreen'
 import PlanetDetailScreen from './screens/PlanetDetailScreen'
 import AuthScreen from './screens/AuthScreen'
+import AboutScreen from './screens/AboutScreen'
 import styles from './App.module.css'
 
 const SCREENS = {
   'adventure-map': AdventureMapScreen,
   course:          PlanetDetailScreen,
+  about:           AboutScreen,
 }
 
 // Screens where the bottom footer is visible
