@@ -647,16 +647,20 @@ export default function AdventureMapScreen() {
           </div>
 
           {/* ─── PLANET CARDS GRID ─── */}
-          <div style={{
-            textAlign: 'center', marginBottom: 20, marginTop: isMobile ? 16 : 0, position: 'relative', zIndex: 1,
-          }}>
+          <div
+            onClick={() => document.getElementById('planet-cards')?.scrollIntoView({ behavior: 'smooth' })}
+            style={{
+              textAlign: 'center', marginBottom: 20, marginTop: isMobile ? 16 : 0, position: 'relative', zIndex: 1,
+              cursor: 'pointer',
+            }}
+          >
             <span style={{
               fontSize: 12, fontWeight: 700, letterSpacing: 2.5, textTransform: 'uppercase',
               color: 'rgba(179,136,255,0.5)',
             }}>✦ Обери свою планету ✦</span>
           </div>
 
-          <div style={{
+          <div id="planet-cards" style={{
             display: 'grid',
             gridTemplateColumns: winSize.w <= 640 ? '1fr' : 'repeat(auto-fit, minmax(280px, 1fr))',
             gap: 12, padding: winSize.w <= 640 ? '0 12px 40px' : '0 24px 40px',
