@@ -578,14 +578,15 @@ export default function AdventureMapScreen() {
                   style={{
                     position: 'absolute', top: SUN_TOP, left: '50%',
                     transform: 'translate(-50%, -50%)',
-                    zIndex: 5, cursor: 'pointer',
+                    zIndex: 50, cursor: 'pointer',
                     width: sunSz, height: sunSz,
                   }}
                 >
-                  {/* Rotating rays */}
+                  {/* Rotating rays — feathered, wide at base */}
                   <div style={{
                     position: 'absolute', top: '50%', left: '50%',
-                    width: sunSz * 2.4, height: sunSz * 2.4,
+                    width: sunSz * 2.8, height: sunSz * 2.8,
+                    marginTop: -(sunSz * 1.4), marginLeft: -(sunSz * 1.4),
                     animation: 'sunRaysRotate 20s linear infinite',
                     pointerEvents: 'none',
                   }}>
@@ -593,40 +594,34 @@ export default function AdventureMapScreen() {
                       <div key={i} style={{
                         position: 'absolute',
                         top: '50%', left: '50%',
-                        width: sunSz * 0.18, height: sunSz * 0.7,
-                        marginLeft: -(sunSz * 0.09),
-                        marginTop: -(sunSz * 1.2),
-                        transformOrigin: `50% ${sunSz * 1.2}px`,
+                        width: sunSz * 0.35,
+                        height: sunSz * 0.9,
+                        marginLeft: -(sunSz * 0.175),
+                        marginTop: -(sunSz * 1.4),
+                        transformOrigin: `50% ${sunSz * 1.4}px`,
                         transform: `rotate(${i * 45}deg)`,
-                        background: 'linear-gradient(to top, rgba(255,213,79,0.6), rgba(255,152,0,0.1))',
-                        borderRadius: '50% 50% 0 0',
-                        filter: 'blur(1px)',
+                        background: 'radial-gradient(ellipse 50% 100% at 50% 100%, rgba(255,213,79,0.55) 0%, rgba(255,152,0,0.15) 55%, transparent 100%)',
+                        borderRadius: '50% 50% 20% 20%',
+                        filter: 'blur(3px)',
                       }} />
                     ))}
                   </div>
 
                   {/* Outer glow halo */}
                   <div style={{
-                    position: 'absolute', inset: -sunSz * 0.3, borderRadius: '50%',
-                    background: 'radial-gradient(circle, rgba(255,213,79,0.18) 0%, transparent 70%)',
+                    position: 'absolute', inset: -sunSz * 0.35, borderRadius: '50%',
+                    background: 'radial-gradient(circle, rgba(255,213,79,0.20) 0%, transparent 70%)',
                     animation: 'planetPulse 4s ease-in-out infinite alternate',
                     pointerEvents: 'none',
                   }} />
 
-                  {/* Sun core with pulse */}
+                  {/* Sun core — clean golden sphere, no icon */}
                   <div style={{
                     position: 'absolute', inset: 0, borderRadius: '50%',
-                    background: 'radial-gradient(circle at 40% 35%, #FFD54F, #FF9800, #E65100)',
-                    boxShadow: '0 0 40px rgba(255,213,79,0.5), 0 0 80px rgba(255,152,0,0.25), inset -8px -6px 16px rgba(0,0,0,0.3)',
+                    background: 'radial-gradient(circle at 38% 32%, #FFF176 0%, #FFD54F 35%, #FF9800 70%, #E65100 100%)',
+                    boxShadow: '0 0 40px rgba(255,213,79,0.6), 0 0 80px rgba(255,152,0,0.3), inset -6px -5px 14px rgba(0,0,0,0.25), inset 4px 4px 10px rgba(255,255,200,0.2)',
                     animation: 'sunCorePulse 3s ease-in-out infinite',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  }}>
-                    <span style={{
-                      fontSize: sunSz * 0.38,
-                      filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.4))',
-                      lineHeight: 1,
-                    }}>☀️</span>
-                  </div>
+                  }} />
 
                   {/* Label below sun */}
                   <div style={{
