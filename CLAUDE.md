@@ -435,12 +435,12 @@ docs/
 - Supabase setup: @supabase/supabase-js installed, src/lib/supabase.js, .env.local, supabase/migrations/001_initial_schema.sql
 
 **In progress:**
-- Step 3: Authentication — AuthScreen, useAuthStore, supabase auth helpers, App.jsx auth gate ✓
+- Step 4: Content system — useResources hook, real Supabase resources in planet detail view ✓
 
 **Next session:**
-- Hook resources table to PlanetDetailScreen (replace MOCK_RESOURCES with Supabase queries)
 - Stripe integration for subscription tiers
 - Profile creation on register (insert into profiles table)
+- Seed real resources into Supabase for all planets
 
 **Characters in store:**
 `companion: 'lumi' | 'orbita' | 'zorx' | 'marik' | null`

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import useAppStore from '../store/useAppStore'
+import { useResources } from '../hooks/useResources'
 import lumiPng   from '../assets/characters/lumi.png'
 import orbitaPng from '../assets/characters/orbita.png'
 import zorxPng   from '../assets/characters/zorx.png'
@@ -335,6 +336,149 @@ const glassCard = (extra = {}) => ({
   borderRadius: 20,
   ...extra,
 })
+
+const TYPE_EMOJI = { pdf: '📄', video: '🎬', interactive: '🧩' }
+const TYPE_LABEL = { pdf: 'PDF', video: 'Відео', interactive: 'Інтерактив' }
+
+function PlanetDetailView({ p, isMobile, backToLanding }) {
+  const { resources, loading } = useResources(p.id)
+
+  return (
+    <>
+      <div style={{
+        textAlign: 'center', padding: '40px 24px 32px',
+        position: 'relative', zIndex: 1,
+        background: `radial-gradient(ellipse 500px 300px at 50% 80%, ${p.glow.replace('0.5', '0.08').replace('0.45', '0.08').replace('0.4', '0.08')} 0%, transparent 70%)`,
+        animation: 'fadeSlideUp 0.5s ease-out',
+      }}>
+        <button onClick={backToLanding} style={{
+          position: 'absolute', top: 16, left: 20,
+          padding: '6px 14px', borderRadius: 12,
+          background: 'rgba(255,255,255,0.05)',
+          border: '1px solid rgba(255,255,255,0.1)',
+          color: 'rgba(255,255,255,0.5)', cursor: 'pointer',
+          fontWeight: 700, fontSize: 12, fontFamily: 'inherit',
+        }}>← Назад</button>
+
+        <PlanetOrb
+          planet={{ ...p, size: 100 }}
+          hovered={true}
+          onClick={() => {}}
+          onHover={() => {}}
+          onLeave={() => {}}
+          style={{ margin: '0 auto 16px', position: 'relative' }}
+        />
+
+        <h2 style={{
+          fontSize: 32, fontWeight: 900, marginBottom: 4,
+          fontFamily: "'Comfortaa', sans-serif",
+          color: p.color1,
+          textShadow: `0 0 20px ${p.glow.replace('0.5', '0.3').replace('0.45', '0.3').replace('0.4', '0.3')}`,
+        }}>Планета {p.name}</h2>
+        <div style={{ fontSize: 13, fontWeight: 700, color: 'rgba(255,255,255,0.4)' }}>
+          {p.curator} — {p.curatorRole}
+        </div>
+        <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.45)', marginTop: 8, maxWidth: 600, margin: '8px auto 0' }}>
+          {p.desc}
+        </p>
+      </div>
+
+      <div style={{ margin: '24px 0', padding: '0 24px 60px', position: 'relative', zIndex: 1 }}>
+        <div style={{
+          fontWeight: 800, fontSize: 12, color: 'rgba(179,136,255,0.5)',
+          textTransform: 'uppercase', letterSpacing: 2, marginBottom: 16,
+        }}>★ Розділи контенту</div>
+
+        <div style={
+          !isMobile
+            ? { display: 'flex', flexDirection: 'row', gap: 12 }
+            : { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }
+        }>
+          {p.sections.map((s, i) => (
+            <div key={s} style={{
+              ...glassCard(),
+              padding: '12px 14px',
+              display: 'flex',
+              flexDirection: isMobile ? 'row' : 'column',
+              alignItems: isMobile ? 'center' : 'flex-start',
+              gap: 10,
+              flex: isMobile ? undefined : 1,
+              animation: `fadeSlideUp 0.5s ease-out ${i * 0.1}s both`,
+            }}>
+              <div style={{
+                width: 32, height: 32, borderRadius: 10,
+                background: `linear-gradient(135deg, ${p.color1}20, ${p.color2}30)`,
+                border: `1px solid ${p.color1}25`,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: 14, fontWeight: 900, color: p.color1,
+                flexShrink: 0,
+              }}>{i + 1}</div>
+              <div>
+                <div style={{ fontWeight: 800, fontSize: 13, color: 'rgba(255,255,255,0.85)' }}>{s}</div>
+                <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)', fontWeight: 600 }}>
+                  PDF · відео · інтерактив
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* ── Real resources from Supabase ── */}
+        <div style={{
+          fontWeight: 800, fontSize: 12, color: 'rgba(179,136,255,0.5)',
+          textTransform: 'uppercase', letterSpacing: 2, marginTop: 32, marginBottom: 16,
+        }}>★ Ресурси</div>
+
+        {loading ? (
+          <div style={{ color: 'rgba(255,255,255,0.3)', fontSize: 13, fontWeight: 600, padding: '20px 0' }}>
+            Завантаження...
+          </div>
+        ) : resources.length > 0 ? (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 12 }}>
+            {resources.map((r, i) => (
+              <div key={r.id} style={{
+                ...glassCard(),
+                padding: '16px', cursor: 'pointer',
+                animation: `fadeSlideUp 0.5s ease-out ${i * 0.08}s both`,
+                display: 'flex', flexDirection: 'column', gap: 8,
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
+                  <span style={{ fontSize: 22 }}>{TYPE_EMOJI[r.type] ?? '📦'}</span>
+                  <span style={{
+                    fontSize: 10, fontWeight: 800, padding: '2px 8px', borderRadius: 6,
+                    background: r.is_free ? 'rgba(52,212,200,0.12)' : 'rgba(244,185,66,0.12)',
+                    border: `1px solid ${r.is_free ? 'rgba(52,212,200,0.3)' : 'rgba(244,185,66,0.3)'}`,
+                    color: r.is_free ? '#34d4c8' : '#f4b942',
+                  }}>{r.is_free ? 'Безкоштовно' : 'Преміум'}</span>
+                </div>
+                <div style={{ fontWeight: 700, fontSize: 13, color: 'rgba(255,255,255,0.85)', lineHeight: 1.4 }}>{r.title}</div>
+                {r.description && (
+                  <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', lineHeight: 1.5 }}>{r.description}</div>
+                )}
+                <button
+                  onClick={() => r.url && window.open(r.url, '_blank', 'noopener')}
+                  style={{
+                    marginTop: 'auto', padding: '7px 0', borderRadius: 10,
+                    background: `${p.color1}12`, border: `1px solid ${p.color1}25`,
+                    fontSize: 11, fontWeight: 800, color: p.color1,
+                    cursor: r.url ? 'pointer' : 'default', fontFamily: 'inherit',
+                  }}
+                >⬇ Взяти на борт</button>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div style={{
+            ...glassCard(), padding: '28px', textAlign: 'center',
+            color: 'rgba(255,255,255,0.3)', fontSize: 14, fontWeight: 600,
+          }}>
+            🚀 Ресурси незабаром з'являться
+          </div>
+        )}
+      </div>
+    </>
+  )
+}
 
 export default function AdventureMapScreen() {
   const { coins, showToast } = useAppStore()
@@ -842,116 +986,13 @@ export default function AdventureMapScreen() {
       {/* ═══════════════════
          PLANET DETAIL VIEW
          ═══════════════════ */}
-      {view === 'planet' && activePlanet && (() => {
-        const p = activePlanet
-        return (
-          <>
-            <div style={{
-              textAlign: 'center', padding: '40px 24px 32px',
-              position: 'relative', zIndex: 1,
-              background: `radial-gradient(ellipse 500px 300px at 50% 80%, ${p.glow.replace('0.5', '0.08').replace('0.45', '0.08').replace('0.4', '0.08')} 0%, transparent 70%)`,
-              animation: 'fadeSlideUp 0.5s ease-out',
-            }}>
-              <button onClick={backToLanding} style={{
-                position: 'absolute', top: 16, left: 20,
-                padding: '6px 14px', borderRadius: 12,
-                background: 'rgba(255,255,255,0.05)',
-                border: '1px solid rgba(255,255,255,0.1)',
-                color: 'rgba(255,255,255,0.5)', cursor: 'pointer',
-                fontWeight: 700, fontSize: 12, fontFamily: 'inherit',
-              }}>← Назад</button>
-
-              <PlanetOrb
-                planet={{ ...p, size: 100 }}
-                hovered={true}
-                onClick={() => {}}
-                onHover={() => {}}
-                onLeave={() => {}}
-                style={{ margin: '0 auto 16px', position: 'relative' }}
-              />
-
-              <h2 style={{
-                fontSize: 32, fontWeight: 900, marginBottom: 4,
-                fontFamily: "'Comfortaa', sans-serif",
-                color: p.color1,
-                textShadow: `0 0 20px ${p.glow.replace('0.5', '0.3').replace('0.45', '0.3').replace('0.4', '0.3')}`,
-              }}>Планета {p.name}</h2>
-              <div style={{ fontSize: 13, fontWeight: 700, color: 'rgba(255,255,255,0.4)' }}>
-                {p.curator} — {p.curatorRole}
-              </div>
-              <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.45)', marginTop: 8, maxWidth: 600, margin: '8px auto 0' }}>
-                {p.desc}
-              </p>
-            </div>
-
-            <div style={{ margin: '24px 0', padding: '0 24px 60px', position: 'relative', zIndex: 1 }}>
-              <div style={{
-                fontWeight: 800, fontSize: 12, color: 'rgba(179,136,255,0.5)',
-                textTransform: 'uppercase', letterSpacing: 2, marginBottom: 16,
-              }}>★ Розділи контенту</div>
-
-              <div style={
-                !isMobile
-                  ? { display: 'flex', flexDirection: 'row', gap: 12 }
-                  : { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }
-              }>
-                {p.sections.map((s, i) => (
-                  <div key={s} style={{
-                    ...glassCard(),
-                    padding: '12px 14px',
-                    display: 'flex',
-                    flexDirection: isMobile ? 'row' : 'column',
-                    alignItems: isMobile ? 'center' : 'flex-start',
-                    gap: 10,
-                    flex: isMobile ? undefined : 1,
-                    animation: `fadeSlideUp 0.5s ease-out ${i * 0.1}s both`,
-                  }}>
-                    <div style={{
-                      width: 32, height: 32, borderRadius: 10,
-                      background: `linear-gradient(135deg, ${p.color1}20, ${p.color2}30)`,
-                      border: `1px solid ${p.color1}25`,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: 14, fontWeight: 900, color: p.color1,
-                      flexShrink: 0,
-                    }}>{i + 1}</div>
-                    <div>
-                      <div style={{ fontWeight: 800, fontSize: 13, color: 'rgba(255,255,255,0.85)' }}>{s}</div>
-                      <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)', fontWeight: 600 }}>
-                        PDF · відео · інтерактив
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <div style={{
-                fontWeight: 800, fontSize: 12, color: 'rgba(179,136,255,0.5)',
-                textTransform: 'uppercase', letterSpacing: 2, marginTop: 32, marginBottom: 16,
-              }}>★ Зразки ресурсів</div>
-
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: 12 }}>
-                {['📄 PDF-аркуш', '🎬 Відеоурок', '🧩 Інтерактивна гра', '📋 Набір оцінювання', '🖨 Картки для друку', '📊 Графік прогресу'].map((r, i) => (
-                  <div key={r} style={{
-                    ...glassCard(),
-                    padding: '20px 14px', textAlign: 'center', cursor: 'pointer',
-                    transition: 'all 0.3s',
-                    animation: `fadeSlideUp 0.5s ease-out ${i * 0.08 + 0.3}s both`,
-                  }}>
-                    <div style={{ fontSize: 28, marginBottom: 8 }}>{r.split(' ')[0]}</div>
-                    <div style={{ fontSize: 13, fontWeight: 700, color: 'rgba(255,255,255,0.65)' }}>{r.slice(2)}</div>
-                    <div style={{
-                      marginTop: 10, padding: '5px 12px', borderRadius: 10,
-                      background: `${p.color1}12`, border: `1px solid ${p.color1}25`,
-                      fontSize: 11, fontWeight: 800, color: p.color1,
-                      display: 'inline-block',
-                    }}>⬇ Взяти на борт</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </>
-        )
-      })()}
+      {view === 'planet' && activePlanet && (
+        <PlanetDetailView
+          p={activePlanet}
+          isMobile={isMobile}
+          backToLanding={backToLanding}
+        />
+      )}
     </div>
   )
 }
