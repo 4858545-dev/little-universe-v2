@@ -26,7 +26,7 @@ const PLANETS = [
     desc: 'Математика, логіка, просторове мислення та когнітивні головоломки',
     sections: ['Робочі аркуші', 'Відеоуроки', 'Інтерактивні пазли', 'Набори для оцінювання'],
     size: 110,
-    orbitRadius: 160,
+    orbitRadius: 190,
     speed: 28,
     startAngle: 30,
   },
@@ -683,8 +683,8 @@ export default function AdventureMapScreen() {
                   {/* Sun core — clean golden sphere */}
                   <div style={{
                     position: 'absolute', inset: 0, borderRadius: '50%',
-                    background: 'radial-gradient(circle at 38% 32%, #FFF176 0%, #FFD54F 35%, #FF9800 70%, #E65100 100%)',
-                    boxShadow: '0 0 40px rgba(255,213,79,0.6), 0 0 80px rgba(255,152,0,0.3), inset -6px -5px 14px rgba(0,0,0,0.25), inset 4px 4px 10px rgba(255,255,200,0.2)',
+                    background: 'radial-gradient(circle at 38% 32%, rgba(255,245,120,0.95) 0%, rgba(255,213,79,0.88) 30%, rgba(255,152,0,0.75) 60%, rgba(200,80,0,0.45) 85%, transparent 100%)',
+                    boxShadow: '0 0 30px rgba(255,213,79,0.4), 0 0 60px rgba(255,152,0,0.18), inset -4px -4px 10px rgba(0,0,0,0.2), inset 3px 3px 8px rgba(255,255,200,0.15)',
                     animation: 'sunCorePulse 3s ease-in-out infinite',
                   }} />
 
@@ -694,10 +694,6 @@ export default function AdventureMapScreen() {
                     transform: 'translateX(-50%)', marginTop: 8, whiteSpace: 'nowrap',
                     textAlign: 'center', pointerEvents: 'none',
                   }}>
-                    <div style={{
-                      fontSize: isMobile ? 9 : 12, fontWeight: 800, color: '#FFD54F',
-                      textShadow: '0 0 12px rgba(255,213,79,0.5)',
-                    }}>Домашня Станція</div>
                     <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.35)', fontWeight: 600 }}>
                       Центр Всесвіту
                     </div>
