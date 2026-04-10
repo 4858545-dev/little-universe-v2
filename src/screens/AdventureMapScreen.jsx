@@ -569,78 +569,6 @@ export default function AdventureMapScreen() {
             height: 'calc(100vh - 54px)',
             overflow: 'hidden', zIndex: 1,
           }}>
-            {/* Sun — centered at 50% of orbital area */}
-            {(() => {
-              const sunSz = isMobile ? 58 : 84
-              return (
-                <div
-                  onClick={() => navigate('home-station')}
-                  style={{
-                    position: 'absolute', top: SUN_TOP, left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    zIndex: 50, cursor: 'pointer',
-                    width: sunSz, height: sunSz,
-                  }}
-                >
-                  {/* Rotating rays — feathered, wide at base */}
-                  <div style={{
-                    position: 'absolute', top: '50%', left: '50%',
-                    width: sunSz * 2.8, height: sunSz * 2.8,
-                    marginTop: -(sunSz * 1.4), marginLeft: -(sunSz * 1.4),
-                    animation: 'sunRaysRotate 20s linear infinite',
-                    pointerEvents: 'none',
-                  }}>
-                    {Array.from({ length: 8 }).map((_, i) => (
-                      <div key={i} style={{
-                        position: 'absolute',
-                        top: '50%', left: '50%',
-                        width: sunSz * 0.35,
-                        height: sunSz * 0.9,
-                        marginLeft: -(sunSz * 0.175),
-                        marginTop: -(sunSz * 1.4),
-                        transformOrigin: `50% ${sunSz * 1.4}px`,
-                        transform: `rotate(${i * 45}deg)`,
-                        background: 'radial-gradient(ellipse 50% 100% at 50% 100%, rgba(255,213,79,0.55) 0%, rgba(255,152,0,0.15) 55%, transparent 100%)',
-                        borderRadius: '50% 50% 20% 20%',
-                        filter: 'blur(3px)',
-                      }} />
-                    ))}
-                  </div>
-
-                  {/* Outer glow halo */}
-                  <div style={{
-                    position: 'absolute', inset: -sunSz * 0.35, borderRadius: '50%',
-                    background: 'radial-gradient(circle, rgba(255,213,79,0.20) 0%, transparent 70%)',
-                    animation: 'planetPulse 4s ease-in-out infinite alternate',
-                    pointerEvents: 'none',
-                  }} />
-
-                  {/* Sun core — clean golden sphere, no icon */}
-                  <div style={{
-                    position: 'absolute', inset: 0, borderRadius: '50%',
-                    background: 'radial-gradient(circle at 38% 32%, #FFF176 0%, #FFD54F 35%, #FF9800 70%, #E65100 100%)',
-                    boxShadow: '0 0 40px rgba(255,213,79,0.6), 0 0 80px rgba(255,152,0,0.3), inset -6px -5px 14px rgba(0,0,0,0.25), inset 4px 4px 10px rgba(255,255,200,0.2)',
-                    animation: 'sunCorePulse 3s ease-in-out infinite',
-                  }} />
-
-                  {/* Label below sun */}
-                  <div style={{
-                    position: 'absolute', top: '100%', left: '50%',
-                    transform: 'translateX(-50%)', marginTop: 8, whiteSpace: 'nowrap',
-                    textAlign: 'center', pointerEvents: 'none',
-                  }}>
-                    <div style={{
-                      fontSize: isMobile ? 9 : 12, fontWeight: 800, color: '#FFD54F',
-                      textShadow: '0 0 12px rgba(255,213,79,0.5)',
-                    }}>Домашня Станція</div>
-                    <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.35)', fontWeight: 600 }}>
-                      Центр Всесвіту
-                    </div>
-                  </div>
-                </div>
-              )
-            })()}
-
             {/* Orbit rings — centered at SUN_TOP */}
             {PLANETS.map((p) => {
               const rPx = p.orbitRadius * orbitScale
@@ -703,6 +631,80 @@ export default function AdventureMapScreen() {
                 </div>
               )
             })}
+
+            {/* Sun — rendered AFTER planets so it sits on top in DOM order */}
+            {(() => {
+              const sunSz = isMobile ? 58 : 84
+              return (
+                <div
+                  onClick={() => navigate('home-station')}
+                  style={{
+                    position: 'absolute', top: SUN_TOP, left: '50%',
+                    transform: 'translate(-50%, -50%)',
+                    zIndex: 1000, cursor: 'pointer',
+                    width: sunSz, height: sunSz,
+                  }}
+                >
+                  {/* Rotating rays — centered on sun core */}
+                  <div style={{
+                    position: 'absolute',
+                    top: sunSz / 2, left: sunSz / 2,
+                    width: 0, height: 0,
+                    animation: 'sunRaysRotate 20s linear infinite',
+                    pointerEvents: 'none',
+                  }}>
+                    {Array.from({ length: 8 }).map((_, i) => (
+                      <div key={i} style={{
+                        position: 'absolute',
+                        width: sunSz * 0.35,
+                        height: sunSz * 0.85,
+                        left: -(sunSz * 0.175),
+                        top: -(sunSz * 0.5 + sunSz * 0.85),
+                        transformOrigin: `50% ${sunSz * 0.85 + sunSz * 0.5}px`,
+                        transform: `rotate(${i * 45}deg)`,
+                        background: 'radial-gradient(ellipse 50% 100% at 50% 100%, rgba(255,213,79,0.55) 0%, rgba(255,152,0,0.15) 55%, transparent 100%)',
+                        borderRadius: '50% 50% 20% 20%',
+                        filter: 'blur(3px)',
+                      }} />
+                    ))}
+                  </div>
+
+                  {/* Outer glow halo */}
+                  <div style={{
+                    position: 'absolute',
+                    top: -(sunSz * 0.35), left: -(sunSz * 0.35),
+                    width: sunSz * 1.7, height: sunSz * 1.7,
+                    borderRadius: '50%',
+                    background: 'radial-gradient(circle, rgba(255,213,79,0.20) 0%, transparent 70%)',
+                    animation: 'planetPulse 4s ease-in-out infinite alternate',
+                    pointerEvents: 'none',
+                  }} />
+
+                  {/* Sun core — clean golden sphere */}
+                  <div style={{
+                    position: 'absolute', inset: 0, borderRadius: '50%',
+                    background: 'radial-gradient(circle at 38% 32%, #FFF176 0%, #FFD54F 35%, #FF9800 70%, #E65100 100%)',
+                    boxShadow: '0 0 40px rgba(255,213,79,0.6), 0 0 80px rgba(255,152,0,0.3), inset -6px -5px 14px rgba(0,0,0,0.25), inset 4px 4px 10px rgba(255,255,200,0.2)',
+                    animation: 'sunCorePulse 3s ease-in-out infinite',
+                  }} />
+
+                  {/* Label below sun */}
+                  <div style={{
+                    position: 'absolute', top: '100%', left: '50%',
+                    transform: 'translateX(-50%)', marginTop: 8, whiteSpace: 'nowrap',
+                    textAlign: 'center', pointerEvents: 'none',
+                  }}>
+                    <div style={{
+                      fontSize: isMobile ? 9 : 12, fontWeight: 800, color: '#FFD54F',
+                      textShadow: '0 0 12px rgba(255,213,79,0.5)',
+                    }}>Домашня Станція</div>
+                    <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.35)', fontWeight: 600 }}>
+                      Центр Всесвіту
+                    </div>
+                  </div>
+                </div>
+              )
+            })()}
           </div>
 
           {/* ─── PLANET CARDS GRID ─── */}
