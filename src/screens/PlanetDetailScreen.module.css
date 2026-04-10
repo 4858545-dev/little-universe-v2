@@ -4,7 +4,7 @@
   width: 100vw;
   height: 100vh;
   overflow-y: auto;
-  background: var(--navy);
+  background: linear-gradient(145deg, #05050F 0%, #0A0A1A 30%, #0D0B1E 60%, #080818 100%);
   display: flex;
   flex-direction: column;
   z-index: 10;
@@ -13,12 +13,10 @@
 
 /* ── Hero ──────────────────────────────────────────────── */
 .hero {
-  background: linear-gradient(
-    135deg,
-    color-mix(in srgb, var(--planet-color) 25%, var(--navy)) 0%,
-    var(--navy) 70%
-  );
-  border-bottom: 1px solid var(--border);
+  background: rgba(10, 18, 40, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   padding: var(--space-5) var(--space-5) var(--space-5);
   flex-shrink: 0;
 }
