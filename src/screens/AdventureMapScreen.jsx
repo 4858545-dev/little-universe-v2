@@ -648,7 +648,7 @@ export default function AdventureMapScreen() {
 
           {/* ─── PLANET CARDS GRID ─── */}
           <div style={{
-            textAlign: 'center', marginBottom: 20, position: 'relative', zIndex: 1,
+            textAlign: 'center', marginBottom: 20, marginTop: isMobile ? 16 : 0, position: 'relative', zIndex: 1,
           }}>
             <span style={{
               fontSize: 12, fontWeight: 700, letterSpacing: 2.5, textTransform: 'uppercase',
@@ -659,7 +659,7 @@ export default function AdventureMapScreen() {
           <div style={{
             display: 'grid',
             gridTemplateColumns: winSize.w <= 640 ? '1fr' : 'repeat(auto-fit, minmax(280px, 1fr))',
-            gap: 16, padding: '0 24px 40px',
+            gap: 12, padding: winSize.w <= 640 ? '0 12px 40px' : '0 24px 40px',
             position: 'relative', zIndex: 1,
           }}>
             {PLANETS.map((p, idx) => {
@@ -672,7 +672,7 @@ export default function AdventureMapScreen() {
                   onMouseLeave={() => setHoveredPlanet(null)}
                   style={{
                     ...glassCard(),
-                    padding: '22px 24px',
+                    padding: winSize.w <= 640 ? '16px 16px' : '22px 24px',
                     cursor: 'pointer',
                     border: `1px solid ${isHov ? p.color1 + '50' : 'rgba(255,255,255,0.06)'}`,
                     boxShadow: isHov
@@ -729,7 +729,7 @@ export default function AdventureMapScreen() {
 
           {/* ─── MICROCOPY GUIDE ─── */}
           <div style={{
-            margin: '0 24px 60px', padding: '24px',
+            margin: winSize.w <= 640 ? '0 12px 60px' : '0 24px 60px', padding: '24px',
             ...glassCard(), position: 'relative', zIndex: 1,
           }}>
             <div style={{
@@ -737,7 +737,7 @@ export default function AdventureMapScreen() {
               background: 'linear-gradient(135deg, #B388FF, #64FFDA)',
               WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
             }}>🗣 Космічний сленг — Гайд по мікрокопі</div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 8 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: winSize.w <= 640 ? '1fr' : 'repeat(auto-fit, minmax(220px, 1fr))', gap: 8 }}>
               {[
                 ['Увійти',      'Стикування',         '🔐'],
                 ['Завантажити', 'Взяти на борт',       '⬇'],
