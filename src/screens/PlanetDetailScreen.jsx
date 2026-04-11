@@ -2,10 +2,18 @@ import { useState, useEffect } from 'react'
 import useAppStore from '../store/useAppStore'
 import CharacterAvatar from '../components/characters/CharacterAvatar'
 import ResourceCard from '../components/cards/ResourceCard'
+import { useResources } from '../hooks/useResources'
 import { PLANET_META, PLANET_SECTIONS } from '../data/planets'
 import styles from './PlanetDetailScreen.module.css'
 
-// ── Mock resource data (inline — no separate file needed) ──────────────────
+// Planets backed by real Supabase data (planet_id values in resources table)
+// Internal planet key → supabase planet_id
+const SUPABASE_PLANETS = {
+  'stem-marik': 'marik',
+  'art-lumi': 'lumi',
+}
+
+// ── Mock resource data (non-Supabase planets) ──────────────────────────────
 const MOCK_RESOURCES = {
   'logo-orbit': {
     'Артикуляційні PDF': [
@@ -94,51 +102,6 @@ const MOCK_RESOURCES = {
       { emoji: '🚀', title: 'Шаблони документації', type: 'pdf', tier: 'specialist' },
     ],
   },
-  'stem-marik': {
-    'Набори експериментів': [
-      { emoji: '🔬', title: 'Дощ у склянці', type: 'guide', tier: 'free' },
-      { emoji: '🔬', title: 'Вулкан із соди', type: 'guide', tier: 'free' },
-      { emoji: '🔬', title: 'Рослина під мікроскопом', type: 'guide', tier: 'free' },
-      { emoji: '🔬', title: 'Кристали солі', type: 'guide', tier: 'premium' },
-    ],
-    'Щоденники природи': [
-      { emoji: '🌿', title: 'Мій щоденник природи', type: 'printable', tier: 'free' },
-      { emoji: '🌿', title: 'Спостереження за птахами', type: 'printable', tier: 'free' },
-      { emoji: '🌿', title: 'Осінній гербарій', type: 'guide', tier: 'free' },
-    ],
-    'Космічні активності': [
-      { emoji: '🚀', title: 'Модель Сонячної системи', type: 'printable', tier: 'free' },
-      { emoji: '🌙', title: 'Фази Місяця', type: 'printable', tier: 'free' },
-      { emoji: '⭐', title: 'Карта зірок для дітей', type: 'printable', tier: 'premium' },
-    ],
-    'STEM-челенджі': [
-      { emoji: '⚡', title: 'Міст із паперу', type: 'guide', tier: 'free' },
-      { emoji: '⚡', title: 'Ракета зі скотчу', type: 'guide', tier: 'free' },
-      { emoji: '⚡', title: 'Ланцюгова реакція', type: 'guide', tier: 'premium' },
-    ],
-  },
-  'art-lumi': {
-    'Арт-терапевтичні картки': [
-      { emoji: '🖼', title: 'Картки емоцій (36 шт.)', type: 'printable', tier: 'free' },
-      { emoji: '🖼', title: 'Проективні малюнки', type: 'printable', tier: 'premium' },
-      { emoji: '🖼', title: 'Мандали для розфарбовування', type: 'printable', tier: 'free' },
-    ],
-    'Аркуші емоцій': [
-      { emoji: '💕', title: 'Колесо емоцій', type: 'printable', tier: 'free' },
-      { emoji: '💕', title: 'Де живе ця емоція?', type: 'worksheet', tier: 'free' },
-      { emoji: '💕', title: 'Щоденник настрою', type: 'printable', tier: 'free' },
-      { emoji: '💕', title: 'Робота зі страхами', type: 'worksheet', tier: 'premium' },
-    ],
-    'Посібники для батьків': [
-      { emoji: '📖', title: 'Як говорити про емоції', type: 'guide', tier: 'free' },
-      { emoji: '📖', title: 'Підтримка тривожної дитини', type: 'guide', tier: 'premium' },
-    ],
-    'Протоколи спеціалістів': [
-      { emoji: '📋', title: 'Протокол первинного прийому', type: 'pdf', tier: 'specialist' },
-      { emoji: '📋', title: 'Протокол арт-терапевтичної сесії', type: 'pdf', tier: 'specialist' },
-      { emoji: '📋', title: 'Карта динаміки дитини', type: 'assessment', tier: 'specialist' },
-    ],
-  },
   cosmodrome: {
     'Курси підготовки': [
       { emoji: '🎓', title: 'Читання: від звуку до слова', type: 'video', tier: 'premium' },
@@ -160,6 +123,87 @@ const MOCK_RESOURCES = {
       { emoji: '📊', title: 'Рекомендації куратора', type: 'guide', tier: 'premium' },
     ],
   },
+}
+
+// Group resources by age range label
+function groupByAge(resources) {
+  const groups = {}
+  for (const r of resources) {
+    const key = `${r.age_min}–${r.age_max} років`
+    if (!groups[key]) groups[key] = []
+    groups[key].push(r)
+  }
+  return groups
+}
+
+// Polished empty state for planets without content yet
+function EmptyState({ planetColor }) {
+  return (
+    <div className={styles.emptyCard} style={{ '--planet-color': planetColor }}>
+      <div className={styles.emptyIcon} aria-hidden="true">🌌</div>
+      <p className={styles.emptyText}>
+        Цей сектор готується до запуску. Наша команда працює над матеріалами.
+        Слідкуйте за оновленнями!
+      </p>
+    </div>
+  )
+}
+
+// Supabase-backed planet view with age grouping
+function SupabasePlanetContent({ supabasePlanetId, planetColor }) {
+  const { resources, loading } = useResources(supabasePlanetId)
+
+  if (loading) {
+    return <p className={styles.loadingText}>Завантаження...</p>
+  }
+
+  if (resources.length === 0) {
+    return <EmptyState planetColor={planetColor} />
+  }
+
+  // Check if age grouping is needed (multiple distinct age ranges)
+  const uniqueRanges = new Set(resources.map((r) => `${r.age_min}-${r.age_max}`))
+  const useGrouping = uniqueRanges.size > 1
+
+  if (!useGrouping) {
+    return (
+      <div className={styles.grid}>
+        {resources.map((r) => (
+          <ResourceCard
+            key={r.id}
+            title={r.title}
+            type={r.type}
+            tier={r.is_free ? 'free' : 'premium'}
+            description={r.description}
+          />
+        ))}
+      </div>
+    )
+  }
+
+  const groups = groupByAge(resources)
+  return (
+    <div className={styles.ageGroups}>
+      {Object.entries(groups).map(([label, items]) => (
+        <div key={label} className={styles.ageGroup}>
+          <div className={styles.ageGroupLabel} style={{ '--planet-color': planetColor }}>
+            {label}
+          </div>
+          <div className={styles.grid}>
+            {items.map((r) => (
+              <ResourceCard
+                key={r.id}
+                title={r.title}
+                type={r.type}
+                tier={r.is_free ? 'free' : 'premium'}
+                description={r.description}
+              />
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  )
 }
 
 export default function PlanetDetailScreen() {
@@ -188,7 +232,13 @@ export default function PlanetDetailScreen() {
     )
   }
 
-  const resources = (MOCK_RESOURCES[planetId]?.[activeSection]) ?? []
+  const supabasePlanetId = SUPABASE_PLANETS[planetId]
+  const isSupabasePlanet = Boolean(supabasePlanetId)
+
+  // For mock planets, get resources for the active tab
+  const mockResources = isSupabasePlanet
+    ? []
+    : (MOCK_RESOURCES[planetId]?.[activeSection] ?? [])
 
   return (
     <div
@@ -219,41 +269,54 @@ export default function PlanetDetailScreen() {
         </div>
       </div>
 
-      {/* Section tabs */}
-      <div className={styles.tabsRow}>
-        {sections.map((sec) => (
-          <button
-            key={sec}
-            className={[styles.tab, activeSection === sec ? styles.tabActive : ''].join(' ')}
-            onClick={() => setActiveSection(sec)}
-          >
-            {sec}
-          </button>
-        ))}
-      </div>
+      {/* Section tabs — only for mock-data planets */}
+      {!isSupabasePlanet && (
+        <div className={styles.tabsRow}>
+          {sections.map((sec) => (
+            <button
+              key={sec}
+              className={[styles.tab, activeSection === sec ? styles.tabActive : ''].join(' ')}
+              onClick={() => setActiveSection(sec)}
+            >
+              {sec}
+            </button>
+          ))}
+        </div>
+      )}
 
-      {/* Resource grid */}
-      <div className={styles.grid} style={planetId === 'logic-zorx' ? (
-        winW >= 768
-          ? { display: 'flex', flexDirection: 'row', gap: '12px', alignItems: 'stretch' }
-          : { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }
-      ) : undefined}>
-        {resources.length === 0 ? (
-          <p className={styles.empty}>Ресурси незабаром з'являться</p>
-        ) : (
-          resources.map((r, i) => (
-            <ResourceCard
-              key={i}
-              emoji={r.emoji}
-              title={r.title}
-              type={r.type}
-              tier={r.tier}
-              compact={planetId === 'logic-zorx'}
-              style={planetId === 'logic-zorx' && winW >= 768 ? { flex: 1 } : undefined}
-            />
-          ))
-        )}
-      </div>
+      {/* Content */}
+      {isSupabasePlanet ? (
+        <div className={styles.supabaseContent}>
+          <SupabasePlanetContent
+            supabasePlanetId={supabasePlanetId}
+            planetColor={meta.color}
+          />
+        </div>
+      ) : (
+        <div className={styles.grid} style={planetId === 'logic-zorx' ? (
+          winW >= 768
+            ? { display: 'flex', flexDirection: 'row', gap: '12px', alignItems: 'stretch' }
+            : { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }
+        ) : undefined}>
+          {mockResources.length === 0 ? (
+            <div className={styles.emptyCardWrapper}>
+              <EmptyState planetColor={meta.color} />
+            </div>
+          ) : (
+            mockResources.map((r, i) => (
+              <ResourceCard
+                key={i}
+                emoji={r.emoji}
+                title={r.title}
+                type={r.type}
+                tier={r.tier}
+                compact={planetId === 'logic-zorx'}
+                style={planetId === 'logic-zorx' && winW >= 768 ? { flex: 1 } : undefined}
+              />
+            ))
+          )}
+        </div>
+      )}
     </div>
   )
 }

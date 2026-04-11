@@ -158,6 +158,101 @@
   padding: var(--space-8) 0;
 }
 
+/* ── Supabase content wrapper ─────────────────────────── */
+.supabaseContent {
+  flex: 1;
+  padding: var(--space-5);
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* ── Age grouping ─────────────────────────────────────── */
+.ageGroups {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.ageGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.ageGroupLabel {
+  font-family: var(--f-display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--planet-color);
+  padding: 4px 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--planet-color) 20%, transparent);
+  margin-bottom: 4px;
+}
+
+/* ── Loading ──────────────────────────────────────────── */
+.loadingText {
+  text-align: center;
+  color: var(--text-3);
+  font-family: var(--f-body);
+  font-size: 14px;
+  padding: var(--space-8) 0;
+}
+
+/* ── Polished empty state card ────────────────────────── */
+.emptyCard {
+  background: rgba(10, 18, 40, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid color-mix(in srgb, var(--planet-color) 25%, transparent);
+  border-top: 2px solid var(--planet-color);
+  border-radius: 20px;
+  padding: 40px 32px;
+  text-align: center;
+  box-shadow: 0 0 40px color-mix(in srgb, var(--planet-color) 10%, transparent);
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.emptyIcon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  display: block;
+  animation: emptyPulse 3s ease-in-out infinite;
+  will-change: transform;
+}
+
+@keyframes emptyPulse {
+  0%, 100% { transform: scale(1) translateY(0); opacity: 0.9; }
+  50%       { transform: scale(1.08) translateY(-4px); opacity: 1; }
+}
+
+.emptyText {
+  font-family: var(--f-body);
+  font-size: 15px;
+  color: var(--text-2);
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* wrapper when empty state sits inside the grid */
+.emptyCardWrapper {
+  grid-column: 1 / -1;
+  padding: var(--space-6) 0;
+}
+
+@media (max-width: 768px) {
+  .supabaseContent {
+    padding: var(--space-4);
+  }
+
+  .emptyCard {
+    padding: 28px 20px;
+  }
+}
+
 /* ── Mobile ───────────────────────────────────────────── */
 @media (max-width: 768px) {
   .heroEmoji {
@@ -189,4 +284,5 @@
   .screen { animation: none; }
   .backBtn { transition: none; }
   .tab { transition: none; }
+  .emptyIcon { animation: none; }
 }

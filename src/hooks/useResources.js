@@ -18,7 +18,7 @@ export function useResources(planetId) {
 
     supabase
       .from('resources')
-      .select('id, title, description, type, url, is_free')
+      .select('id, title, description, type, url, is_free, age_min, age_max')
       .eq('planet_id', planetId)
       .order('created_at', { ascending: true })
       .then(({ data, error: err }) => {
