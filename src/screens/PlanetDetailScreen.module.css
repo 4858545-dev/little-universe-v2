@@ -272,6 +272,16 @@
   .hero {
     padding: var(--space-4);
   }
+
+  .tab {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+
+  .supabaseContent {
+    padding: var(--space-4);
+  }
 }
 
 @media (max-width: 400px) {

@@ -234,6 +234,8 @@ function PlanetOrb({ planet, hovered, onClick, onHover, onLeave, style: extraSty
       style={{
         width: sz,
         height: sz,
+        minWidth: Math.max(sz, 44),
+        minHeight: Math.max(sz, 44),
         borderRadius: '50%',
         cursor: 'pointer',
         position: 'relative',
@@ -358,6 +360,7 @@ function PlanetDetailView({ p, isMobile, backToLanding }) {
           border: '1px solid rgba(255,255,255,0.1)',
           color: 'rgba(255,255,255,0.5)', cursor: 'pointer',
           fontWeight: 700, fontSize: 12, fontFamily: 'inherit',
+          minHeight: 44, display: 'flex', alignItems: 'center',
         }}>← Назад</button>
 
         <PlanetOrb
@@ -528,6 +531,7 @@ export default function AdventureMapScreen() {
   }
 
   const isMobile = winSize.w <= 768
+  const isSmallMobile = winSize.w <= 480
   const NAV_H = 0
   const HERO_H = isMobile ? 90 : 140  // approximate hero section height (no navbar)
   const MAX_ORBIT = 900
@@ -616,30 +620,32 @@ export default function AdventureMapScreen() {
           display: 'flex', gap: 8, alignItems: 'center',
         }}>
           <span style={{
-            padding: '7px 14px', borderRadius: 24,
+            padding: isSmallMobile ? '5px 10px' : '7px 14px', borderRadius: 24,
             background: 'rgba(255,213,79,0.1)',
             border: '1.5px solid rgba(255,213,79,0.25)',
-            color: '#FFD54F', fontWeight: 800, fontSize: 13,
+            color: '#FFD54F', fontWeight: 800, fontSize: isSmallMobile ? 11 : 13,
           }}>🪙 {coins}</span>
-          <button onClick={triggerMeteorite} style={{
-            padding: '7px 18px', borderRadius: 24, fontFamily: 'inherit',
-            background: 'linear-gradient(135deg, rgba(255,152,0,0.25), rgba(255,87,34,0.2))',
-            border: '1.5px solid rgba(255,152,0,0.35)',
-            color: '#FFB74D', cursor: 'pointer', fontWeight: 700, fontSize: 13,
-            transition: 'all 0.3s',
-          }}>☄️ Метеорит</button>
+          {!isSmallMobile && (
+            <button onClick={triggerMeteorite} style={{
+              padding: '7px 18px', borderRadius: 24, fontFamily: 'inherit',
+              background: 'linear-gradient(135deg, rgba(255,152,0,0.25), rgba(255,87,34,0.2))',
+              border: '1.5px solid rgba(255,152,0,0.35)',
+              color: '#FFB74D', cursor: 'pointer', fontWeight: 700, fontSize: 13,
+              transition: 'all 0.3s',
+            }}>☄️ Метеорит</button>
+          )}
           <button onClick={() => navigate('about')} style={{
-            padding: '7px 14px', borderRadius: 24, fontFamily: 'inherit',
+            padding: isSmallMobile ? '5px 10px' : '7px 14px', borderRadius: 24, fontFamily: 'inherit',
             background: 'rgba(100,255,218,0.08)',
             border: '1.5px solid rgba(100,255,218,0.2)',
-            color: '#64FFDA', cursor: 'pointer', fontWeight: 700, fontSize: 13,
+            color: '#64FFDA', cursor: 'pointer', fontWeight: 700, fontSize: isSmallMobile ? 11 : 13,
             transition: 'all 0.3s',
-          }}>👥 Про команду</button>
+          }}>{isSmallMobile ? '👥' : '👥 Про команду'}</button>
         </div>
       )}
 
       {/* ─── FLOATING METEORITE ─── */}
-      {view === 'landing' && (
+      {view === 'landing' && !isSmallMobile && (
         <div onClick={triggerMeteorite} style={{
           position: 'fixed', zIndex: 90, cursor: 'pointer',
           left: `${meteoritePos.x}%`, top: `${meteoritePos.y}%`,
