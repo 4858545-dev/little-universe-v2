@@ -4,6 +4,7 @@ import styles from './AboutScreen.module.css'
 const TEAM = [
   {
     initials: 'ГШ',
+    photo: 'https://qxdwkhfjpjaqihvzyvzh.supabase.co/storage/v1/object/public/resources/team/hanna-shvets.png',
     name: 'Ганна Швець',
     callsign: 'Навігаторка розвитку',
     role: 'Педагог, Психологиня та Методистка місій',
@@ -16,6 +17,7 @@ const TEAM = [
   },
   {
     initials: 'АК',
+    photo: 'https://qxdwkhfjpjaqihvzyvzh.supabase.co/storage/v1/object/public/resources/team/anna-kipria.png',
     name: 'Анна Кіпря',
     callsign: 'Архітекторка історій',
     role: 'Письменниця, сценаристка, наративна дизайнерка',
@@ -73,7 +75,16 @@ export default function AboutScreen() {
 
               {/* Avatar */}
               <div className={styles.avatar}>
-                {m.initials}
+                <img
+                  src={m.photo}
+                  alt={m.name}
+                  className={styles.avatarImg}
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none'
+                    e.currentTarget.nextSibling.style.display = 'flex'
+                  }}
+                />
+                <span className={styles.avatarFallback}>{m.initials}</span>
               </div>
 
               <div className={styles.callsign}>{m.callsign}</div>
