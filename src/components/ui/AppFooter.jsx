@@ -25,7 +25,7 @@ export default function AppFooter() {
         </button>
       ))}
       <a
-        href="https://forms.gle/ТВІЙ_РЕАЛЬНИЙ_ID"
+        href="https://forms.gle/1VfZ618G1WT1xE3z8"
         target="_blank"
         rel="noopener noreferrer"
         className={styles.navBtn}
