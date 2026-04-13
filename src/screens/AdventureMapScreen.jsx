@@ -490,8 +490,9 @@ function PlanetDetailView({ p, isMobile, backToLanding }) {
 }
 
 export default function AdventureMapScreen() {
-  const { coins, showToast, navigate } = useAppStore()
+  const { coins, showToast, navigate, unlockedPlanets } = useAppStore()
   const { logout } = useAuthStore()
+  const UNLOCKED = new Set(unlockedPlanets)
   const [view, setView] = useState('landing')
   const [activePlanet, setActivePlanet] = useState(null)
   const [meteorite, setMeteorite] = useState(null)
@@ -603,6 +604,10 @@ export default function AdventureMapScreen() {
         @keyframes sunCorePulse {
           0%, 100% { transform: scale(1.0); }
           50%      { transform: scale(1.05); }
+        }
+        @keyframes startPulse {
+          0%, 100% { opacity: 0.85; transform: scale(1); }
+          50%      { opacity: 1;    transform: scale(1.06); }
         }
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-thumb { background: rgba(179,136,255,0.3); border-radius: 10px; }
@@ -770,6 +775,7 @@ export default function AdventureMapScreen() {
 
             {/* Planets — positioned from SUN_TOP center */}
             {PLANETS.map((p) => {
+              const isLocked = !UNLOCKED.has(p.id)
               const scaledSize = p.size * planetScale
               const angle = p.startAngle + (time * 360) / p.speed
               const rad = (angle * Math.PI) / 180
@@ -784,15 +790,29 @@ export default function AdventureMapScreen() {
                   marginTop: y - scaledSize / 2,
                   zIndex: Math.round(y + 500),
                   transition: 'margin 0.05s linear',
+                  opacity: isLocked ? 0.45 : 1,
                 }}>
                   <PlanetOrb
                     planet={p}
                     hovered={hoveredPlanet === p.id}
-                    onClick={() => openPlanet(p)}
+                    onClick={() => isLocked
+                      ? showToast({ message: 'Цей сектор готується до запуску 🚀', type: 'info' })
+                      : openPlanet(p)
+                    }
                     onHover={() => setHoveredPlanet(p.id)}
                     onLeave={() => setHoveredPlanet(null)}
                     sizeOverride={scaledSize}
                   />
+                  {/* Lock icon overlay */}
+                  {isLocked && (
+                    <div style={{
+                      position: 'absolute', top: '18%', left: '50%',
+                      transform: 'translateX(-50%)',
+                      fontSize: isMobile ? 14 : 18,
+                      pointerEvents: 'none', zIndex: 10,
+                      filter: 'drop-shadow(0 1px 4px rgba(0,0,0,0.8))',
+                    }}>🔒</div>
+                  )}
                   {/* label */}
                   <div style={{
                     position: 'absolute', top: '100%', left: '50%',
@@ -808,6 +828,22 @@ export default function AdventureMapScreen() {
                     {!isMobile && <div style={{ fontSize: 9, color: 'rgba(255,255,255,0.35)', fontWeight: 600 }}>
                       {p.curator}
                     </div>}
+                    {/* ПОЧНИ ТУТ badge — stem-marik only */}
+                    {p.id === 'stem-marik' && (
+                      <div style={{
+                        marginTop: 4, display: 'inline-block',
+                        padding: isMobile ? '2px 6px' : '3px 8px',
+                        borderRadius: 20,
+                        background: 'rgba(244,185,66,0.15)',
+                        border: '1.5px solid rgba(244,185,66,0.5)',
+                        color: '#f4b942', fontWeight: 800,
+                        fontSize: isMobile ? 7 : 9,
+                        letterSpacing: '0.8px', textTransform: 'uppercase',
+                        whiteSpace: 'nowrap',
+                        animation: 'startPulse 2s ease-in-out infinite',
+                        pointerEvents: 'none',
+                      }}>ПОЧНИ ТУТ ★</div>
+                    )}
                   </div>
                 </div>
               )
@@ -905,23 +941,28 @@ export default function AdventureMapScreen() {
             position: 'relative', zIndex: 1,
           }}>
             {PLANETS.map((p, idx) => {
+              const isLocked = !UNLOCKED.has(p.id)
               const isHov = hoveredPlanet === p.id
               return (
                 <div
                   key={p.id}
-                  onClick={() => openPlanet(p)}
+                  onClick={() => isLocked
+                    ? showToast({ message: 'Цей сектор готується до запуску 🚀', type: 'info' })
+                    : openPlanet(p)
+                  }
                   onMouseEnter={() => setHoveredPlanet(p.id)}
                   onMouseLeave={() => setHoveredPlanet(null)}
                   style={{
                     ...glassCard(),
                     padding: winSize.w <= 640 ? '16px 16px' : '22px 24px',
-                    cursor: 'pointer',
-                    border: `1px solid ${isHov ? p.color1 + '50' : 'rgba(255,255,255,0.06)'}`,
-                    boxShadow: isHov
+                    cursor: isLocked ? 'default' : 'pointer',
+                    opacity: isLocked ? 0.55 : 1,
+                    border: `1px solid ${isHov && !isLocked ? p.color1 + '50' : 'rgba(255,255,255,0.06)'}`,
+                    boxShadow: isHov && !isLocked
                       ? `0 8px 40px ${p.glow.replace('0.5', '0.15').replace('0.45', '0.15').replace('0.4', '0.15')}, inset 0 1px 0 rgba(255,255,255,0.05)`
                       : '0 2px 12px rgba(0,0,0,0.2)',
                     transition: 'all 0.4s cubic-bezier(0.34,1.56,0.64,1)',
-                    transform: isHov ? 'translateY(-4px)' : 'none',
+                    transform: isHov && !isLocked ? 'translateY(-4px)' : 'none',
                     animation: `fadeSlideUp 0.6s ease-out ${idx * 0.07}s both`,
                     position: 'relative', overflow: 'hidden',
                   }}
@@ -941,11 +982,12 @@ export default function AdventureMapScreen() {
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       fontSize: 20, flexShrink: 0,
                     }}>{p.emoji}</div>
-                    <div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
                       <div style={{ fontSize: 17, fontWeight: 800, color: p.color1 }}>{p.name}</div>
+                      {isLocked && <span style={{ fontSize: 14, opacity: 0.7 }}>🔒</span>}
                       <div style={{
                         fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.35)',
-                        textTransform: 'uppercase', letterSpacing: 1,
+                        textTransform: 'uppercase', letterSpacing: 1, width: '100%',
                       }}>{p.curator}</div>
                     </div>
                   </div>
@@ -954,16 +996,23 @@ export default function AdventureMapScreen() {
                     {p.desc}
                   </div>
 
-                  <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-                    {p.sections.map((s) => (
-                      <span key={s} style={{
-                        padding: '3px 10px', borderRadius: 8,
-                        background: `${p.color1}10`,
-                        border: `1px solid ${p.color1}20`,
-                        fontSize: 10, fontWeight: 700, color: `${p.color1}AA`,
-                      }}>★ {s}</span>
-                    ))}
-                  </div>
+                  {isLocked ? (
+                    <div style={{
+                      fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.25)',
+                      letterSpacing: 1, textTransform: 'uppercase',
+                    }}>Незабаром</div>
+                  ) : (
+                    <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+                      {p.sections.map((s) => (
+                        <span key={s} style={{
+                          padding: '3px 10px', borderRadius: 8,
+                          background: `${p.color1}10`,
+                          border: `1px solid ${p.color1}20`,
+                          fontSize: 10, fontWeight: 700, color: `${p.color1}AA`,
+                        }}>★ {s}</span>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )
             })}

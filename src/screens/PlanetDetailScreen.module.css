@@ -290,9 +290,79 @@
   }
 }
 
+/* ── Marik character greeting ─────────────────────────── */
+.greeting {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px var(--space-5);
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.greetingImg {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  flex-shrink: 0;
+  filter: drop-shadow(0 4px 16px var(--planet-color));
+  animation: emptyPulse 4s ease-in-out infinite;
+}
+
+.bubble {
+  position: relative;
+  background: rgba(10, 18, 40, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid color-mix(in srgb, var(--planet-color) 25%, transparent);
+  border-radius: 16px;
+  padding: 14px 18px;
+  box-shadow: 0 0 24px color-mix(in srgb, var(--planet-color) 12%, transparent);
+  flex: 1;
+}
+
+.bubble::before {
+  content: '';
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 10px solid transparent;
+  border-right-color: color-mix(in srgb, var(--planet-color) 25%, transparent);
+  border-left: 0;
+}
+
+.bubble::after {
+  content: '';
+  position: absolute;
+  left: -8px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 9px solid transparent;
+  border-right-color: rgba(10, 18, 40, 0.65);
+  border-left: 0;
+}
+
+.bubbleText {
+  font-family: var(--f-body);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+  line-height: 1.55;
+}
+
+@media (max-width: 768px) {
+  .greeting { padding: 16px var(--space-4); gap: 12px; }
+  .greetingImg { width: 88px; height: 88px; }
+  .bubbleText { font-size: 13px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .screen { animation: none; }
   .backBtn { transition: none; }
   .tab { transition: none; }
   .emptyIcon { animation: none; }
+  .greetingImg { animation: none; }
 }

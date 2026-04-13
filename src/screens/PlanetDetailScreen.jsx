@@ -4,6 +4,7 @@ import CharacterAvatar from '../components/characters/CharacterAvatar'
 import ResourceCard from '../components/cards/ResourceCard'
 import { useResources } from '../hooks/useResources'
 import { PLANET_META, PLANET_SECTIONS } from '../data/planets'
+import marikPng from '../assets/characters/marik.png'
 import styles from './PlanetDetailScreen.module.css'
 
 // Planets backed by real Supabase data (planet_id values in resources table)
@@ -268,6 +269,18 @@ export default function PlanetDetailScreen() {
           </div>
         </div>
       </div>
+
+      {/* Character greeting — stem-marik only */}
+      {planetId === 'stem-marik' && (
+        <div className={styles.greeting}>
+          <img src={marikPng} alt="Марік" className={styles.greetingImg} draggable={false} />
+          <div className={styles.bubble}>
+            <p className={styles.bubbleText}>
+              Привіт! Я Марік! Готовий до STEM-пригоди? 🧪
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Section tabs — only for mock-data planets */}
       {!isSupabasePlanet && (
