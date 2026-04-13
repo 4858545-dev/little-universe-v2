@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import useAppStore from '../store/useAppStore'
+import useAuthStore from '../store/useAuthStore'
 import { useResources } from '../hooks/useResources'
 import lumiPng   from '../assets/characters/lumi.png'
 import orbitaPng from '../assets/characters/orbita.png'
@@ -490,6 +491,7 @@ function PlanetDetailView({ p, isMobile, backToLanding }) {
 
 export default function AdventureMapScreen() {
   const { coins, showToast, navigate } = useAppStore()
+  const { logout } = useAuthStore()
   const [view, setView] = useState('landing')
   const [activePlanet, setActivePlanet] = useState(null)
   const [meteorite, setMeteorite] = useState(null)
@@ -619,6 +621,15 @@ export default function AdventureMapScreen() {
           position: 'fixed', top: 12, right: 12, zIndex: 100,
           display: 'flex', gap: 8, alignItems: 'center',
         }}>
+          {/* BETA badge */}
+          <span style={{
+            padding: isSmallMobile ? '4px 8px' : '5px 12px', borderRadius: 24,
+            background: 'rgba(244,185,66,0.12)',
+            border: '1.5px solid rgba(244,185,66,0.35)',
+            color: '#f4b942', fontWeight: 800,
+            fontSize: isSmallMobile ? 9 : 10,
+            letterSpacing: '1.5px', textTransform: 'uppercase',
+          }}>BETA 🚀</span>
           <span style={{
             padding: isSmallMobile ? '5px 10px' : '7px 14px', borderRadius: 24,
             background: 'rgba(255,213,79,0.1)',
@@ -641,6 +652,14 @@ export default function AdventureMapScreen() {
             color: '#64FFDA', cursor: 'pointer', fontWeight: 700, fontSize: isSmallMobile ? 11 : 13,
             transition: 'all 0.3s',
           }}>{isSmallMobile ? '👥' : '👥 Про команду'}</button>
+          <button onClick={logout} title="Вийти" style={{
+            padding: isSmallMobile ? '5px 8px' : '7px 12px', borderRadius: 24, fontFamily: 'inherit',
+            background: 'rgba(255,255,255,0.04)',
+            border: '1.5px solid rgba(255,255,255,0.1)',
+            color: 'rgba(255,255,255,0.35)', cursor: 'pointer', fontWeight: 700,
+            fontSize: isSmallMobile ? 12 : 14,
+            transition: 'all 0.3s', lineHeight: 1,
+          }}>⏏</button>
         </div>
       )}
 
@@ -988,15 +1007,38 @@ export default function AdventureMapScreen() {
           {/* ─── FOOTER ─── */}
           <div style={{
             textAlign: 'center',
-            padding: '24px',
-            fontSize: 12,
-            color: 'rgba(255,255,255,0.2)',
-            fontFamily: "'Nunito', sans-serif",
-            fontWeight: 600,
-            letterSpacing: 0.5,
+            padding: '20px 24px 32px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 10,
             position: 'relative', zIndex: 1,
           }}>
-            © 2026 Маленький Всесвіт
+            <a
+              href="https://forms.gle/YOUR_FORM_ID"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: 6,
+                padding: '8px 20px', borderRadius: 24,
+                background: 'rgba(244,185,66,0.08)',
+                border: '1px solid rgba(244,185,66,0.25)',
+                color: '#f4b942', fontFamily: "'Nunito', sans-serif",
+                fontWeight: 700, fontSize: 13,
+                textDecoration: 'none',
+                transition: 'background 0.2s, border-color 0.2s',
+              }}
+              onMouseEnter={e => e.currentTarget.style.background = 'rgba(244,185,66,0.14)'}
+              onMouseLeave={e => e.currentTarget.style.background = 'rgba(244,185,66,0.08)'}
+            >
+              Залишити відгук ✨
+            </a>
+            <span style={{
+              fontSize: 12, color: 'rgba(255,255,255,0.18)',
+              fontFamily: "'Nunito', sans-serif", fontWeight: 600, letterSpacing: 0.5,
+            }}>
+              © 2026 Маленький Всесвіт · Beta
+            </span>
           </div>
         </>
       )}
