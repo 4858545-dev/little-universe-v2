@@ -1015,7 +1015,7 @@ export default function AdventureMapScreen() {
             position: 'relative', zIndex: 1,
           }}>
             <a
-              href="https://forms.gle/YOUR_FORM_ID"
+              href="https://forms.gle/ТВІЙ_РЕАЛЬНИЙ_ID"
               target="_blank"
               rel="noopener noreferrer"
               style={{
