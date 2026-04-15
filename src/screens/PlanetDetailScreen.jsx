@@ -5,6 +5,7 @@ import ResourceCard from '../components/cards/ResourceCard'
 import { useResources } from '../hooks/useResources'
 import { PLANET_META, PLANET_SECTIONS } from '../data/planets'
 import marikPng from '../assets/characters/marik.png'
+import lumiPng from '../assets/characters/lumi.png'
 import styles from './PlanetDetailScreen.module.css'
 
 // Planets backed by real Supabase data (planet_id values in resources table)
@@ -12,6 +13,12 @@ import styles from './PlanetDetailScreen.module.css'
 const SUPABASE_PLANETS = {
   'stem-marik': 'marik',
   'art-lumi': 'lumi',
+}
+
+// Character greetings per planet
+const GREETINGS = {
+  'stem-marik': { img: marikPng, alt: 'Марік', text: 'Привіт! Я Марік! Готовий до STEM-пригоди? 🧪' },
+  'art-lumi':   { img: lumiPng,  alt: 'Люмі',  text: 'Привіт! Я Люмі! Готова до творчої пригоди? 🎨' },
 }
 
 // ── Mock resource data (non-Supabase planets) ──────────────────────────────
@@ -155,7 +162,21 @@ function SupabasePlanetContent({ supabasePlanetId, planetColor }) {
   const { resources, loading } = useResources(supabasePlanetId)
 
   if (loading) {
-    return <p className={styles.loadingText}>Завантаження...</p>
+    return (
+      <div className={styles.skeletonWrapper}>
+        <div className={styles.grid}>
+          {[0, 1, 2].map((i) => (
+            <div key={i} className={styles.skeletonCard}>
+              <div className={styles.skeletonTop} />
+              <div className={styles.skeletonLine} />
+              <div className={styles.skeletonLineShort} />
+              <div className={styles.skeletonBtn} />
+            </div>
+          ))}
+        </div>
+        <p className={styles.skeletonLabel}>Запуск двигунів...</p>
+      </div>
+    )
   }
 
   if (resources.length === 0) {
@@ -270,14 +291,29 @@ export default function PlanetDetailScreen() {
         </div>
       </div>
 
-      {/* Character greeting — stem-marik only */}
-      {planetId === 'stem-marik' && (
+      {/* Breadcrumb nav */}
+      <nav className={styles.breadcrumbs} aria-label="Навігація">
+        <button
+          className={styles.breadcrumbLink}
+          onClick={() => { window.scrollTo(0, 0); navigate('adventure-map'); }}
+        >
+          🪐 Карта пригод
+        </button>
+        <span className={styles.breadcrumbSep} aria-hidden="true">›</span>
+        <span className={styles.breadcrumbCurrent}>{meta.name}</span>
+      </nav>
+
+      {/* Character greeting */}
+      {GREETINGS[planetId] && (
         <div className={styles.greeting}>
-          <img src={marikPng} alt="Марік" className={styles.greetingImg} draggable={false} />
+          <img
+            src={GREETINGS[planetId].img}
+            alt={GREETINGS[planetId].alt}
+            className={styles.greetingImg}
+            draggable={false}
+          />
           <div className={styles.bubble}>
-            <p className={styles.bubbleText}>
-              Привіт! Я Марік! Готовий до STEM-пригоди? 🧪
-            </p>
+            <p className={styles.bubbleText}>{GREETINGS[planetId].text}</p>
           </div>
         </div>
       )}
