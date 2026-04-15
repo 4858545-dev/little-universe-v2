@@ -650,6 +650,8 @@ export default function AdventureMapScreen() {
   const [winSize, setWinSize] = useState(() => ({ w: window.innerWidth, h: window.innerHeight }))
   const frameRef = useRef(null)
   const hasAnimated = useRef(false)
+  const scrollRef = useRef(null)
+  const [mapReady, setMapReady] = useState(false)
 
   useEffect(() => {
     const onResize = () => setWinSize({ w: window.innerWidth, h: window.innerHeight })
@@ -668,6 +670,7 @@ export default function AdventureMapScreen() {
     const tick = () => {
       t += 0.003
       setTime(t)
+      setMapReady(true)
       setMeteoritePos({
         x: 83 + Math.sin(t * 1.1) * 5,
         y: 13 + Math.cos(t * 0.8) * 4 + Math.sin(t * 2) * 1.5,
@@ -699,20 +702,49 @@ export default function AdventureMapScreen() {
   const planetScale = isMobile ? 0.7 : 1.0
   const SUN_TOP = '50%'   // dead center of the orbital container (hero is now above it)
 
-  function openPlanet(p) {
+  function scrollTop() {
+    if (scrollRef.current) scrollRef.current.scrollTop = 0
     window.scrollTo(0, 0)
+  }
+
+  function openPlanet(p) {
+    scrollTop()
     setActivePlanet(p)
     setView('planet')
   }
 
   function backToLanding() {
-    window.scrollTo(0, 0)
+    scrollTop()
     setView('landing')
     setActivePlanet(null)
   }
 
+  if (!mapReady) {
+    return (
+      <div style={{
+        minHeight: '100vh',
+        background: 'linear-gradient(145deg, #05050F 0%, #0A0A1A 30%, #0D0B1E 60%, #080818 100%)',
+        display: 'flex', flexDirection: 'column',
+        alignItems: 'center', justifyContent: 'center',
+        gap: 16, fontFamily: "'Nunito', sans-serif",
+      }}>
+        <style>{`
+          @keyframes rocketPulse {
+            0%, 100% { transform: scale(1) translateY(0); opacity: 0.7; }
+            50%       { transform: scale(1.15) translateY(-6px); opacity: 1; }
+          }
+        `}</style>
+        <div style={{ fontSize: 52, animation: 'rocketPulse 1.4s ease-in-out infinite' }}>🚀</div>
+        <div style={{
+          fontSize: 14, fontWeight: 600, letterSpacing: 1.5,
+          color: 'rgba(232,224,240,0.4)', textTransform: 'uppercase',
+        }}>Запуск двигунів...</div>
+      </div>
+    )
+  }
+
   return (
-    <div style={{
+    <div ref={scrollRef} style={{
       fontFamily: "'Nunito', 'Comfortaa', sans-serif",
       background: 'linear-gradient(145deg, #05050F 0%, #0A0A1A 30%, #0D0B1E 60%, #080818 100%)',
       minHeight: '100vh',
@@ -1261,41 +1293,89 @@ export default function AdventureMapScreen() {
           </div>
 
           {/* ─── FOOTER ─── */}
-          <div style={{
-            textAlign: 'center',
-            padding: '20px 24px 32px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: 10,
+          <footer style={{
             position: 'relative', zIndex: 1,
+            borderTop: '1px solid transparent',
+            backgroundImage: 'linear-gradient(#0A0A1A, #0A0A1A), linear-gradient(90deg, #f4b942, #7b6ef6, #34d4c8)',
+            backgroundOrigin: 'border-box',
+            backgroundClip: 'padding-box, border-box',
+            background: 'rgba(10,18,40,0.7)',
+            borderTopColor: 'transparent',
           }}>
-            <a
-              href="https://forms.gle/1VfZ618G1WT1xE3z8"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: 'inline-flex', alignItems: 'center', gap: 6,
-                padding: '8px 20px', borderRadius: 24,
-                background: 'rgba(244,185,66,0.08)',
-                border: '1px solid rgba(244,185,66,0.25)',
-                color: '#f4b942', fontFamily: "'Nunito', sans-serif",
-                fontWeight: 700, fontSize: 13,
-                textDecoration: 'none',
-                transition: 'background 0.2s, border-color 0.2s',
-              }}
-              onMouseEnter={e => e.currentTarget.style.background = 'rgba(244,185,66,0.14)'}
-              onMouseLeave={e => e.currentTarget.style.background = 'rgba(244,185,66,0.08)'}
-            >
-              Залишити відгук ✨
-            </a>
-            <span style={{
-              fontSize: 12, color: 'rgba(255,255,255,0.18)',
-              fontFamily: "'Nunito', sans-serif", fontWeight: 600, letterSpacing: 0.5,
+            {/* gradient top border */}
+            <div style={{
+              height: 1,
+              background: 'linear-gradient(90deg, rgba(244,185,66,0.4), rgba(123,110,246,0.4), rgba(52,212,200,0.4))',
+              marginBottom: 0,
+            }} />
+            <div style={{
+              maxWidth: 900, margin: '0 auto',
+              padding: isMobile ? '28px 20px 36px' : '32px 24px 40px',
+              display: 'flex', flexDirection: 'column', alignItems: 'center',
+              gap: 16, textAlign: 'center',
             }}>
-              © 2026 Маленький Всесвіт · Beta
-            </span>
-          </div>
+              {/* Logo + tagline */}
+              <div>
+                <div style={{
+                  fontFamily: "'Comfortaa', sans-serif", fontWeight: 700,
+                  fontSize: 15, color: 'rgba(232,224,240,0.85)',
+                  marginBottom: 4,
+                }}>🌌 Маленький Всесвіт</div>
+                <div style={{
+                  fontSize: 12, color: 'rgba(155,168,204,0.6)',
+                  fontWeight: 600, letterSpacing: 0.3,
+                }}>Освітній хаб для спеціалістів та батьків</div>
+              </div>
+
+              {/* Links row */}
+              <div style={{
+                display: 'flex', flexWrap: 'wrap', justifyContent: 'center',
+                gap: isMobile ? '10px 16px' : '10px 24px',
+                alignItems: 'center',
+              }}>
+                <button
+                  onClick={() => navigate('about')}
+                  style={{
+                    background: 'none', border: 'none', padding: 0,
+                    fontFamily: "'Nunito', sans-serif", fontSize: 13, fontWeight: 600,
+                    color: 'rgba(155,168,204,0.7)', cursor: 'pointer',
+                    transition: 'color 0.2s',
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.color = '#e8edf8' }}
+                  onMouseLeave={e => { e.currentTarget.style.color = 'rgba(155,168,204,0.7)' }}
+                >Про команду</button>
+                <span style={{ color: 'rgba(255,255,255,0.15)', fontSize: 11 }}>·</span>
+                <a
+                  href="https://forms.gle/1VfZ618G1WT1xE3z8"
+                  target="_blank" rel="noopener noreferrer"
+                  style={{
+                    fontFamily: "'Nunito', sans-serif", fontSize: 13, fontWeight: 600,
+                    color: '#f4b942', textDecoration: 'none',
+                    transition: 'opacity 0.2s',
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.opacity = '0.75' }}
+                  onMouseLeave={e => { e.currentTarget.style.opacity = '1' }}
+                >Залишити відгук ✨</a>
+                <span style={{ color: 'rgba(255,255,255,0.15)', fontSize: 11 }}>·</span>
+                <a
+                  href="mailto:hello@littleuniverse.app"
+                  style={{
+                    fontFamily: "'Nunito', sans-serif", fontSize: 13, fontWeight: 600,
+                    color: 'rgba(155,168,204,0.7)', textDecoration: 'none',
+                    transition: 'color 0.2s',
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.color = '#e8edf8' }}
+                  onMouseLeave={e => { e.currentTarget.style.color = 'rgba(155,168,204,0.7)' }}
+                >Підтримка: hello@littleuniverse.app</a>
+              </div>
+
+              {/* Copyright */}
+              <div style={{
+                fontSize: 11, color: 'rgba(255,255,255,0.2)',
+                fontFamily: "'Nunito', sans-serif", fontWeight: 600, letterSpacing: 0.4,
+              }}>© 2026 Маленький Всесвіт. Всі права захищені.</div>
+            </div>
+          </footer>
         </>
       )}
 
