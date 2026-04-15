@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import useAuthStore from '../store/useAuthStore'
 import styles from './AuthScreen.module.css'
 
@@ -7,13 +7,35 @@ const ROLES = [
   { id: 'parent',     label: 'Батько/Мати', emoji: '👨‍👩‍👧', desc: 'Для сімейного використання' },
 ]
 
+// Read OAuth error params from the URL (set by Supabase on failed redirect)
+function getOAuthError() {
+  const params = new URLSearchParams(window.location.search)
+  const hash = new URLSearchParams(window.location.hash.replace('#', '?'))
+  const code = params.get('error_code') || hash.get('error_code')
+  const desc = params.get('error_description') || hash.get('error_description')
+  if (code) {
+    return desc
+      ? decodeURIComponent(desc.replace(/\+/g, ' '))
+      : `Помилка входу через Google (${code})`
+  }
+  return null
+}
+
 export default function AuthScreen() {
   const { login, register, loginWithGoogle, isLoading } = useAuthStore()
   const [mode, setMode] = useState('login')   // 'login' | 'register'
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [role, setRole] = useState('parent')
-  const [error, setError] = useState(null)
+  const [error, setError] = useState(() => getOAuthError())
+
+  // Clear URL error params on mount so they don't persist across re-renders
+  useEffect(() => {
+    if (getOAuthError()) {
+      const clean = window.location.pathname
+      window.history.replaceState(null, '', clean)
+    }
+  }, [])
 
   async function handleSubmit(e) {
     e.preventDefault()

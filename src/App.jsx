@@ -40,8 +40,10 @@ export default function App() {
   const { isAuthenticated, isLoading, initAuth } = useAuthStore()
 
   useEffect(() => {
+    // initAuth returns the Supabase subscription cleanup fn
     const unsubscribe = initAuth()
-    return unsubscribe
+    return () => { if (typeof unsubscribe === 'function') unsubscribe() }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   if (isLoading) {
