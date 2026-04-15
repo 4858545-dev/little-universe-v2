@@ -343,6 +343,78 @@ const glassCard = (extra = {}) => ({
 const TYPE_EMOJI = { pdf: '📄', video: '🎬', interactive: '🧩' }
 const TYPE_LABEL = { pdf: 'PDF', video: 'Відео', interactive: 'Інтерактив' }
 
+// Burst directions for 6 star particles
+const BURST_DIRS = [
+  { bx: '0px',    by: '-44px' },
+  { bx: '38px',   by: '-22px' },
+  { bx: '38px',   by:  '22px' },
+  { bx: '0px',    by:  '44px' },
+  { bx: '-38px',  by:  '22px' },
+  { bx: '-38px',  by: '-22px' },
+]
+
+function ResourceCard({ r, planetColor }) {
+  const [claimed, setClaimed] = useState(false)
+  const [bursting, setBursting] = useState(false)
+
+  function handleDownload() {
+    if (!r.url) return
+    window.open(r.url, '_blank', 'noopener')
+    setClaimed(true)
+    setBursting(true)
+    setTimeout(() => setBursting(false), 1500)
+    setTimeout(() => setClaimed(false), 2000)
+  }
+
+  return (
+    <div style={{
+      ...glassCard(),
+      padding: '16px', cursor: 'pointer',
+      display: 'flex', flexDirection: 'column', gap: 8,
+      position: 'relative', overflow: 'visible',
+    }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
+        <span style={{ fontSize: 22 }}>{TYPE_EMOJI[r.type] ?? '📦'}</span>
+        <span style={{
+          fontSize: 10, fontWeight: 800, padding: '2px 8px', borderRadius: 6,
+          background: r.is_free ? 'rgba(52,212,200,0.12)' : 'rgba(244,185,66,0.12)',
+          border: `1px solid ${r.is_free ? 'rgba(52,212,200,0.3)' : 'rgba(244,185,66,0.3)'}`,
+          color: r.is_free ? '#34d4c8' : '#f4b942',
+        }}>{r.is_free ? 'Безкоштовно' : 'Преміум'}</span>
+      </div>
+      <div style={{ fontWeight: 700, fontSize: 13, color: 'rgba(255,255,255,0.85)', lineHeight: 1.4 }}>{r.title}</div>
+      {r.description && (
+        <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', lineHeight: 1.5 }}>{r.description}</div>
+      )}
+      <div style={{ position: 'relative', marginTop: 'auto' }}>
+        <button
+          onClick={handleDownload}
+          style={{
+            width: '100%', padding: '7px 0', borderRadius: 10,
+            background: claimed ? 'rgba(244,185,66,0.12)' : `${planetColor}12`,
+            border: `1px solid ${claimed ? 'rgba(244,185,66,0.35)' : planetColor + '25'}`,
+            fontSize: 11, fontWeight: 800,
+            color: claimed ? '#f4b942' : planetColor,
+            cursor: r.url ? 'pointer' : 'default', fontFamily: 'inherit',
+            transition: 'color 0.25s, background 0.25s, border-color 0.25s',
+          }}
+        >{claimed ? '✓ Місію виконано!' : '⬇ Взяти на борт'}</button>
+        {/* Star burst particles */}
+        {bursting && BURST_DIRS.map((d, i) => (
+          <div key={i} style={{
+            position: 'absolute', top: '50%', left: '50%',
+            width: 14, height: 14,
+            fontSize: 12, lineHeight: '14px', textAlign: 'center',
+            pointerEvents: 'none', zIndex: 50,
+            '--bx': d.bx, '--by': d.by,
+            animation: `starBurst 1.2s ease-out ${i * 0.05}s both`,
+          }}>⭐</div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 const PLANET_GREETINGS = {
   'stem-marik': 'Привіт! Я Марік! Готовий до STEM-пригоди? 🧪',
   'art-lumi':   'Привіт! Я Люмі! Готова до творчої пригоди? 🎨',
@@ -508,34 +580,8 @@ function PlanetDetailView({ p, isMobile, backToLanding }) {
         ) : resources.length > 0 ? (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 12 }}>
             {resources.map((r, i) => (
-              <div key={r.id} style={{
-                ...glassCard(),
-                padding: '16px', cursor: 'pointer',
-                animation: `fadeSlideUp 0.5s ease-out ${i * 0.08}s both`,
-                display: 'flex', flexDirection: 'column', gap: 8,
-              }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
-                  <span style={{ fontSize: 22 }}>{TYPE_EMOJI[r.type] ?? '📦'}</span>
-                  <span style={{
-                    fontSize: 10, fontWeight: 800, padding: '2px 8px', borderRadius: 6,
-                    background: r.is_free ? 'rgba(52,212,200,0.12)' : 'rgba(244,185,66,0.12)',
-                    border: `1px solid ${r.is_free ? 'rgba(52,212,200,0.3)' : 'rgba(244,185,66,0.3)'}`,
-                    color: r.is_free ? '#34d4c8' : '#f4b942',
-                  }}>{r.is_free ? 'Безкоштовно' : 'Преміум'}</span>
-                </div>
-                <div style={{ fontWeight: 700, fontSize: 13, color: 'rgba(255,255,255,0.85)', lineHeight: 1.4 }}>{r.title}</div>
-                {r.description && (
-                  <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', lineHeight: 1.5 }}>{r.description}</div>
-                )}
-                <button
-                  onClick={() => r.url && window.open(r.url, '_blank', 'noopener')}
-                  style={{
-                    marginTop: 'auto', padding: '7px 0', borderRadius: 10,
-                    background: `${p.color1}12`, border: `1px solid ${p.color1}25`,
-                    fontSize: 11, fontWeight: 800, color: p.color1,
-                    cursor: r.url ? 'pointer' : 'default', fontFamily: 'inherit',
-                  }}
-                >⬇ Взяти на борт</button>
+              <div key={r.id} style={{ animation: `fadeSlideUp 0.5s ease-out ${i * 0.08}s both` }}>
+                <ResourceCard r={r} planetColor={p.color1} />
               </div>
             ))}
           </div>
@@ -569,11 +615,18 @@ export default function AdventureMapScreen() {
   const [meteoritePos, setMeteoritePos] = useState({ x: 85, y: 15 })
   const [winSize, setWinSize] = useState(() => ({ w: window.innerWidth, h: window.innerHeight }))
   const frameRef = useRef(null)
+  const hasAnimated = useRef(false)
 
   useEffect(() => {
     const onResize = () => setWinSize({ w: window.innerWidth, h: window.innerHeight })
     window.addEventListener('resize', onResize)
     return () => window.removeEventListener('resize', onResize)
+  }, [])
+
+  // Mark entry animation as done after it plays — no re-trigger on nav back
+  useEffect(() => {
+    const t = setTimeout(() => { hasAnimated.current = true }, 2200)
+    return () => clearTimeout(t)
   }, [])
 
   useEffect(() => {
@@ -676,6 +729,27 @@ export default function AdventureMapScreen() {
         @keyframes startPulse {
           0%, 100% { opacity: 0.85; transform: scale(1); }
           50%      { opacity: 1;    transform: scale(1.06); }
+        }
+        @keyframes sunReveal {
+          0%   { opacity: 0; transform: translate(-50%,-50%) scale(0.4); filter: blur(8px); }
+          60%  { transform: translate(-50%,-50%) scale(1.08); filter: blur(0); }
+          100% { opacity: 1; transform: translate(-50%,-50%) scale(1); filter: blur(0); }
+        }
+        @keyframes planetReveal {
+          0%   { opacity: 0; transform: translateY(12px) scale(0.7); }
+          100% { opacity: 1; transform: translateY(0)    scale(1); }
+        }
+        @keyframes starBurst {
+          0%   { opacity: 1; transform: translate(-50%,-50%) scale(1); }
+          100% { opacity: 0; transform: translate(
+                  calc(-50% + var(--bx)),
+                  calc(-50% + var(--by))
+                ) scale(0.3); }
+        }
+        @keyframes sparkleOrbit {
+          0%   { transform: rotate(var(--sa)) translateX(var(--sr)) scale(1);   opacity: 0.9; }
+          50%  { opacity: 1; }
+          100% { transform: rotate(calc(var(--sa) + 360deg)) translateX(var(--sr)) scale(1); opacity: 0.9; }
         }
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-thumb { background: rgba(179,136,255,0.3); border-radius: 10px; }
@@ -850,6 +924,7 @@ export default function AdventureMapScreen() {
               const r = p.orbitRadius * orbitScale
               const x = Math.cos(rad) * r
               const y = Math.sin(rad) * r * 0.55 // perspective squish
+              const pIdx = PLANETS.indexOf(p)
               return (
                 <div key={p.id} style={{
                   position: 'absolute',
@@ -859,6 +934,9 @@ export default function AdventureMapScreen() {
                   zIndex: Math.round(y + 500),
                   transition: 'margin 0.05s linear',
                   opacity: isLocked ? 0.45 : 1,
+                  animation: hasAnimated.current
+                    ? 'none'
+                    : `planetReveal 0.5s ease-out ${0.4 + pIdx * 0.12}s both`,
                 }}>
                   <PlanetOrb
                     planet={p}
@@ -880,6 +958,32 @@ export default function AdventureMapScreen() {
                       pointerEvents: 'none', zIndex: 10,
                       filter: 'drop-shadow(0 1px 4px rgba(0,0,0,0.8))',
                     }}>🔒</div>
+                  )}
+                  {/* Hover sparkle particles — unlocked planets only */}
+                  {!isLocked && hoveredPlanet === p.id && (
+                    <>
+                      {[
+                        { sa: '0deg',   sr: `${scaledSize * 0.72}px`, delay: '0s' },
+                        { sa: '90deg',  sr: `${scaledSize * 0.72}px`, delay: '0.18s' },
+                        { sa: '180deg', sr: `${scaledSize * 0.72}px`, delay: '0.36s' },
+                        { sa: '270deg', sr: `${scaledSize * 0.72}px`, delay: '0.54s' },
+                      ].map((sp, si) => (
+                        <div key={si} style={{
+                          position: 'absolute',
+                          top: '50%', left: '50%',
+                          width: 6, height: 6,
+                          borderRadius: '50%',
+                          background: p.color1,
+                          boxShadow: `0 0 6px ${p.glow}`,
+                          pointerEvents: 'none',
+                          transformOrigin: '0 0',
+                          '--sa': sp.sa,
+                          '--sr': sp.sr,
+                          animation: `sparkleOrbit 1.4s linear ${sp.delay} infinite`,
+                          zIndex: 20,
+                        }} />
+                      ))}
+                    </>
                   )}
                   {/* label */}
                   <div style={{
@@ -928,6 +1032,7 @@ export default function AdventureMapScreen() {
                     transform: 'translate(-50%, -50%)',
                     zIndex: 1000, cursor: 'pointer',
                     width: sunSz, height: sunSz,
+                    animation: hasAnimated.current ? 'none' : 'sunReveal 0.7s cubic-bezier(0.34,1.56,0.64,1) both',
                   }}
                 >
                   {/* Rotating rays — centered on sun core */}
