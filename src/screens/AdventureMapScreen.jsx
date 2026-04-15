@@ -369,22 +369,34 @@ function ResourceCard({ r, planetColor }) {
   return (
     <div style={{
       ...glassCard(),
-      padding: '16px', cursor: 'pointer',
-      display: 'flex', flexDirection: 'column', gap: 8,
+      padding: '20px 18px 18px',
+      display: 'flex', flexDirection: 'column', gap: 10,
       position: 'relative', overflow: 'visible',
+      borderLeft: `4px solid ${planetColor}`,
     }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 8 }}>
-        <span style={{ fontSize: 22 }}>{TYPE_EMOJI[r.type] ?? '📦'}</span>
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 8 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, flex: 1 }}>
+          <span style={{ fontSize: 20, flexShrink: 0 }}>📄</span>
+          <div style={{ fontWeight: 700, fontSize: 14, color: 'rgba(255,255,255,0.9)', lineHeight: 1.4 }}>{r.title}</div>
+        </div>
         <span style={{
-          fontSize: 10, fontWeight: 800, padding: '2px 8px', borderRadius: 6,
-          background: r.is_free ? 'rgba(52,212,200,0.12)' : 'rgba(244,185,66,0.12)',
-          border: `1px solid ${r.is_free ? 'rgba(52,212,200,0.3)' : 'rgba(244,185,66,0.3)'}`,
-          color: r.is_free ? '#34d4c8' : '#f4b942',
+          fontSize: 10, fontWeight: 800, padding: '3px 9px', borderRadius: 6, flexShrink: 0,
+          ...(r.is_free
+            ? {
+                background: 'rgba(244,185,66,0.12)',
+                border: '1px solid rgba(244,185,66,0.4)',
+                color: '#f4b942',
+                boxShadow: '0 0 8px rgba(244,185,66,0.15)',
+              }
+            : {
+                background: 'rgba(255,255,255,0.06)',
+                border: '1px solid rgba(255,255,255,0.12)',
+                color: 'rgba(255,255,255,0.4)',
+              }),
         }}>{r.is_free ? 'Безкоштовно' : 'Преміум'}</span>
       </div>
-      <div style={{ fontWeight: 700, fontSize: 13, color: 'rgba(255,255,255,0.85)', lineHeight: 1.4 }}>{r.title}</div>
       {r.description && (
-        <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)', lineHeight: 1.5 }}>{r.description}</div>
+        <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', lineHeight: 1.55 }}>{r.description}</div>
       )}
       <div style={{ position: 'relative', marginTop: 'auto' }}>
         <button
@@ -454,13 +466,15 @@ function PlanetDetailView({ p, isMobile, backToLanding }) {
         <h2 style={{
           fontSize: 32, fontWeight: 900, marginBottom: 4,
           fontFamily: "'Comfortaa', sans-serif",
-          color: p.color1,
-          textShadow: `0 0 20px ${p.glow.replace('0.5', '0.3').replace('0.45', '0.3').replace('0.4', '0.3')}`,
+          background: `linear-gradient(135deg, ${p.color1} 0%, ${p.color2} 100%)`,
+          WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+          backgroundClip: 'text',
+          filter: `drop-shadow(0 0 12px ${p.glow.replace('0.5','0.25').replace('0.45','0.25').replace('0.4','0.25')})`,
         }}>Планета {p.name}</h2>
-        <div style={{ fontSize: 13, fontWeight: 700, color: 'rgba(255,255,255,0.4)' }}>
+        <div style={{ fontSize: 16, fontWeight: 400, color: 'rgba(155,168,204,0.9)', marginBottom: 4 }}>
           {p.curator} — {p.curatorRole}
         </div>
-        <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.45)', marginTop: 8, maxWidth: 600, margin: '8px auto 0' }}>
+        <p style={{ fontSize: 15, color: 'rgba(93,106,138,0.95)', marginTop: 8, maxWidth: 600, margin: '8px auto 0', lineHeight: 1.6 }}>
           {p.desc}
         </p>
       </div>
@@ -528,10 +542,14 @@ function PlanetDetailView({ p, isMobile, backToLanding }) {
       )}
 
       <div style={{ margin: '24px 0', padding: '0 24px 60px', position: 'relative', zIndex: 1 }}>
-        <div style={{
-          fontWeight: 800, fontSize: 12, color: 'rgba(179,136,255,0.5)',
-          textTransform: 'uppercase', letterSpacing: 2, marginBottom: 16,
-        }}>★ Розділи контенту</div>
+        {/* Section label with accent line */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
+          <div style={{ width: 3, height: 18, borderRadius: 2, background: p.color1, flexShrink: 0 }} />
+          <div style={{
+            fontWeight: 800, fontSize: 11, color: 'rgba(179,136,255,0.6)',
+            textTransform: 'uppercase', letterSpacing: 2,
+          }}>Розділи контенту</div>
+        </div>
 
         <div style={
           !isMobile
@@ -547,7 +565,10 @@ function PlanetDetailView({ p, isMobile, backToLanding }) {
               alignItems: isMobile ? 'center' : 'flex-start',
               gap: 10,
               flex: isMobile ? undefined : 1,
+              opacity: 0.6,
               animation: `fadeSlideUp 0.5s ease-out ${i * 0.1}s both`,
+              position: 'relative',
+              overflow: 'hidden',
             }}>
               <div style={{
                 width: 32, height: 32, borderRadius: 10,
@@ -557,21 +578,34 @@ function PlanetDetailView({ p, isMobile, backToLanding }) {
                 fontSize: 14, fontWeight: 900, color: p.color1,
                 flexShrink: 0,
               }}>{i + 1}</div>
-              <div>
+              <div style={{ flex: 1 }}>
                 <div style={{ fontWeight: 800, fontSize: 13, color: 'rgba(255,255,255,0.85)' }}>{s}</div>
                 <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.3)', fontWeight: 600 }}>
                   PDF · відео · інтерактив
                 </div>
               </div>
+              {/* Coming soon badge */}
+              <div style={{
+                fontSize: 9, fontWeight: 800, letterSpacing: 1, textTransform: 'uppercase',
+                padding: '2px 7px', borderRadius: 6,
+                background: 'rgba(255,255,255,0.05)',
+                border: '1px solid rgba(255,255,255,0.12)',
+                color: 'rgba(255,255,255,0.3)',
+                flexShrink: 0,
+                alignSelf: isMobile ? 'center' : 'flex-start',
+              }}>Незабаром</div>
             </div>
           ))}
         </div>
 
         {/* ── Real resources from Supabase ── */}
-        <div style={{
-          fontWeight: 800, fontSize: 12, color: 'rgba(179,136,255,0.5)',
-          textTransform: 'uppercase', letterSpacing: 2, marginTop: 32, marginBottom: 16,
-        }}>★ Ресурси</div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 32, marginBottom: 16 }}>
+          <div style={{ width: 3, height: 18, borderRadius: 2, background: p.color1, flexShrink: 0 }} />
+          <div style={{
+            fontWeight: 800, fontSize: 11, color: 'rgba(179,136,255,0.6)',
+            textTransform: 'uppercase', letterSpacing: 2,
+          }}>Ресурси</div>
+        </div>
 
         {loading ? (
           <div style={{ color: 'rgba(255,255,255,0.3)', fontSize: 13, fontWeight: 600, padding: '20px 0' }}>
