@@ -343,8 +343,14 @@ const glassCard = (extra = {}) => ({
 const TYPE_EMOJI = { pdf: '📄', video: '🎬', interactive: '🧩' }
 const TYPE_LABEL = { pdf: 'PDF', video: 'Відео', interactive: 'Інтерактив' }
 
+const PLANET_GREETINGS = {
+  'stem-marik': 'Привіт! Я Марік! Готовий до STEM-пригоди? 🧪',
+  'art-lumi':   'Привіт! Я Люмі! Готова до творчої пригоди? 🎨',
+}
+
 function PlanetDetailView({ p, isMobile, backToLanding }) {
   const { resources, loading } = useResources(p.id)
+  const greeting = PLANET_GREETINGS[p.id]
 
   return (
     <>
@@ -386,6 +392,68 @@ function PlanetDetailView({ p, isMobile, backToLanding }) {
           {p.desc}
         </p>
       </div>
+
+      {/* Breadcrumb */}
+      <div style={{
+        display: 'flex', alignItems: 'center', gap: 6,
+        padding: '10px 24px', position: 'relative', zIndex: 1,
+        maxWidth: 900, margin: '0 auto', width: '100%',
+      }}>
+        <button onClick={backToLanding} style={{
+          background: 'none', border: 'none', padding: 0, cursor: 'pointer',
+          fontFamily: 'inherit', fontSize: 13, color: 'rgba(232,224,240,0.5)',
+          transition: 'color 0.2s',
+        }}>🪐 Карта пригод</button>
+        <span style={{ fontSize: 14, color: 'rgba(232,224,240,0.25)', lineHeight: 1 }}>›</span>
+        <span style={{ fontSize: 13, color: p.color1, fontFamily: 'inherit', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+          {p.name}
+        </span>
+      </div>
+
+      {/* Character greeting */}
+      {greeting && (
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: 16,
+          padding: isMobile ? '16px 16px' : '20px 24px',
+          maxWidth: 900, margin: '0 auto', width: '100%',
+          position: 'relative', zIndex: 1, boxSizing: 'border-box',
+        }}>
+          <img src={p.charImg} alt={p.curator} draggable={false} style={{
+            width: isMobile ? 88 : 120, height: isMobile ? 88 : 120,
+            objectFit: 'contain', flexShrink: 0,
+            filter: `drop-shadow(0 4px 16px ${p.glow.replace('0.5','0.6').replace('0.45','0.6').replace('0.4','0.6')})`,
+            animation: 'floatMeteorite 4s ease-in-out infinite',
+          }} />
+          <div style={{
+            position: 'relative',
+            background: 'rgba(10,18,40,0.65)',
+            backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
+            border: `1px solid ${p.color1}40`,
+            borderRadius: 16, padding: '14px 18px',
+            boxShadow: `0 0 24px ${p.glow.replace('0.5','0.12').replace('0.45','0.12').replace('0.4','0.12')}`,
+            flex: 1,
+          }}>
+            {/* Triangle pointer */}
+            <div style={{
+              position: 'absolute', left: -10, top: '50%', transform: 'translateY(-50%)',
+              width: 0, height: 0,
+              borderTop: '10px solid transparent', borderBottom: '10px solid transparent',
+              borderRight: `10px solid ${p.color1}40`,
+            }} />
+            <div style={{
+              position: 'absolute', left: -8, top: '50%', transform: 'translateY(-50%)',
+              width: 0, height: 0,
+              borderTop: '9px solid transparent', borderBottom: '9px solid transparent',
+              borderRight: '9px solid rgba(10,18,40,0.65)',
+            }} />
+            <p style={{
+              fontFamily: "'Nunito', sans-serif", fontSize: isMobile ? 13 : 15,
+              fontWeight: 700, color: '#e8edf8', margin: 0, lineHeight: 1.55,
+            }}>{greeting}</p>
+          </div>
+        </div>
+      )}
 
       <div style={{ margin: '24px 0', padding: '0 24px 60px', position: 'relative', zIndex: 1 }}>
         <div style={{
