@@ -586,14 +586,17 @@ function PlanetDetailView({ p, isMobile, backToLanding }) {
               </div>
               {/* Coming soon badge */}
               <div style={{
-                fontSize: 9, fontWeight: 800, letterSpacing: 1, textTransform: 'uppercase',
-                padding: '2px 7px', borderRadius: 6,
+                fontSize: isMobile ? 7 : 9,
+                fontWeight: 800, letterSpacing: isMobile ? 0.5 : 1,
+                textTransform: 'uppercase',
+                padding: isMobile ? '2px 5px' : '2px 7px', borderRadius: 5,
                 background: 'rgba(255,255,255,0.05)',
                 border: '1px solid rgba(255,255,255,0.12)',
                 color: 'rgba(255,255,255,0.3)',
                 flexShrink: 0,
                 alignSelf: isMobile ? 'center' : 'flex-start',
-              }}>Незабаром</div>
+                whiteSpace: 'nowrap',
+              }}>{isMobile ? 'Скоро' : 'Незабаром'}</div>
             </div>
           ))}
         </div>
