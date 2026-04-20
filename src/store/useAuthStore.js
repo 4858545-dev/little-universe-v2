@@ -39,27 +39,28 @@ const useAuthStore = create(
         // 1. Subscribe FIRST so we never miss a SIGNED_IN event.
         //    With flowType:'implicit' + detectSessionInUrl:true, the SDK parses the
         //    #access_token hash and fires SIGNED_IN via this listener automatically.
+        //    IMPORTANT: do NOT touch the URL hash before this fires — clearing it
+        //    earlier strips the token before the SDK can read it.
         const { data: { subscription } } = onAuthStateChange((event, user) => {
           console.log('[auth] onAuthStateChange:', event, user?.email ?? 'no user')
           set({ user, isAuthenticated: !!user, isLoading: false })
-          if (user) clearOAuthParams()
+          // Only clean up URL params AFTER a confirmed sign-in, never before
+          if (event === 'SIGNED_IN' && user) clearOAuthParams()
         })
 
-        // 2. Delayed getSession() as a fallback for non-OAuth page loads (e.g. an
-        //    existing persisted session). The 100ms gap gives the SDK time to finish
-        //    parsing any hash fragment before we check.
+        // 2. Delayed getSession() as a fallback for returning users with a persisted
+        //    session (no hash in the URL for those). 100ms lets the SDK finish parsing
+        //    any hash fragment first, so getSession() sees the exchanged session.
         setTimeout(() => {
           getSession().then(({ data: { session }, error }) => {
             if (error) {
               console.error('[auth] getSession error:', error)
-              clearOAuthParams()
               set({ isLoading: false })
               return
             }
             if (session?.user) {
               console.log('[auth] getSession: session found', session.user.email)
               set({ user: session.user, isAuthenticated: true, isLoading: false })
-              clearOAuthParams()
             } else {
               console.log('[auth] getSession: no session')
               set({ isLoading: false })
