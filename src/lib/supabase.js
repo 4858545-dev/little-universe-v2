@@ -29,14 +29,12 @@ export function signUpWithEmail(email, password, metadata = {}) {
 export function signInWithGoogle() {
   // redirectTo must exactly match a URL listed in Supabase dashboard →
   // Authentication → URL Configuration → Redirect URLs
+  // Note: access_type/prompt queryParams are omitted — they cause
+  // unexpected_failure on Supabase free tier.
   return supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
       redirectTo: window.location.origin,
-      queryParams: {
-        access_type: 'offline',
-        prompt: 'consent',
-      },
     },
   })
 }
@@ -50,7 +48,7 @@ export function getSession() {
 }
 
 export function onAuthStateChange(callback) {
-  return supabase.auth.onAuthStateChange((_event, session) => {
-    callback(session?.user ?? null)
+  return supabase.auth.onAuthStateChange((event, session) => {
+    callback(event, session?.user ?? null)
   })
 }

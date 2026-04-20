@@ -36,29 +36,31 @@ const useAuthStore = create(
       initAuth: () => {
         set({ isLoading: true })
 
-        // 1. Subscribe to future auth state changes (catches OAuth SIGNED_IN event)
-        const { data: { subscription } } = onAuthStateChange((user) => {
-          set({ user, isAuthenticated: !!user, isLoading: false })
-          // Clear OAuth redirect params once session is confirmed
-          if (user) clearOAuthParams()
-        })
-
-        // 2. Eagerly resolve any existing session — critical for OAuth redirect flow.
-        //    Supabase JS v2 exchanges the URL hash token automatically, but we must
-        //    call getSession() to kick that off and not rely solely on the listener.
+        // 1. Eagerly resolve any existing session first — critical for OAuth redirect
+        //    flow. Supabase JS v2 exchanges the URL hash token on getSession() call.
         getSession().then(({ data: { session }, error }) => {
           if (error) {
-            // Clear bad params so the user doesn't get stuck in an error loop
+            console.error('[auth] getSession error:', error)
             clearOAuthParams()
             set({ isLoading: false })
             return
           }
           if (session?.user) {
+            console.log('[auth] getSession: session found', session.user.email)
             set({ user: session.user, isAuthenticated: true, isLoading: false })
             clearOAuthParams()
           } else {
+            console.log('[auth] getSession: no session')
             set({ isLoading: false })
           }
+        })
+
+        // 2. Subscribe to future auth state changes (catches OAuth SIGNED_IN event
+        //    in case the redirect fires after getSession resolves)
+        const { data: { subscription } } = onAuthStateChange((event, user) => {
+          console.log('[auth] onAuthStateChange:', event, user?.email ?? 'no user')
+          set({ user, isAuthenticated: !!user, isLoading: false })
+          if (user) clearOAuthParams()
         })
 
         return () => subscription.unsubscribe()
