@@ -5,7 +5,11 @@ const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
-    // Explicitly enable URL session detection for OAuth redirects
+    // Implicit flow so the SDK reads the #access_token hash fragment
+    // that Google/Supabase sends back after OAuth redirect.
+    // PKCE (the v2 default) uses a ?code= query param which requires a
+    // server-side exchange — not suitable for a pure SPA.
+    flowType: 'implicit',
     detectSessionInUrl: true,
     persistSession: true,
     autoRefreshToken: true,

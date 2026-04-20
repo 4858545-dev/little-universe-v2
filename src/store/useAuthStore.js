@@ -36,32 +36,36 @@ const useAuthStore = create(
       initAuth: () => {
         set({ isLoading: true })
 
-        // 1. Eagerly resolve any existing session first — critical for OAuth redirect
-        //    flow. Supabase JS v2 exchanges the URL hash token on getSession() call.
-        getSession().then(({ data: { session }, error }) => {
-          if (error) {
-            console.error('[auth] getSession error:', error)
-            clearOAuthParams()
-            set({ isLoading: false })
-            return
-          }
-          if (session?.user) {
-            console.log('[auth] getSession: session found', session.user.email)
-            set({ user: session.user, isAuthenticated: true, isLoading: false })
-            clearOAuthParams()
-          } else {
-            console.log('[auth] getSession: no session')
-            set({ isLoading: false })
-          }
-        })
-
-        // 2. Subscribe to future auth state changes (catches OAuth SIGNED_IN event
-        //    in case the redirect fires after getSession resolves)
+        // 1. Subscribe FIRST so we never miss a SIGNED_IN event.
+        //    With flowType:'implicit' + detectSessionInUrl:true, the SDK parses the
+        //    #access_token hash and fires SIGNED_IN via this listener automatically.
         const { data: { subscription } } = onAuthStateChange((event, user) => {
           console.log('[auth] onAuthStateChange:', event, user?.email ?? 'no user')
           set({ user, isAuthenticated: !!user, isLoading: false })
           if (user) clearOAuthParams()
         })
+
+        // 2. Delayed getSession() as a fallback for non-OAuth page loads (e.g. an
+        //    existing persisted session). The 100ms gap gives the SDK time to finish
+        //    parsing any hash fragment before we check.
+        setTimeout(() => {
+          getSession().then(({ data: { session }, error }) => {
+            if (error) {
+              console.error('[auth] getSession error:', error)
+              clearOAuthParams()
+              set({ isLoading: false })
+              return
+            }
+            if (session?.user) {
+              console.log('[auth] getSession: session found', session.user.email)
+              set({ user: session.user, isAuthenticated: true, isLoading: false })
+              clearOAuthParams()
+            } else {
+              console.log('[auth] getSession: no session')
+              set({ isLoading: false })
+            }
+          })
+        }, 100)
 
         return () => subscription.unsubscribe()
       },
