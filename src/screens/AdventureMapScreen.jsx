@@ -87,7 +87,7 @@ const PLANETS = [
     startAngle: 300,
   },
   {
-    id: 'heritage-lambi',
+    id: 'lambi-heritage',
     name: 'Спадщина-Ламбі',
     emoji: '🐑',
     charImg: lambiPng,
