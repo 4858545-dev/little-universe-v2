@@ -17,13 +17,17 @@ const TYPE_EMOJI = {
   worksheet:  '📝',
 }
 
-export default function ResourceCard({ title, type, tier = 'free', description = '', emoji, style: extraStyle, compact }) {
+export default function ResourceCard({ title, type, tier = 'free', description = '', emoji, url, style: extraStyle, compact }) {
   const { showToast } = useAppStore()
   const badge = TIER_BADGE[tier] ?? TIER_BADGE.free
   const typeEmoji = emoji ?? TYPE_EMOJI[type] ?? '📦'
 
   function handleTakeOnBoard() {
-    showToast({ message: '📦 Завантажено!', type: 'reward' })
+    if (url) {
+      window.open(url, '_blank', 'noopener,noreferrer')
+    } else {
+      showToast({ message: '📦 Завантажено!', type: 'reward' })
+    }
   }
 
   return (

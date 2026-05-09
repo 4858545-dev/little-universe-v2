@@ -11,8 +11,13 @@ import styles from './PlanetDetailScreen.module.css'
 // Planets backed by real Supabase data (planet_id values in resources table)
 // Internal planet key → supabase planet_id
 const SUPABASE_PLANETS = {
-  'stem-marik': 'marik',
-  'art-lumi': 'lumi',
+  'stem-marik':     'stem-marik',
+  'art-lumi':       'art-lumi',
+  'logic-aila':     'logic-aila',
+  'lambi-heritage': 'lambi-heritage',
+  'marik-nature':   'marik-nature',
+  'about-crew':     'about-crew',
+  'logo-orbit':     'logo-orbit',
 }
 
 // Character greetings per planet
@@ -197,6 +202,7 @@ function SupabasePlanetContent({ supabasePlanetId, planetColor }) {
             type={r.type}
             tier={r.is_free ? 'free' : 'premium'}
             description={r.description}
+            url={r.url}
           />
         ))}
       </div>
@@ -219,6 +225,7 @@ function SupabasePlanetContent({ supabasePlanetId, planetColor }) {
                 type={r.type}
                 tier={r.is_free ? 'free' : 'premium'}
                 description={r.description}
+                url={r.url}
               />
             ))}
           </div>
