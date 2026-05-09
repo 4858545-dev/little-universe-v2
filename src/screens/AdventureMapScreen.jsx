@@ -159,7 +159,6 @@ const PLANETS = [
     id: 'marik-nature',
     name: 'Марік Природознавець',
     emoji: '🌿',
-    charImg: marikPng,
     curator: 'Марік Інопланетянин',
     curatorRole: 'Дослідник природи',
     color1: '#81C784',

@@ -105,8 +105,8 @@ export const PLANET_META = {
   'about-crew': {
     id: 'about-crew',
     emoji: '👨‍🚀',
-    name: 'Про Команду',
-    subject: 'Екіпаж корабля',
+    name: 'Екіпаж Маленького Всесвіту',
+    subject: 'Паспорти, фото та описи кожного члена екіпажу',
     curator: 'Весь екіпаж',
     characterId: null,
     color: 'var(--gold)',

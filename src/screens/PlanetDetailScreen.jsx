@@ -4,8 +4,11 @@ import CharacterAvatar from '../components/characters/CharacterAvatar'
 import ResourceCard from '../components/cards/ResourceCard'
 import { useResources } from '../hooks/useResources'
 import { PLANET_META, PLANET_SECTIONS } from '../data/planets'
-import marikPng from '../assets/characters/marik.png'
-import lumiPng from '../assets/characters/lumi.png'
+import marikPng  from '../assets/characters/marik.png'
+import lumiPng   from '../assets/characters/lumi.png'
+import orbitaPng from '../assets/characters/orbita.png'
+import ailaPng   from '../assets/characters/zorx.png'
+import lambiPng  from '../assets/characters/lambi.png'
 import styles from './PlanetDetailScreen.module.css'
 
 // Planets backed by real Supabase data (planet_id values in resources table)
@@ -22,8 +25,13 @@ const SUPABASE_PLANETS = {
 
 // Character greetings per planet
 const GREETINGS = {
-  'stem-marik': { img: marikPng, alt: 'Марік', text: 'Привіт! Я Марік! Готовий до STEM-пригоди? 🧪' },
-  'art-lumi':   { img: lumiPng,  alt: 'Люмі',  text: 'Привіт! Я Люмі! Готова до творчої пригоди? 🎨' },
+  'stem-marik':     { img: marikPng,  alt: 'Марік',  text: 'Привіт! Я Марік! Готовий до STEM-пригоди! 🧪' },
+  'art-lumi':       { img: lumiPng,   alt: 'Люмі',   text: 'Привіт! Я Люмі! Готова до творчої пригоди! 🎨' },
+  'logo-orbit':     { img: orbitaPng, alt: 'Орбіта', text: 'Привіт! Я Орбіта! Вирушаємо до світу слів! 🪐' },
+  'logic-aila':     { img: ailaPng,   alt: 'Айла',   text: 'Привіт! Я Айла! Розгадаємо логічні загадки! 📐' },
+  'lambi-heritage': { img: lambiPng,  alt: 'Ламбі',  text: 'Привіт! Я Ламбі! Пізнаємо традиції разом! 🧵' },
+  'marik-nature':   { img: marikPng,  alt: 'Марік',  text: 'Привіт! Я Марік! Досліджуємо природу! 🌿' },
+  'about-crew':     { img: lumiPng,   alt: 'Люмі',   text: 'Познайомтесь з нашим екіпажем! 👨‍🚀' },
 }
 
 // ── Mock resource data (non-Supabase planets) ──────────────────────────────
