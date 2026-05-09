@@ -47,7 +47,7 @@ const MOCK_RESOURCES = {
       { emoji: '✅', title: 'Чек-лист корекції', type: 'assessment', tier: 'specialist' },
     ],
   },
-  'logic-zorx': {
+  'logic-aila': {
     'Робочі аркуші': [
       { emoji: '📝', title: 'Додавання до 10', type: 'worksheet', tier: 'free' },
       { emoji: '📝', title: 'Порівняння чисел', type: 'worksheet', tier: 'free' },
@@ -342,7 +342,7 @@ export default function PlanetDetailScreen() {
           />
         </div>
       ) : (
-        <div className={styles.grid} style={planetId === 'logic-zorx' ? (
+        <div className={styles.grid} style={planetId === 'logic-aila' ? (
           winW >= 768
             ? { display: 'flex', flexDirection: 'row', gap: '12px', alignItems: 'stretch' }
             : { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }
@@ -359,8 +359,8 @@ export default function PlanetDetailScreen() {
                 title={r.title}
                 type={r.type}
                 tier={r.tier}
-                compact={planetId === 'logic-zorx'}
-                style={planetId === 'logic-zorx' && winW >= 768 ? { flex: 1 } : undefined}
+                compact={planetId === 'logic-aila'}
+                style={planetId === 'logic-aila' && winW >= 768 ? { flex: 1 } : undefined}
               />
             ))
           )}

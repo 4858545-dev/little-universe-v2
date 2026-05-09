@@ -4,7 +4,7 @@ import useAuthStore from '../store/useAuthStore'
 import { useResources } from '../hooks/useResources'
 import lumiPng   from '../assets/characters/lumi.png'
 import orbitaPng from '../assets/characters/orbita.png'
-import zorxPng   from '../assets/characters/zorx.png'
+import ailaPng   from '../assets/characters/zorx.png'
 import marikPng  from '../assets/characters/marik.png'
 import lambiPng  from '../assets/characters/lambi.png'
 import styles from './AdventureMapScreen.module.css'
@@ -15,11 +15,11 @@ import styles from './AdventureMapScreen.module.css'
 
 const PLANETS = [
   {
-    id: 'logic-zorx',
-    name: 'Логіка-Зоркс',
+    id: 'logic-aila',
+    name: 'Логіка-Айла',
     emoji: '📐',
-    charImg: zorxPng,
-    curator: 'Зоркс Зірка',
+    charImg: ailaPng,
+    curator: 'Айла',
     curatorRole: 'Куратор математики та логіки',
     color1: '#00E5CC',
     color2: '#00897B',
@@ -155,10 +155,45 @@ const PLANETS = [
     speed: 86,
     startAngle: 250,
   },
+  {
+    id: 'marik-nature',
+    name: 'Марік Природознавець',
+    emoji: '🌿',
+    charImg: marikPng,
+    curator: 'Марік Інопланетянин',
+    curatorRole: 'Дослідник природи',
+    color1: '#81C784',
+    color2: '#2E7D32',
+    glow: 'rgba(129,199,132,0.5)',
+    ring: 'rgba(129,199,132,0.12)',
+    desc: 'Природа, спостереження, дослідження довкілля',
+    sections: ['Тиждень природи', 'Шукачі скарбів', 'Дослідники', 'Альбом дослідника'],
+    size: 95,
+    orbitRadius: 310,
+    speed: 48,
+    startAngle: 150,
+  },
+  {
+    id: 'about-crew',
+    name: 'Про Команду',
+    emoji: '👨‍🚀',
+    curator: 'Весь екіпаж',
+    curatorRole: 'Паспорти персонажів',
+    color1: '#FFD54F',
+    color2: '#F57F17',
+    glow: 'rgba(255,213,79,0.5)',
+    ring: 'rgba(255,213,79,0.12)',
+    desc: 'Паспорти та фото екіпажу космічного корабля',
+    sections: ['Паспорти екіпажу', 'Фото команди', 'Наша місія', 'Контакти'],
+    size: 85,
+    orbitRadius: 380,
+    speed: 54,
+    startAngle: 260,
+  },
 ]
 
 const SURPRISES = [
-  '🎲 Робочий аркуш-лабіринт — Логічний лабіринт Зоркса!',
+  '🎲 Робочий аркуш-лабіринт — Логічний лабіринт Айли!',
   '🖍 Розмальовка — Палітра емоцій Люмі!',
   '📖 Міні-історія — Скоромовка від Орбіти!',
   '🔬 Швидкий експеримент — Лабораторія Маріка!',

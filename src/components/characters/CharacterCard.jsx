@@ -14,11 +14,11 @@ const CHAR_DATA = {
     tags: ['Грамота', 'Читання', 'Мовлення'],
     color: 'var(--orbita-color)',
   },
-  zorx: {
-    name: 'Зоркс',
-    motto: 'Кожна задача має своє правильне рішення',
+  aila: {
+    name: 'Айла',
+    motto: 'Кожна головоломка — новий крок до зірок',
     tags: ['Математика', 'Логіка', 'Числа'],
-    color: 'var(--zorx-color)',
+    color: 'var(--aila-color)',
   },
   marik: {
     name: 'Марік',

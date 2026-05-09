@@ -50,8 +50,14 @@
   --zorx-color:    #f4b942;
   --zorx-gradient: linear-gradient(135deg, #d4940a, #a06000);
 
+  --aila-color:    #f4b942;
+  --aila-gradient: linear-gradient(135deg, #d4940a, #a06000);
+
   --marik-color:    #4fd9a0;
   --marik-gradient: linear-gradient(135deg, #18806a, #085040);
+
+  --lambi-color:    #f9a825;
+  --lambi-gradient: linear-gradient(135deg, #f57f17, #e65100);
 
   /* ── Spacing scale ── */
   --space-1: 4px;

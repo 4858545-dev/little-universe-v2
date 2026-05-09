@@ -3,7 +3,7 @@ import styles from './ConnectorLines.module.css'
 // Matches PLANET_META x/y in AdventureMapScreen.jsx
 const POSITIONS = {
   'logo-orbit':   { x: 18, y: 17 },
-  'logic-zorx':   { x: 78, y: 17 },
+  'logic-aila':   { x: 78, y: 17 },
   'home-station': { x: 11, y: 50 },
   'training-hub': { x: 85, y: 50 },
   'stem-marik':   { x: 20, y: 78 },
