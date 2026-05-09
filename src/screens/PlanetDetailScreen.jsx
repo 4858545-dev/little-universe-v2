@@ -25,13 +25,16 @@ const SUPABASE_PLANETS = {
 
 // Character greetings per planet
 const GREETINGS = {
-  'stem-marik':     { img: marikPng,  alt: 'Марік',  text: 'Привіт! Я Марік! Готовий до STEM-пригоди! 🧪' },
-  'art-lumi':       { img: lumiPng,   alt: 'Люмі',   text: 'Привіт! Я Люмі! Готова до творчої пригоди! 🎨' },
-  'logo-orbit':     { img: orbitaPng, alt: 'Орбіта', text: 'Привіт! Я Орбіта! Вирушаємо до світу слів! 🪐' },
-  'logic-aila':     { img: ailaPng,   alt: 'Айла',   text: 'Привіт! Я Айла! Розгадаємо логічні загадки! 📐' },
-  'lambi-heritage': { img: lambiPng,  alt: 'Ламбі',  text: 'Привіт! Я Ламбі! Пізнаємо традиції разом! 🧵' },
-  'marik-nature':   { img: marikPng,  alt: 'Марік',  text: 'Привіт! Я Марік! Досліджуємо природу! 🌿' },
-  'about-crew':     { img: lumiPng,   alt: 'Люмі',   text: 'Познайомтесь з нашим екіпажем! 👨‍🚀' },
+  'stem-marik':     { img: marikPng,  alt: 'Марік',  text: 'Привіт! Я Марік! Починаємо STEM-пригоду! 🚀' },
+  'art-lumi':       { img: lumiPng,   alt: 'Люмі',   text: 'Привіт! Я Люмі! Починаємо творчу пригоду! 🎨' },
+  'logo-orbit':     { img: orbitaPng, alt: 'Орбіта', text: 'Привіт! Я Орбіта! Починаємо мовну пригоду! 📖' },
+  'logic-aila':     { img: ailaPng,   alt: 'Айла',   text: 'Привіт! Я Айла! Починаємо логічну пригоду! 🧩' },
+  'lambi-heritage': { img: lambiPng,  alt: 'Ламбі',  text: 'Привіт! Я Ламбі! Починаємо культурну пригоду! 🧵' },
+  'marik-nature':   { img: marikPng,  alt: 'Марік',  text: 'Привіт! Я Марік! Досліджуємо природу разом! 🌿' },
+  'about-crew':     { img: lumiPng,   alt: 'Люмі',   text: 'Привіт! Ми — екіпаж Маленького Всесвіту! 👨‍🚀' },
+  'home-station':   { img: lumiPng,   alt: 'Люмі',   text: 'Привіт! Тут затишно і корисно для всієї родини! 🏠' },
+  'training-hub':   { img: orbitaPng, alt: 'Орбіта', text: 'Привіт! Тут зростають справжні фахівці! 🛰' },
+  cosmodrome:       { img: marikPng,  alt: 'Марік',  text: 'Привіт! Готуємось до старту! 🚀' },
 }
 
 // ── Mock resource data (non-Supabase planets) ──────────────────────────────
