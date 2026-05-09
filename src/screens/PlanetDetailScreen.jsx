@@ -18,7 +18,6 @@ const SUPABASE_PLANETS = {
   'art-lumi':       'art-lumi',
   'logic-aila':     'logic-aila',
   'lambi-heritage': 'lambi-heritage',
-  'marik-nature':   'marik-nature',
   'about-crew':     'about-crew',
   'logo-orbit':     'logo-orbit',
 }
@@ -30,7 +29,6 @@ const GREETINGS = {
   'logo-orbit':     { img: orbitaPng, alt: 'Орбіта', text: 'Привіт! Я Орбіта! Починаємо мовну пригоду! 📖' },
   'logic-aila':     { img: ailaPng,   alt: 'Айла',   text: 'Привіт! Я Айла! Починаємо логічну пригоду! 🧩' },
   'lambi-heritage': { img: lambiPng,  alt: 'Ламбі',  text: 'Привіт! Я Ламбі! Починаємо культурну пригоду! 🧵' },
-  'marik-nature':   { img: marikPng,  alt: 'Марік',  text: 'Привіт! Я Марік! Досліджуємо природу разом! 🌿' },
   'about-crew':     { img: lumiPng,   alt: 'Люмі',   text: 'Привіт! Ми — екіпаж Маленького Всесвіту! 👨‍🚀' },
   'home-station':   { img: lumiPng,   alt: 'Люмі',   text: 'Привіт! Тут затишно і корисно для всієї родини! 🏠' },
   'training-hub':   { img: orbitaPng, alt: 'Орбіта', text: 'Привіт! Тут зростають справжні фахівці! 🛰' },
