@@ -32,7 +32,7 @@ const GREETINGS = {
   'about-crew':     { img: lumiPng,   alt: 'Люмі',   text: 'Привіт! Ми — екіпаж Маленького Всесвіту! 👨‍🚀' },
   'home-station':   { img: lumiPng,   alt: 'Люмі',   text: 'Привіт! Тут затишно і корисно для всієї родини! 🏠' },
   'training-hub':   { img: orbitaPng, alt: 'Орбіта', text: 'Привіт! Тут зростають справжні фахівці! 🛰' },
-  cosmodrome:       { img: marikPng,  alt: 'Марік',  text: 'Привіт! Готуємось до старту! 🚀' },
+  cosmodrome:       { img: marikPng,  alt: 'Марік',  text: 'Привіт! Готуємось до старту разом! 🚀' },
 }
 
 // ── Mock resource data (non-Supabase planets) ──────────────────────────────
