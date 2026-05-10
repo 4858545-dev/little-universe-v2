@@ -300,7 +300,7 @@ export default function PlanetDetailScreen() {
             </div>
             {meta.characterId && (
               <div className={styles.heroAvatar}>
-                <CharacterAvatar character={meta.characterId} size="lg" />
+                <CharacterAvatar character={meta.characterId} size="xl" />
               </div>
             )}
           </div>

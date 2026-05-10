@@ -13,7 +13,7 @@ const CHAR_DATA = {
   lambi:  { img: lambiPng,  color: 'var(--lumi-color)',   gradient: 'var(--lumi-gradient)' },
 }
 
-const SIZES = { sm: 40, md: 64, lg: 96 }
+const SIZES = { sm: 40, md: 64, lg: 96, xl: 128 }
 
 export default function CharacterAvatar({ character, size = 'md' }) {
   const data = CHAR_DATA[character]
