@@ -142,6 +142,32 @@
   color: var(--text-2);
 }
 
+.inputWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.inputWrap .input {
+  padding-right: 42px;
+}
+
+.eyeBtn {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: var(--text-3);
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
+  min-height: 32px;
+}
+
+.eyeBtn:hover { color: var(--text-2); }
+
 .input {
   width: 100%;
   padding: 11px 14px;
