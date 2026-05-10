@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import useAppStore from './store/useAppStore'
 import useAuthStore from './store/useAuthStore'
 import Toast from './components/ui/Toast'
@@ -38,15 +38,21 @@ function ComingSoon({ name }) {
 export default function App() {
   const { screen, toastVisible, toastData, hideToast } = useAppStore()
   const { isAuthenticated, isLoading, initAuth } = useAuthStore()
+  // True only during the initial session check on mount — not during login attempts
+  const [initializing, setInitializing] = useState(true)
 
   useEffect(() => {
-    // initAuth returns the Supabase subscription cleanup fn
     const unsubscribe = initAuth()
+    // Once isLoading goes false for the first time, we're done initializing
     return () => { if (typeof unsubscribe === 'function') unsubscribe() }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  if (isLoading) {
+  useEffect(() => {
+    if (!isLoading) setInitializing(false)
+  }, [isLoading])
+
+  if (initializing && isLoading) {
     return (
       <div style={{
         minHeight: '100vh',

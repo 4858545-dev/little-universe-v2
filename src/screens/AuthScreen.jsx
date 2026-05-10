@@ -31,13 +31,15 @@ function toUkrError(msg = '') {
 }
 
 export default function AuthScreen() {
-  const { login, register, loginWithGoogle, isLoading } = useAuthStore()
+  const { login, register, loginWithGoogle } = useAuthStore()
   const [mode, setMode] = useState('login')   // 'login' | 'register'
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [role, setRole] = useState('parent')
   const [error, setError] = useState(() => getOAuthError())
+  // Local submitting flag — keeps this component mounted so error state survives
+  const [submitting, setSubmitting] = useState(false)
 
   // Clear URL error params on mount so they don't persist across re-renders
   useEffect(() => {
@@ -50,6 +52,7 @@ export default function AuthScreen() {
   async function handleSubmit(e) {
     e.preventDefault()
     setError(null)
+    setSubmitting(true)
     try {
       if (mode === 'login') {
         await login(email, password)
@@ -57,7 +60,10 @@ export default function AuthScreen() {
         await register(email, password, role)
       }
     } catch (err) {
+      console.log('[auth] login error:', err)
       setError(toUkrError(err.message))
+    } finally {
+      setSubmitting(false)
     }
   }
 
@@ -66,6 +72,7 @@ export default function AuthScreen() {
     try {
       await loginWithGoogle()
     } catch (err) {
+      console.log('[auth] google error:', err)
       setError(toUkrError(err.message))
     }
   }
@@ -106,7 +113,7 @@ export default function AuthScreen() {
           type="button"
           className={styles.googleBtn}
           onClick={handleGoogle}
-          disabled={isLoading}
+          disabled={submitting}
         >
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
             <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z" fill="#4285F4"/>
@@ -144,7 +151,7 @@ export default function AuthScreen() {
               className={styles.input}
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => { setEmail(e.target.value); setError(null) }}
               placeholder="your@email.com"
               required
               autoComplete="email"
@@ -158,7 +165,7 @@ export default function AuthScreen() {
                 className={styles.input}
                 type={showPassword ? 'text' : 'password'}
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => { setPassword(e.target.value); setError(null) }}
                 placeholder="••••••••"
                 required
                 autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
@@ -191,9 +198,9 @@ export default function AuthScreen() {
           <button
             type="submit"
             className={styles.submitBtn}
-            disabled={isLoading}
+            disabled={submitting}
           >
-            {isLoading
+            {submitting
               ? 'Запуск двигунів...'
               : mode === 'login' ? 'Стикування ✦' : 'Приєднатись до екіпажу ✦'}
           </button>
