@@ -14,6 +14,9 @@
   animation: spin 3s linear infinite;
   will-change: transform;
   flex-shrink: 0;
+  /* allow character image to overflow above the circle */
+  overflow: visible;
+  position: relative;
 }
 
 .inner {
@@ -22,17 +25,25 @@
   border-radius: 50%;
   background: var(--char-gradient);
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
   animation: spin 3s linear infinite reverse;
   will-change: transform;
+  /* clip only the circular background, not the img which overflows */
+  overflow: visible;
+  position: relative;
 }
 
 .img {
-  width: 100%;
-  height: 100%;
+  /* 140% height so character overflows the circle upward — full head visible */
+  width: 90%;
+  height: 140%;
   object-fit: contain;
-  object-position: center center;
+  object-position: center bottom;
+  position: absolute;
+  bottom: -4%;
+  left: 50%;
+  transform: translateX(-50%);
   user-select: none;
   pointer-events: none;
 }
