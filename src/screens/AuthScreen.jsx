@@ -31,7 +31,7 @@ function toUkrError(msg = '') {
 }
 
 export default function AuthScreen() {
-  const { login, register, loginWithGoogle } = useAuthStore()
+  const { login, register, loginWithGoogle, setGuest } = useAuthStore()
   const [mode, setMode] = useState('login')   // 'login' | 'register'
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -216,6 +216,14 @@ export default function AuthScreen() {
             {mode === 'login' ? 'Приєднатись' : 'Увійти'}
           </button>
         </p>
+
+        <button
+          type="button"
+          className={styles.guestBtn}
+          onClick={setGuest}
+        >
+          Переглянути без реєстрації →
+        </button>
       </div>
     </div>
   )

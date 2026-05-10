@@ -31,6 +31,8 @@ const useAuthStore = create(
       role: null,          // 'specialist' | 'parent'
       isLoading: false,
       isAuthenticated: false,
+      isGuest: false,
+      setGuest: () => set({ isGuest: true }),
 
       // Called once on app mount to sync Supabase session
       initAuth: () => {
@@ -43,7 +45,7 @@ const useAuthStore = create(
         //    earlier strips the token before the SDK can read it.
         const { data: { subscription } } = onAuthStateChange((event, user) => {
           console.log('[auth] onAuthStateChange:', event, user?.email ?? 'no user')
-          set({ user, isAuthenticated: !!user, isLoading: false })
+          set({ user, isAuthenticated: !!user, isLoading: false, isGuest: false })
           // Only clean up URL params AFTER a confirmed sign-in, never before
           if (event === 'SIGNED_IN' && user) clearOAuthParams()
         })
@@ -103,7 +105,7 @@ const useAuthStore = create(
 
       logout: async () => {
         await signOut()
-        set({ user: null, role: null, isAuthenticated: false })
+        set({ user: null, role: null, isAuthenticated: false, isGuest: false })
       },
 
       setRole: (role) => set({ role }),

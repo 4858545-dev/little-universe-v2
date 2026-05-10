@@ -37,7 +37,7 @@ function ComingSoon({ name }) {
 
 export default function App() {
   const { screen, toastVisible, toastData, hideToast } = useAppStore()
-  const { isAuthenticated, isLoading, initAuth } = useAuthStore()
+  const { isAuthenticated, isGuest, isLoading, initAuth } = useAuthStore()
   // True only during the initial session check on mount — not during login attempts
   const [initializing, setInitializing] = useState(true)
 
@@ -70,7 +70,7 @@ export default function App() {
     )
   }
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated && !isGuest) {
     return <AuthScreen />
   }
 

@@ -295,6 +295,29 @@
 
 .switchBtn:hover { color: #9d8fff; }
 
+/* ── Guest access ──────────────────────────────────── */
+.guestBtn {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 10px;
+  background: none;
+  border: 1px solid var(--border-2);
+  border-radius: 10px;
+  color: var(--text-3);
+  font-family: var(--f-body);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  min-height: 44px;
+}
+
+.guestBtn:hover {
+  color: var(--text-2);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
 /* ── Mobile ────────────────────────────────────────── */
 @media (max-width: 480px) {
   .screen { padding: 16px; min-height: -webkit-fill-available; }
