@@ -34,6 +34,20 @@
   position: relative;
 }
 
+/* light backdrop behind the PNG so transparent eye/mouth holes show as white */
+.inner::before {
+  content: '';
+  width: 90%;
+  height: 140%;
+  position: absolute;
+  bottom: -4%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.88);
+  border-radius: 40% 40% 30% 30% / 30% 30% 20% 20%;
+  pointer-events: none;
+}
+
 .img {
   /* 140% height so character overflows the circle upward — full head visible */
   width: 90%;
@@ -46,6 +60,7 @@
   transform: translateX(-50%);
   user-select: none;
   pointer-events: none;
+  z-index: 1;
 }
 
 @media (prefers-reduced-motion: reduce) {
