@@ -449,3 +449,19 @@ docs/
 `['orbita', 'zorx', 'lumi', 'marik', 'home-station', 'learning-center', 'cosmodrome']`
 
 **MVP unlocked planets:** `lumi`, `marik`
+
+---
+
+## Current Sprint: Step 5 — Progress & Gamification
+
+Status: IN PROGRESS
+
+Goals:
+- useProgressStore (Zustand + localStorage persist) — tracks completed resources, coins
+- Progress dashboard on Домашня Станція planet
+- Coins awarded per downloaded resource (+10 🪙)
+- Meteor surprise connected to real resources
+
+Completed so far:
+- Social icons (Instagram, Telegram) added to footer ✅
+- "Козочка" renamed to "Кізонька" everywhere ✅

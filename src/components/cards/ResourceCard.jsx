@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import useAppStore from '../../store/useAppStore'
+import useProgressStore from '../../store/useProgressStore'
 import Badge from '../ui/Badge'
 import styles from './ResourceCard.module.css'
 
@@ -17,16 +19,26 @@ const TYPE_EMOJI = {
   worksheet:  '📝',
 }
 
-export default function ResourceCard({ title, type, tier = 'free', description = '', emoji, url, style: extraStyle, compact }) {
+export default function ResourceCard({ id, title, type, tier = 'free', description = '', emoji, url, style: extraStyle, compact }) {
   const { showToast } = useAppStore()
+  const { markResourceComplete, isResourceComplete } = useProgressStore()
+  const [coinPop, setCoinPop] = useState(false)
+
   const badge = TIER_BADGE[tier] ?? TIER_BADGE.free
   const typeEmoji = emoji ?? TYPE_EMOJI[type] ?? '📦'
+  const alreadyDone = id ? isResourceComplete(id) : false
 
   function handleTakeOnBoard() {
     if (url) {
       window.open(url, '_blank', 'noopener,noreferrer')
     } else {
       showToast({ message: '📦 Завантажено!', type: 'reward' })
+    }
+
+    if (id && !alreadyDone) {
+      markResourceComplete(id)
+      setCoinPop(true)
+      setTimeout(() => setCoinPop(false), 1000)
     }
   }
 
@@ -38,9 +50,15 @@ export default function ResourceCard({ title, type, tier = 'free', description =
       </div>
       <p className={styles.title}>{title}</p>
       {description && <p className={styles.desc}>{description}</p>}
-      <button className={styles.takeBtn} onClick={handleTakeOnBoard}>
-        Взяти на борт
-      </button>
+      <div className={styles.btnWrap}>
+        <button
+          className={[styles.takeBtn, alreadyDone ? styles.done : ''].join(' ')}
+          onClick={handleTakeOnBoard}
+        >
+          {alreadyDone ? '✓ На борту' : 'Взяти на борт'}
+        </button>
+        {coinPop && <span className={styles.coinPop}>+10 🪙</span>}
+      </div>
     </div>
   )
 }

@@ -53,7 +53,6 @@
 }
 
 .takeBtn {
-  margin-top: auto;
   padding: 8px 0;
   background: rgba(244, 185, 66, 0.10);
   border: 1px solid rgba(244, 185, 66, 0.35);
@@ -89,10 +88,47 @@
   padding: 6px 0;
 }
 
+.btnWrap {
+  position: relative;
+  margin-top: auto;
+}
+
+.takeBtn.done {
+  background: rgba(79, 217, 160, 0.12);
+  border-color: rgba(79, 217, 160, 0.4);
+  color: var(--green);
+  cursor: default;
+}
+
+.takeBtn.done:hover {
+  background: rgba(79, 217, 160, 0.12);
+  border-color: rgba(79, 217, 160, 0.4);
+}
+
+.coinPop {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--f-display);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gold);
+  white-space: nowrap;
+  pointer-events: none;
+  animation: coinFloat 1s ease forwards;
+}
+
+@keyframes coinFloat {
+  0%   { opacity: 1; transform: translateX(-50%) translateY(0); }
+  100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .card {
     transition: none;
   }
   .card:hover { transform: none; }
   .takeBtn { transition: none; }
+  .coinPop { animation: none; opacity: 0; }
 }
