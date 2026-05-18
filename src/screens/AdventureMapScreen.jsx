@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import useAppStore from '../store/useAppStore'
 import useAuthStore from '../store/useAuthStore'
+import useProgressStore from '../store/useProgressStore'
 import { useResources } from '../hooks/useResources'
 import lumiPng   from '../assets/characters/lumi.png'
 import orbitaPng from '../assets/characters/orbita.png'
@@ -356,6 +357,87 @@ const glassCard = (extra = {}) => ({
   borderRadius: 20,
   ...extra,
 })
+
+const TOTAL_RESOURCES = 58
+
+function ProgressDashboard({ isMobile }) {
+  const { completedResources, coins } = useProgressStore()
+  const downloaded = completedResources.length
+  const pct = Math.round((downloaded / TOTAL_RESOURCES) * 100)
+
+  return (
+    <div style={{
+      ...glassCard(),
+      margin: isMobile ? '0 12px 20px' : '0 24px 20px',
+      padding: isMobile ? '16px 18px' : '20px 24px',
+      position: 'relative', zIndex: 1,
+      borderTop: '1px solid rgba(52,212,200,0.2)',
+    }}>
+      <div style={{
+        fontSize: 10, fontWeight: 800, letterSpacing: 2.5, textTransform: 'uppercase',
+        color: 'rgba(52,212,200,0.6)', marginBottom: 14,
+      }}>✦ Мій прогрес ✦</div>
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: isMobile ? 12 : 24, marginBottom: 14 }}>
+        <div style={{ flex: 1, textAlign: 'center' }}>
+          <div style={{
+            fontFamily: "'Comfortaa', sans-serif", fontSize: isMobile ? 20 : 26,
+            fontWeight: 700, color: '#FFD54F',
+          }}>🪙 {coins}</div>
+          <div style={{
+            fontSize: 10, fontWeight: 700, textTransform: 'uppercase',
+            letterSpacing: 1, color: 'rgba(155,168,204,0.6)', marginTop: 3,
+          }}>Монети</div>
+        </div>
+
+        <div style={{ width: 1, height: 40, background: 'rgba(255,255,255,0.08)', flexShrink: 0 }} />
+
+        <div style={{ flex: 1, textAlign: 'center' }}>
+          <div style={{
+            fontFamily: "'Comfortaa', sans-serif", fontSize: isMobile ? 20 : 26,
+            fontWeight: 700, color: '#64FFDA',
+          }}>{downloaded}</div>
+          <div style={{
+            fontSize: 10, fontWeight: 700, textTransform: 'uppercase',
+            letterSpacing: 1, color: 'rgba(155,168,204,0.6)', marginTop: 3,
+          }}>Завантажено</div>
+        </div>
+
+        <div style={{ width: 1, height: 40, background: 'rgba(255,255,255,0.08)', flexShrink: 0 }} />
+
+        <div style={{ flex: 1, textAlign: 'center' }}>
+          <div style={{
+            fontFamily: "'Comfortaa', sans-serif", fontSize: isMobile ? 20 : 26,
+            fontWeight: 700, color: 'rgba(232,224,240,0.7)',
+          }}>{TOTAL_RESOURCES}</div>
+          <div style={{
+            fontSize: 10, fontWeight: 700, textTransform: 'uppercase',
+            letterSpacing: 1, color: 'rgba(155,168,204,0.6)', marginTop: 3,
+          }}>Всього</div>
+        </div>
+      </div>
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        <div style={{
+          flex: 1, height: 6, background: 'rgba(255,255,255,0.07)',
+          borderRadius: 99, overflow: 'hidden',
+        }}>
+          <div style={{
+            height: '100%', borderRadius: 99,
+            background: 'linear-gradient(90deg, #34d4c8, #4fd9a0)',
+            width: `${pct}%`,
+            minWidth: pct > 0 ? 4 : 0,
+            transition: 'width 0.5s ease',
+          }} />
+        </div>
+        <div style={{
+          fontFamily: "'Comfortaa', sans-serif", fontSize: 11, fontWeight: 700,
+          color: '#34d4c8', minWidth: 32, textAlign: 'right',
+        }}>{pct}%</div>
+      </div>
+    </div>
+  )
+}
 
 const TYPE_EMOJI = { pdf: '📄', video: '🎬', interactive: '🧩' }
 const TYPE_LABEL = { pdf: 'PDF', video: 'Відео', interactive: 'Інтерактив' }
@@ -1185,6 +1267,9 @@ export default function AdventureMapScreen() {
               )
             })()}
           </div>
+
+          {/* ─── PROGRESS DASHBOARD ─── */}
+          <ProgressDashboard isMobile={isMobile} />
 
           {/* ─── PLANET CARDS GRID ─── */}
           <div
