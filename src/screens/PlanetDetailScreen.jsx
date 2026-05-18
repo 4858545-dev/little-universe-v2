@@ -39,110 +39,110 @@ const GREETINGS = {
 const MOCK_RESOURCES = {
   'logo-orbit': {
     'Артикуляційні PDF': [
-      { emoji: '📄', title: 'Звук [Р] — підготовчі вправи', type: 'pdf', tier: 'free' },
-      { emoji: '📄', title: 'Постановка [Ш] та [Ж]', type: 'pdf', tier: 'free' },
-      { emoji: '🖨', title: 'Артикуляційна гімнастика', type: 'printable', tier: 'free' },
-      { emoji: '📋', title: 'Диференціація [С–З]', type: 'assessment', tier: 'premium' },
+      { id: 'lo-art-1', emoji: '📄', title: 'Звук [Р] — підготовчі вправи', type: 'pdf', tier: 'free' },
+      { id: 'lo-art-2', emoji: '📄', title: 'Постановка [Ш] та [Ж]', type: 'pdf', tier: 'free' },
+      { id: 'lo-art-3', emoji: '🖨', title: 'Артикуляційна гімнастика', type: 'printable', tier: 'free' },
+      { id: 'lo-art-4', emoji: '📋', title: 'Диференціація [С–З]', type: 'assessment', tier: 'premium' },
     ],
     'Фонетичні ігри': [
-      { emoji: '🎮', title: 'Гра «Хто швидший?»', type: 'printable', tier: 'free' },
-      { emoji: '🃏', title: 'Картки фонетичного лото', type: 'printable', tier: 'free' },
-      { emoji: '🎲', title: 'Звукова доріжка', type: 'guide', tier: 'free' },
-      { emoji: '📋', title: 'Вправи з наголосом', type: 'worksheet', tier: 'premium' },
+      { id: 'lo-phon-1', emoji: '🎮', title: 'Гра «Хто швидший?»', type: 'printable', tier: 'free' },
+      { id: 'lo-phon-2', emoji: '🃏', title: 'Картки фонетичного лото', type: 'printable', tier: 'free' },
+      { id: 'lo-phon-3', emoji: '🎲', title: 'Звукова доріжка', type: 'guide', tier: 'free' },
+      { id: 'lo-phon-4', emoji: '📋', title: 'Вправи з наголосом', type: 'worksheet', tier: 'premium' },
     ],
     'Конструктори історій': [
-      { emoji: '📚', title: 'Картки-стартери для казок', type: 'printable', tier: 'free' },
-      { emoji: '🌀', title: 'Сюжетна мозаїка', type: 'printable', tier: 'free' },
-      { emoji: '🎭', title: 'Рольові ситуації', type: 'guide', tier: 'premium' },
+      { id: 'lo-story-1', emoji: '📚', title: 'Картки-стартери для казок', type: 'printable', tier: 'free' },
+      { id: 'lo-story-2', emoji: '🌀', title: 'Сюжетна мозаїка', type: 'printable', tier: 'free' },
+      { id: 'lo-story-3', emoji: '🎭', title: 'Рольові ситуації', type: 'guide', tier: 'premium' },
     ],
     'Трекери прогресу': [
-      { emoji: '📊', title: 'Щотижневий трекер звуків', type: 'printable', tier: 'free' },
-      { emoji: '🗂', title: 'Портфоліо дитини', type: 'guide', tier: 'premium' },
-      { emoji: '✅', title: 'Чек-лист корекції', type: 'assessment', tier: 'specialist' },
+      { id: 'lo-track-1', emoji: '📊', title: 'Щотижневий трекер звуків', type: 'printable', tier: 'free' },
+      { id: 'lo-track-2', emoji: '🗂', title: 'Портфоліо дитини', type: 'guide', tier: 'premium' },
+      { id: 'lo-track-3', emoji: '✅', title: 'Чек-лист корекції', type: 'assessment', tier: 'specialist' },
     ],
   },
   'logic-aila': {
     'Робочі аркуші': [
-      { emoji: '📝', title: 'Додавання до 10', type: 'worksheet', tier: 'free' },
-      { emoji: '📝', title: 'Порівняння чисел', type: 'worksheet', tier: 'free' },
-      { emoji: '📝', title: 'Лічба до 20', type: 'worksheet', tier: 'free' },
-      { emoji: '📝', title: 'Геометричні фігури', type: 'worksheet', tier: 'premium' },
+      { id: 'la-work-1', emoji: '📝', title: 'Додавання до 10', type: 'worksheet', tier: 'free' },
+      { id: 'la-work-2', emoji: '📝', title: 'Порівняння чисел', type: 'worksheet', tier: 'free' },
+      { id: 'la-work-3', emoji: '📝', title: 'Лічба до 20', type: 'worksheet', tier: 'free' },
+      { id: 'la-work-4', emoji: '📝', title: 'Геометричні фігури', type: 'worksheet', tier: 'premium' },
     ],
     'Відеоуроки': [
-      { emoji: '🎬', title: 'Числа від 1 до 5', type: 'video', tier: 'free' },
-      { emoji: '🎬', title: 'Що таке більше і менше', type: 'video', tier: 'free' },
-      { emoji: '🎬', title: 'Просторова логіка', type: 'video', tier: 'premium' },
+      { id: 'la-vid-1', emoji: '🎬', title: 'Числа від 1 до 5', type: 'video', tier: 'free' },
+      { id: 'la-vid-2', emoji: '🎬', title: 'Що таке більше і менше', type: 'video', tier: 'free' },
+      { id: 'la-vid-3', emoji: '🎬', title: 'Просторова логіка', type: 'video', tier: 'premium' },
     ],
     'Інтерактивні пазли': [
-      { emoji: '🧩', title: 'Числові пазли 1–10', type: 'printable', tier: 'free' },
-      { emoji: '🧩', title: 'Логічні ланцюжки', type: 'printable', tier: 'free' },
-      { emoji: '🧩', title: 'Матриці з фігурами', type: 'printable', tier: 'premium' },
+      { id: 'la-puzz-1', emoji: '🧩', title: 'Числові пазли 1–10', type: 'printable', tier: 'free' },
+      { id: 'la-puzz-2', emoji: '🧩', title: 'Логічні ланцюжки', type: 'printable', tier: 'free' },
+      { id: 'la-puzz-3', emoji: '🧩', title: 'Матриці з фігурами', type: 'printable', tier: 'premium' },
     ],
     'Набори для оцінювання': [
-      { emoji: '📋', title: 'Вхідне оцінювання — математика', type: 'assessment', tier: 'specialist' },
-      { emoji: '📋', title: 'Карта навичок 4–5 р.', type: 'assessment', tier: 'specialist' },
+      { id: 'la-assess-1', emoji: '📋', title: 'Вхідне оцінювання — математика', type: 'assessment', tier: 'specialist' },
+      { id: 'la-assess-2', emoji: '📋', title: 'Карта навичок 4–5 р.', type: 'assessment', tier: 'specialist' },
     ],
   },
   'home-station': {
     'Ідеї для ігор': [
-      { emoji: '🎯', title: 'Ігри на кухні', type: 'guide', tier: 'free' },
-      { emoji: '🎨', title: 'Творчі хвилинки', type: 'guide', tier: 'free' },
-      { emoji: '🌿', title: 'Природа вдома', type: 'guide', tier: 'free' },
+      { id: 'hs-play-1', emoji: '🎯', title: 'Ігри на кухні', type: 'guide', tier: 'free' },
+      { id: 'hs-play-2', emoji: '🎨', title: 'Творчі хвилинки', type: 'guide', tier: 'free' },
+      { id: 'hs-play-3', emoji: '🌿', title: 'Природа вдома', type: 'guide', tier: 'free' },
     ],
     'Статті для батьків': [
-      { emoji: '📖', title: 'Як розвивати мовлення вдома', type: 'guide', tier: 'free' },
-      { emoji: '📖', title: 'Ритуали перед сном', type: 'guide', tier: 'free' },
-      { emoji: '📖', title: 'Дитяча тривога: поради', type: 'guide', tier: 'premium' },
+      { id: 'hs-art-1', emoji: '📖', title: 'Як розвивати мовлення вдома', type: 'guide', tier: 'free' },
+      { id: 'hs-art-2', emoji: '📖', title: 'Ритуали перед сном', type: 'guide', tier: 'free' },
+      { id: 'hs-art-3', emoji: '📖', title: 'Дитяча тривога: поради', type: 'guide', tier: 'premium' },
     ],
     'Швидкі активності': [
-      { emoji: '⚡', title: '5-хвилинні ігри', type: 'guide', tier: 'free' },
-      { emoji: '⚡', title: 'Рухавки для дому', type: 'printable', tier: 'free' },
+      { id: 'hs-quick-1', emoji: '⚡', title: '5-хвилинні ігри', type: 'guide', tier: 'free' },
+      { id: 'hs-quick-2', emoji: '⚡', title: 'Рухавки для дому', type: 'printable', tier: 'free' },
     ],
     'Сезонні гайди': [
-      { emoji: '🍂', title: 'Осінні активності', type: 'guide', tier: 'free' },
-      { emoji: '❄️', title: 'Зимові традиції', type: 'guide', tier: 'free' },
-      { emoji: '🌸', title: 'Весняні ігри', type: 'guide', tier: 'premium' },
+      { id: 'hs-seas-1', emoji: '🍂', title: 'Осінні активності', type: 'guide', tier: 'free' },
+      { id: 'hs-seas-2', emoji: '❄️', title: 'Зимові традиції', type: 'guide', tier: 'free' },
+      { id: 'hs-seas-3', emoji: '🌸', title: 'Весняні ігри', type: 'guide', tier: 'premium' },
     ],
   },
   'training-hub': {
     'Живі вебінари': [
-      { emoji: '🎥', title: 'АВА терапія: основи', type: 'video', tier: 'specialist' },
-      { emoji: '🎥', title: 'Сенсорна інтеграція', type: 'video', tier: 'specialist' },
-      { emoji: '🎥', title: 'Робота з тривогою у дітей', type: 'video', tier: 'premium' },
+      { id: 'th-web-1', emoji: '🎥', title: 'АВА терапія: основи', type: 'video', tier: 'specialist' },
+      { id: 'th-web-2', emoji: '🎥', title: 'Сенсорна інтеграція', type: 'video', tier: 'specialist' },
+      { id: 'th-web-3', emoji: '🎥', title: 'Робота з тривогою у дітей', type: 'video', tier: 'premium' },
     ],
     'Шляхи сертифікації': [
-      { emoji: '📜', title: 'Сертифікат «Логопед +»', type: 'guide', tier: 'specialist' },
-      { emoji: '📜', title: 'Курс «Арт-терапія»', type: 'guide', tier: 'specialist' },
+      { id: 'th-cert-1', emoji: '📜', title: 'Сертифікат «Логопед +»', type: 'guide', tier: 'specialist' },
+      { id: 'th-cert-2', emoji: '📜', title: 'Курс «Арт-терапія»', type: 'guide', tier: 'specialist' },
     ],
     'Архів воркшопів': [
-      { emoji: '📁', title: 'Воркшоп: казкотерапія', type: 'video', tier: 'premium' },
-      { emoji: '📁', title: 'Воркшоп: STEM для дошкільнят', type: 'video', tier: 'premium' },
-      { emoji: '📁', title: 'Воркшоп: ігрова терапія', type: 'video', tier: 'specialist' },
+      { id: 'th-arch-1', emoji: '📁', title: 'Воркшоп: казкотерапія', type: 'video', tier: 'premium' },
+      { id: 'th-arch-2', emoji: '📁', title: 'Воркшоп: STEM для дошкільнят', type: 'video', tier: 'premium' },
+      { id: 'th-arch-3', emoji: '📁', title: 'Воркшоп: ігрова терапія', type: 'video', tier: 'specialist' },
     ],
     'Прокачка екіпажу': [
-      { emoji: '🚀', title: 'База знань спеціаліста', type: 'guide', tier: 'specialist' },
-      { emoji: '🚀', title: 'Шаблони документації', type: 'pdf', tier: 'specialist' },
+      { id: 'th-crew-1', emoji: '🚀', title: 'База знань спеціаліста', type: 'guide', tier: 'specialist' },
+      { id: 'th-crew-2', emoji: '🚀', title: 'Шаблони документації', type: 'pdf', tier: 'specialist' },
     ],
   },
   cosmodrome: {
     'Курси підготовки': [
-      { emoji: '🎓', title: 'Читання: від звуку до слова', type: 'video', tier: 'premium' },
-      { emoji: '🎓', title: 'Математика: перший клас', type: 'video', tier: 'premium' },
-      { emoji: '🎓', title: 'Розвиток пам\'яті', type: 'guide', tier: 'free' },
+      { id: 'cosm-course-1', emoji: '🎓', title: 'Читання: від звуку до слова', type: 'video', tier: 'premium' },
+      { id: 'cosm-course-2', emoji: '🎓', title: 'Математика: перший клас', type: 'video', tier: 'premium' },
+      { id: 'cosm-course-3', emoji: '🎓', title: 'Розвиток пам\'яті', type: 'guide', tier: 'free' },
     ],
     'Тести оцінювання': [
-      { emoji: '✅', title: 'Готовність до школи (6р.)', type: 'assessment', tier: 'premium' },
-      { emoji: '✅', title: 'Рівень читання', type: 'assessment', tier: 'premium' },
-      { emoji: '✅', title: 'Концентрація уваги', type: 'assessment', tier: 'specialist' },
+      { id: 'cosm-test-1', emoji: '✅', title: 'Готовність до школи (6р.)', type: 'assessment', tier: 'premium' },
+      { id: 'cosm-test-2', emoji: '✅', title: 'Рівень читання', type: 'assessment', tier: 'premium' },
+      { id: 'cosm-test-3', emoji: '✅', title: 'Концентрація уваги', type: 'assessment', tier: 'specialist' },
     ],
     'Бейджі навичок': [
-      { emoji: '🏆', title: 'Бейдж «Читець»', type: 'guide', tier: 'free' },
-      { emoji: '🏆', title: 'Бейдж «Лічильник»', type: 'guide', tier: 'free' },
-      { emoji: '🏆', title: 'Бейдж «Дослідник»', type: 'guide', tier: 'premium' },
+      { id: 'cosm-badge-1', emoji: '🏆', title: 'Бейдж «Читець»', type: 'guide', tier: 'free' },
+      { id: 'cosm-badge-2', emoji: '🏆', title: 'Бейдж «Лічильник»', type: 'guide', tier: 'free' },
+      { id: 'cosm-badge-3', emoji: '🏆', title: 'Бейдж «Дослідник»', type: 'guide', tier: 'premium' },
     ],
     'Звіти для батьків': [
-      { emoji: '📊', title: 'Прогрес за місяць', type: 'pdf', tier: 'premium' },
-      { emoji: '📊', title: 'Рекомендації куратора', type: 'guide', tier: 'premium' },
+      { id: 'cosm-rep-1', emoji: '📊', title: 'Прогрес за місяць', type: 'pdf', tier: 'premium' },
+      { id: 'cosm-rep-2', emoji: '📊', title: 'Рекомендації куратора', type: 'guide', tier: 'premium' },
     ],
   },
 }
@@ -207,6 +207,7 @@ function SupabasePlanetContent({ supabasePlanetId, planetColor }) {
         {resources.map((r) => (
           <ResourceCard
             key={r.id}
+            id={r.id}
             title={r.title}
             type={r.type}
             tier={r.is_free ? 'free' : 'premium'}
@@ -230,6 +231,7 @@ function SupabasePlanetContent({ supabasePlanetId, planetColor }) {
             {items.map((r) => (
               <ResourceCard
                 key={r.id}
+                id={r.id}
                 title={r.title}
                 type={r.type}
                 tier={r.is_free ? 'free' : 'premium'}
@@ -368,9 +370,10 @@ export default function PlanetDetailScreen() {
               <EmptyState planetColor={meta.color} />
             </div>
           ) : (
-            mockResources.map((r, i) => (
+            mockResources.map((r) => (
               <ResourceCard
-                key={i}
+                key={r.id}
+                id={r.id}
                 emoji={r.emoji}
                 title={r.title}
                 type={r.type}
