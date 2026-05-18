@@ -55,7 +55,7 @@ const PLANETS = [
     name: 'Лого-Орбіта',
     emoji: '🪐',
     charImg: orbitaPng,
-    curator: 'Орбіта Козочка',
+    curator: 'Орбіта Кізонька',
     curatorRole: 'Куратор логопедії та грамотності',
     color1: '#B388FF',
     color2: '#7C4DFF',

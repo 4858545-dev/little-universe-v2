@@ -8,7 +8,7 @@ export const PLANET_META = {
     emoji: '🪐',
     name: 'Лого-Орбіта',
     subject: 'Грамота, письмо',
-    curator: 'Орбіта Козочка',
+    curator: 'Орбіта Кізонька',
     characterId: 'orbita',
     color: 'var(--orbita-color)',
     gradient: 'var(--orbita-gradient)',
