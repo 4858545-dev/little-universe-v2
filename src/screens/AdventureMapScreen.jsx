@@ -453,16 +453,19 @@ const BURST_DIRS = [
 ]
 
 function ResourceCard({ r, planetColor }) {
-  const [claimed, setClaimed] = useState(false)
+  const { markResourceComplete, isResourceComplete } = useProgressStore()
+  const alreadyDone = r.id ? isResourceComplete(r.id) : false
   const [bursting, setBursting] = useState(false)
 
   function handleDownload() {
-    if (!r.url) return
-    window.open(r.url, '_blank', 'noopener')
-    setClaimed(true)
+    console.log('ResourceCard handleDownload, r.id:', r.id, 'alreadyDone:', alreadyDone)
+    if (r.url) window.open(r.url, '_blank', 'noopener')
+    if (r.id && !alreadyDone) {
+      markResourceComplete(r.id)
+      console.log('markResourceComplete called for', r.id)
+    }
     setBursting(true)
     setTimeout(() => setBursting(false), 1500)
-    setTimeout(() => setClaimed(false), 2000)
   }
 
   return (
@@ -502,14 +505,14 @@ function ResourceCard({ r, planetColor }) {
           onClick={handleDownload}
           style={{
             width: '100%', padding: '7px 0', borderRadius: 10,
-            background: claimed ? 'rgba(244,185,66,0.12)' : `${planetColor}12`,
-            border: `1px solid ${claimed ? 'rgba(244,185,66,0.35)' : planetColor + '25'}`,
+            background: alreadyDone ? '#4fd9a0' : `${planetColor}12`,
+            border: `1px solid ${alreadyDone ? '#4fd9a0' : planetColor + '25'}`,
             fontSize: 11, fontWeight: 800,
-            color: claimed ? '#f4b942' : planetColor,
+            color: alreadyDone ? '#050b1e' : planetColor,
             cursor: r.url ? 'pointer' : 'default', fontFamily: 'inherit',
             transition: 'color 0.25s, background 0.25s, border-color 0.25s',
           }}
-        >{claimed ? '✓ Місію виконано!' : '⬇ Взяти на борт'}</button>
+        >{alreadyDone ? '✓ Місію виконано!' : '⬇ Взяти на борт'}</button>
         {/* Star burst particles */}
         {bursting && BURST_DIRS.map((d, i) => (
           <div key={i} style={{

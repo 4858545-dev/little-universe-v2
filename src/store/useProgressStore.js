@@ -9,21 +9,32 @@ const useProgressStore = create(
       lastActivity: null,
 
       markResourceComplete(resourceId) {
-        const { completedResources } = get()
-        if (completedResources.includes(resourceId)) return
+        const state = get()
+        // Guard: persisted Sets come back as plain objects — normalise to array
+        const list = Array.isArray(state.completedResources)
+          ? state.completedResources
+          : Object.values(state.completedResources)
+        console.log('[ProgressStore] markResourceComplete called:', resourceId, '| current list:', list)
+        if (list.includes(resourceId)) {
+          console.log('[ProgressStore] already complete, skipping')
+          return
+        }
         set({
-          completedResources: [...completedResources, resourceId],
-          coins: get().coins + 10,
+          completedResources: [...list, resourceId],
+          coins: state.coins + 10,
           lastActivity: Date.now(),
         })
+        console.log('[ProgressStore] updated — coins:', state.coins + 10, '| total:', list.length + 1)
       },
 
       isResourceComplete(resourceId) {
-        return get().completedResources.includes(resourceId)
+        const list = get().completedResources
+        return Array.isArray(list) ? list.includes(resourceId) : false
       },
 
       getTotalCompleted() {
-        return get().completedResources.length
+        const list = get().completedResources
+        return Array.isArray(list) ? list.length : 0
       },
 
       resetProgress() {
