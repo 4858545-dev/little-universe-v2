@@ -1385,6 +1385,33 @@ export default function AdventureMapScreen() {
                 >Залишити відгук ✨</a>
                 <span style={{ color: 'rgba(255,255,255,0.15)', fontSize: 11 }}>·</span>
                 <a
+                  href="https://www.instagram.com/little_universe_kids/"
+                  target="_blank" rel="noopener noreferrer"
+                  aria-label="Instagram"
+                  style={{ color: 'rgba(155,168,204,0.7)', display: 'inline-flex', alignItems: 'center', transition: 'color 0.2s' }}
+                  onMouseEnter={e => { e.currentTarget.style.color = '#e8edf8' }}
+                  onMouseLeave={e => { e.currentTarget.style.color = 'rgba(155,168,204,0.7)' }}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="currentColor" strokeWidth="1.8"/>
+                    <circle cx="12" cy="12" r="4.5" stroke="currentColor" strokeWidth="1.8"/>
+                    <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/>
+                  </svg>
+                </a>
+                <a
+                  href="https://t.me/+KBg-YoLiqTVmNmJi"
+                  target="_blank" rel="noopener noreferrer"
+                  aria-label="Telegram"
+                  style={{ color: 'rgba(155,168,204,0.7)', display: 'inline-flex', alignItems: 'center', transition: 'color 0.2s' }}
+                  onMouseEnter={e => { e.currentTarget.style.color = '#e8edf8' }}
+                  onMouseLeave={e => { e.currentTarget.style.color = 'rgba(155,168,204,0.7)' }}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M21.8 3.2L2.6 10.7c-1.3.5-1.3 1.3-.2 1.6l4.8 1.5 11.1-7c.5-.3 1 0 .6.4L9.8 16l-.4 5c.6 0 .8-.3 1.1-.6l2.7-2.6 4.9 3.6c.9.5 1.6.2 1.8-.8L22.8 4.3c.3-1.2-.5-1.7-1-1.1z" fill="currentColor"/>
+                  </svg>
+                </a>
+                <span style={{ color: 'rgba(255,255,255,0.15)', fontSize: 11 }}>·</span>
+                <a
                   href="mailto:hello@littleuniverse.app"
                   style={{
                     fontFamily: "'Nunito', sans-serif", fontSize: 13, fontWeight: 600,
