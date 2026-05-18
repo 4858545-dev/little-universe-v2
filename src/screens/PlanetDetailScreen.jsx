@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import useAppStore from '../store/useAppStore'
+import useProgressStore from '../store/useProgressStore'
 import CharacterAvatar from '../components/characters/CharacterAvatar'
 import ResourceCard from '../components/cards/ResourceCard'
 import { useResources } from '../hooks/useResources'
@@ -145,6 +146,46 @@ const MOCK_RESOURCES = {
       { id: 'cosm-rep-2', emoji: '📊', title: 'Рекомендації куратора', type: 'guide', tier: 'premium' },
     ],
   },
+}
+
+// Total count of all mock resources across all planets
+const TOTAL_MOCK_RESOURCES = Object.values(MOCK_RESOURCES).reduce(
+  (sum, sections) => sum + Object.values(sections).reduce((s, arr) => s + arr.length, 0),
+  0
+)
+
+function ProgressDashboard() {
+  const { completedResources, coins } = useProgressStore()
+  const downloaded = completedResources.length
+  const pct = TOTAL_MOCK_RESOURCES > 0 ? Math.round((downloaded / TOTAL_MOCK_RESOURCES) * 100) : 0
+
+  return (
+    <div className={styles.progressDashboard}>
+      <h2 className={styles.dashTitle}>Мій прогрес</h2>
+      <div className={styles.dashStats}>
+        <div className={styles.dashStat}>
+          <span className={styles.dashStatValue}>🪙 {coins}</span>
+          <span className={styles.dashStatLabel}>Монети</span>
+        </div>
+        <div className={styles.dashDivider} />
+        <div className={styles.dashStat}>
+          <span className={styles.dashStatValue}>{downloaded}</span>
+          <span className={styles.dashStatLabel}>Завантажено</span>
+        </div>
+        <div className={styles.dashDivider} />
+        <div className={styles.dashStat}>
+          <span className={styles.dashStatValue}>{TOTAL_MOCK_RESOURCES}</span>
+          <span className={styles.dashStatLabel}>Всього матеріалів</span>
+        </div>
+      </div>
+      <div className={styles.dashBarWrap}>
+        <div className={styles.dashBar}>
+          <div className={styles.dashBarFill} style={{ width: `${pct}%` }} />
+        </div>
+        <span className={styles.dashBarPct}>{pct}%</span>
+      </div>
+    </div>
+  )
 }
 
 // Group resources by age range label
@@ -335,6 +376,9 @@ export default function PlanetDetailScreen() {
           </div>
         </div>
       )}
+
+      {/* Progress dashboard — Домашня Станція only */}
+      {planetId === 'home-station' && <ProgressDashboard />}
 
       {/* Section tabs — only for mock-data planets */}
       {!isSupabasePlanet && (

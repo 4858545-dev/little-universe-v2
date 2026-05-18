@@ -464,6 +464,103 @@
   .bubbleText { font-size: 13px; }
 }
 
+/* ── Progress Dashboard (Домашня Станція) ──────────────────── */
+.progressDashboard {
+  max-width: 900px;
+  margin: 0 auto var(--space-4);
+  padding: 0 var(--space-5);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.dashTitle {
+  font-family: var(--f-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0 0 var(--space-3);
+}
+
+.dashStats {
+  background: rgba(10, 18, 40, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 16px;
+  padding: var(--space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-3);
+}
+
+.dashStat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.dashStatValue {
+  font-family: var(--f-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--gold);
+}
+
+.dashStatLabel {
+  font-family: var(--f-body);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-2);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.dashDivider {
+  width: 1px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.08);
+  flex-shrink: 0;
+}
+
+.dashBarWrap {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.dashBar {
+  flex: 1;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.dashBarFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--teal), var(--green));
+  border-radius: 99px;
+  transition: width 0.5s ease;
+  min-width: 4px;
+}
+
+.dashBarPct {
+  font-family: var(--f-display);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--teal);
+  min-width: 32px;
+  text-align: right;
+}
+
+@media (max-width: 768px) {
+  .dashStatValue { font-size: 18px; }
+  .dashStatLabel { font-size: 10px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .screen { animation: none; }
   .backBtn { transition: none; }
@@ -477,4 +574,5 @@
   .skeletonBtn { animation: none; background: rgba(255,255,255,0.06); }
   .skeletonLabel { animation: none; }
   .breadcrumbLink { transition: none; }
+  .dashBarFill { transition: none; }
 }
