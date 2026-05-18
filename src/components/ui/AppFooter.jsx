@@ -30,40 +30,30 @@ export default function AppFooter() {
   const { logout } = useAuthStore()
 
   return (
-    <footer className={styles.footer}>
-      <nav className={styles.navRow} aria-label="Навігація">
-        {NAV.map((n) => (
-          <button
-            key={n.id}
-            className={[styles.navBtn, screen === n.id ? styles.active : ''].join(' ')}
-            onClick={() => navigate(n.id)}
-            aria-current={screen === n.id ? 'page' : undefined}
-          >
-            <span className={styles.navEmoji}>{n.emoji}</span>
-            <span className={styles.navLabel}>{n.label}</span>
-          </button>
-        ))}
-        <a
-          href="https://forms.gle/1VfZ618G1WT1xE3z8"
-          target="_blank"
-          rel="noopener noreferrer"
-          className={styles.navBtn}
-          style={{ textDecoration: 'none' }}
-          aria-label="Залишити відгук"
-        >
-          <span className={styles.navEmoji}>✨</span>
-          <span className={styles.navLabel}>Відгук</span>
-        </a>
+    <nav className={styles.footer} aria-label="Навігація">
+      {NAV.map((n) => (
         <button
-          className={styles.navBtn}
-          onClick={logout}
-          aria-label="Вийти"
+          key={n.id}
+          className={[styles.navBtn, screen === n.id ? styles.active : ''].join(' ')}
+          onClick={() => navigate(n.id)}
+          aria-current={screen === n.id ? 'page' : undefined}
         >
-          <span className={styles.navEmoji}>⏏</span>
-          <span className={styles.navLabel}>Вийти</span>
+          <span className={styles.navEmoji}>{n.emoji}</span>
+          <span className={styles.navLabel}>{n.label}</span>
         </button>
-      </nav>
-      <div className={styles.socialRow}>
+      ))}
+      <a
+        href="https://forms.gle/1VfZ618G1WT1xE3z8"
+        target="_blank"
+        rel="noopener noreferrer"
+        className={styles.navBtn}
+        style={{ textDecoration: 'none' }}
+        aria-label="Залишити відгук"
+      >
+        <span className={styles.navEmoji}>✨</span>
+        <span className={styles.navLabel}>Відгук</span>
+      </a>
+      <div className={styles.socialGroup}>
         <a
           href="https://www.instagram.com/little_universe_kids"
           target="_blank"
@@ -83,7 +73,14 @@ export default function AppFooter() {
           <TelegramIcon />
         </a>
       </div>
-      <p className={styles.copyright}>© 2026 Маленький Всесвіт</p>
-    </footer>
+      <button
+        className={styles.navBtn}
+        onClick={logout}
+        aria-label="Вийти"
+      >
+        <span className={styles.navEmoji}>⏏</span>
+        <span className={styles.navLabel}>Вийти</span>
+      </button>
+    </nav>
   )
 }
