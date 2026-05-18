@@ -29,6 +29,7 @@ export default function ResourceCard({ id, title, type, tier = 'free', descripti
   const alreadyDone = id ? isResourceComplete(id) : false
 
   function handleTakeOnBoard() {
+    console.log('Download clicked, id:', id, 'alreadyDone:', alreadyDone)
     if (url) {
       window.open(url, '_blank', 'noopener,noreferrer')
     } else {

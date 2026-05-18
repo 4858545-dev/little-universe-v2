@@ -94,15 +94,15 @@
 }
 
 .takeBtn.done {
-  background: rgba(79, 217, 160, 0.12);
-  border-color: rgba(79, 217, 160, 0.4);
-  color: var(--green);
+  background: #4fd9a0;
+  border-color: #4fd9a0;
+  color: #050b1e;
   cursor: default;
 }
 
 .takeBtn.done:hover {
-  background: rgba(79, 217, 160, 0.12);
-  border-color: rgba(79, 217, 160, 0.4);
+  background: #4fd9a0;
+  border-color: #4fd9a0;
 }
 
 .coinPop {
