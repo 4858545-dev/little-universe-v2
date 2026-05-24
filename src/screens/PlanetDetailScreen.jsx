@@ -20,6 +20,7 @@ const SUPABASE_PLANETS = {
   'lambi-heritage': 'lambi-heritage',
   'about-crew':     'about-crew',
   'logo-orbit':     'logo-orbit',
+  'home-station':   'home-station',
 }
 
 // Character greetings per planet
